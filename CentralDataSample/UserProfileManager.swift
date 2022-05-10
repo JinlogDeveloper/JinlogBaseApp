@@ -11,6 +11,7 @@ import Foundation
 
 /// ***
 /// プロフィール定義
+// 型定義だけなので構造体とする
 struct Profile {
     var userName: String = ""            /// ユーザ名(プレイヤー名)
     var birthday: Date                   /// 生年月日
@@ -19,10 +20,18 @@ struct Profile {
     var belong: String = ""              /// 所属
     var introMessage: String = ""        /// 自己紹介
     var visibleBirthday: Bool = false    /// 生年月日を公開
+    // 下記などの理由もあり、
+    // 多くのSNSで生年月日の公開／非公開の設定がある
+    // 　・パスワードに関わる情報の場合がある
+    // 　・歳を知られたくない
+    // 　・どうでもいい相手から誕生日を祝われるのが邪魔くさい
 
     init () {
-        // = Date() で問題ないが、何か明確な値を入れておくことで
-        // デバッグ時に初期値であることを容易に判別できるかなと
+        // = Date() でも問題はない。(その瞬間の年月日時分秒が入る)
+        // しかし、明確な値を入れておくことで、
+        // 　・デバッグ時にその値が初期値なのかそうでないかを判別し易い
+        // 　・不要な情報(時分秒)が00:00:00で初期化できる。
+        // 　・DatePickerの初期値にできる。(誕生日を入力する時の初期値が)
         birthday = Calendar(identifier: .gregorian)
             .date(from: DateComponents(year: 2000, month: 1, day: 1))!
     }

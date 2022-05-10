@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
+// Firebaseをimportしない！！
 
 struct MainView: View {
-    @State private var isShowingModal1: Bool = false
-    @State private var isShowingModal2: Bool = false
-    @State private var birthday = Date()
+    @State private var isShowingModal: Bool = false
 
     @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
     @State private var bufUserId: String = ""
@@ -23,14 +22,14 @@ struct MainView: View {
             
             Button(
                 action:{
-                    isShowingModal2 = true
+                    isShowingModal = true
                 }
             ) {
                 Text("プロフィール編集")
                     .background(.orange)
             }
             .padding()
-            .sheet(isPresented: $isShowingModal2) {
+            .sheet(isPresented: $isShowingModal) {
                 let _ = print("なぜか2回走る")
                 ProfileView()
             }

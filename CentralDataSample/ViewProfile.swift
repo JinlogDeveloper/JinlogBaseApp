@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+// Firebaseをimportしない！！
 
 struct ProfileView: View {
     @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile

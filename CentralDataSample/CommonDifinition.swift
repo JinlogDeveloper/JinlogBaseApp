@@ -34,7 +34,7 @@ enum Sex: Int, CaseIterable {
         switch num {
         case Self.male.rawValue:    return Sex.male
         case Self.female.rawValue:  return Sex.female
-        case Self.male.rawValue:    return Sex.etc
+        case Self.etc.rawValue:    return Sex.etc
         case Self.secret.rawValue:  return Sex.secret
         default: return Sex.unselected
         }
