@@ -7,6 +7,7 @@
 
 import SwiftUI
 // Firebaseをimportしない！！
+//testコメント追加
 
 struct MainView: View {
     @State private var isShowingModal: Bool = false

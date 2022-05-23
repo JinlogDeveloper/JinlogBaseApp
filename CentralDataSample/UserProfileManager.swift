@@ -14,7 +14,7 @@ import Foundation
 // 型定義だけなので構造体とする
 struct Profile {
     var userName: String = ""            /// ユーザ名(プレイヤー名)
-    var birthday: Date                   /// 生年月日
+    var birthday: Date = Date()                  /// 生年月日
     var sex = Sex.unselected             /// 性別
     var area = Areas.unselected          /// 地域
     var belong: String = ""              /// 所属
@@ -48,6 +48,9 @@ class UserProfile: ObservableObject {
     // 一旦、本クラスに持たせてみる
     private let profStore = ProfileStore()
 
+    init(){
+        userId="abc"
+    }
     /// プロフィールを保存する
     /// - Parameters:
     ///   - uId: 保存するプロフィールのユーザID
@@ -128,6 +131,7 @@ class UserProfile: ObservableObject {
 /// ***
 /// アプリ使用者本人のプロフィール ※シングルトンにする
 final class OwnerProfile: UserProfile {
-    override private init() {}
+    override private init() {
+    }
     static let sOwnerProfile = OwnerProfile()
 }
