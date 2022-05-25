@@ -9,7 +9,7 @@ import SwiftUI
 // Firebaseをimportしない！！
 
 @main
-struct CentralDataSampleApp: App {
+struct JinlogBaseApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
