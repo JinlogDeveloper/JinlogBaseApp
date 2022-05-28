@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C66B9DF2841AD9F00CDA29B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0C66B9DE2841AD9F00CDA29B /* .gitignore */; };
 		6F8E68A32824D84200FF042B /* UserSettingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A22824D84200FF042B /* UserSettingManager.swift */; };
 		6F8E68A92826060900FF042B /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A82826060900FF042B /* CommonUtil.swift */; };
 		6FE40F75281467AC004A9E1B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE40F74281467AC004A9E1B /* FirebaseAnalytics */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C66B9DE2841AD9F00CDA29B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		6F8E68A22824D84200FF042B /* UserSettingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingManager.swift; sourceTree = "<group>"; };
 		6F8E68A82826060900FF042B /* CommonUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUtil.swift; sourceTree = "<group>"; };
 		6FAC914928266B820008DCF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 		6FE40F57281464C3004A9E1B = {
 			isa = PBXGroup;
 			children = (
+				0C66B9DE2841AD9F00CDA29B /* .gitignore */,
 				6FE40F62281464C3004A9E1B /* JinlogBase */,
 				6FE40F61281464C3004A9E1B /* Products */,
 			);
@@ -166,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FE40F90281B6305004A9E1B /* Preview Assets.xcassets in Resources */,
+				0C66B9DF2841AD9F00CDA29B /* .gitignore in Resources */,
 				6FF04AB428275E1500BCE9B8 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
