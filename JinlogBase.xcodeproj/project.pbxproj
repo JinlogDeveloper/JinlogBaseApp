@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C66B9DF2841AD9F00CDA29B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0C66B9DE2841AD9F00CDA29B /* .gitignore */; };
+		0C66B9E12841C18A00CDA29B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C66B9E02841C18A00CDA29B /* ProfileView.swift */; };
 		6F8E68A32824D84200FF042B /* UserSettingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A22824D84200FF042B /* UserSettingManager.swift */; };
 		6F8E68A92826060900FF042B /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A82826060900FF042B /* CommonUtil.swift */; };
 		6FE40F75281467AC004A9E1B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE40F74281467AC004A9E1B /* FirebaseAnalytics */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		0C66B9DE2841AD9F00CDA29B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		0C66B9E02841C18A00CDA29B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		6F8E68A22824D84200FF042B /* UserSettingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingManager.swift; sourceTree = "<group>"; };
 		6F8E68A82826060900FF042B /* CommonUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUtil.swift; sourceTree = "<group>"; };
 		6FAC914928266B820008DCF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				6FAC914928266B820008DCF8 /* Info.plist */,
 				6FF04AB328275E1500BCE9B8 /* GoogleService-Info.plist */,
 				6FE40F8E28198AAB004A9E1B /* Preview Content */,
+				0C66B9E02841C18A00CDA29B /* ProfileView.swift */,
 			);
 			path = JinlogBase;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FE40F892818297B004A9E1B /* JinlogBaseApp.swift in Sources */,
+				0C66B9E12841C18A00CDA29B /* ProfileView.swift in Sources */,
 				6FE40F92281C2FEF004A9E1B /* UserProfileManager.swift in Sources */,
 				6F8E68A32824D84200FF042B /* UserSettingManager.swift in Sources */,
 				6FE40F8B28182A0D004A9E1B /* CommonDifinition.swift in Sources */,
