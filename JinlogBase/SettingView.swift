@@ -8,15 +8,20 @@
 import SwiftUI
 
 struct SettingView: View {
+    
+    @State var isShowNaviView: Bool = false
+    
     var body: some View {
         VStack{
             HStack{
                 //設定ボタン
                 Button(action:{
-                    
+                    isShowNaviView = true
                 }){
-                    
+                    NavigationLink(destination: ProfileView2(), isActive: $isShowNaviView){
                     Text("プロフィール")
+                        .padding(.top, 50.0)
+                    }
                     
                 }
             }

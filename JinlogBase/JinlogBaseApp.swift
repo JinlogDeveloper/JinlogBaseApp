@@ -12,7 +12,8 @@ import SwiftUI
 struct JinlogBaseApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView()
+            //MainView()
+            HomeView()
         }
     }
 }
