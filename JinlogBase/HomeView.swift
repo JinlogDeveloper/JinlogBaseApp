@@ -9,18 +9,31 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-
-            //設定ボタン
-            Button(action:{
-                
-            }){
-            
-            Image(systemName: "gearshape.fill")
-           
+        VStack{
+            HStack{
+                Spacer()
+                //設定ボタン
+                Button(action:{
+                    
+                }){
+                    
+                    Image(systemName: "gearshape.fill")
+                    
+                }
             }
-
-
- 
+            Spacer()
+            HStack{
+                Spacer()
+                Text("ホーム画面")
+                    .padding(.all, 20.0) //全ての辺に20余白
+                Spacer()
+            }
+            Spacer()
+        }
+        
+        
+        
+        
     }
 }
 
