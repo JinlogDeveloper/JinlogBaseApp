@@ -14,6 +14,7 @@ struct HomeView: View {
     
     
     var body: some View {
+        //NavigationView{
         VStack{
             HStack{
                 Spacer()
@@ -42,10 +43,12 @@ struct HomeView: View {
             }
             Spacer()
 
-        }
+        } //VStack　ここまで
        
-    }
-}
+  //  } //NavigationView　ここまで
+            
+} //body ここまで
+} //HomeView　ここまで
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {

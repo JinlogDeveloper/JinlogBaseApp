@@ -12,31 +12,34 @@ struct SettingView: View {
     @State var isShowNaviView: Bool = false
     
     var body: some View {
-        VStack{
-            HStack{
+        NavigationView{
+            VStack{
                 //設定ボタン
                 Button(action:{
                     isShowNaviView = true
                 }){
-                    NavigationLink(destination: ProfileView2(), isActive: $isShowNaviView){
-                    Text("プロフィール")
-                        .padding(.top, 50.0)
+                    NavigationLink(destination: ProfileView2(),isActive:$isShowNaviView){
+                        
+                        //print($isShowNaviView)
+                        
+                        Text("プロフィール")
+                            .padding(.top, 50.0)
                     }
-                    
                 }
-            }
-            Spacer()
-            HStack{
+                
+                
                 Spacer()
-                Text("設定画面")
-                    .padding(.all, 20.0) //全ての辺に20余白
+                HStack{
+                    Spacer()
+                    Text("設定画面")
+                        .padding(.all, 20.0) //全ての辺に20余白
+                    Spacer()
+                }
                 Spacer()
-            }
-            Spacer()
-
-        }
-    }
-}
+            } //VStackここまで
+        } //NavigationView　ここkまで
+    } // body　ここまで
+} //View　ここまで
 
 struct SettingView_Previews: PreviewProvider {
     static var previews: some View {
