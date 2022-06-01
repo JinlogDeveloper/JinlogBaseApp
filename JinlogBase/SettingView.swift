@@ -20,8 +20,6 @@ struct SettingView: View {
                 }){
                     NavigationLink(destination: ProfileView2(),isActive:$isShowNaviView){
                         
-                        //print($isShowNaviView)
-                        
                         Text("プロフィール")
                             .padding(.top, 50.0)
                     }
