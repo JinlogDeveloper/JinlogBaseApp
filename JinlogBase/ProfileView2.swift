@@ -12,6 +12,7 @@ struct ProfileView2: View {
     
     
     var body: some View {
+        
         VStack {
             Text("プロフィール画面")
             Text(ownProfile.userId)
