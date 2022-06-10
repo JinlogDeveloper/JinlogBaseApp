@@ -11,9 +11,11 @@ struct HomeView: View {
     
     //ボタンが押されたときにtrueにすることで画面遷移させる
     @State var isShowSheetView: Bool = false
-    
+    @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+   
     
     var body: some View {
+        let _ =  ownProfile.loadProfile(uId: "aaa")
         //NavigationView{
         VStack{
             HStack{

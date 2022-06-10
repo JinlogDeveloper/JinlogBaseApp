@@ -9,9 +9,8 @@ import SwiftUI
 
 struct ProfileView2: View {
     @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
-    
-    
     var body: some View {
+       
         
         VStack {
             Text("プロフィール画面")
