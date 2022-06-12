@@ -14,6 +14,8 @@ struct JinlogBaseApp: App {
         WindowGroup {
             //MainView()
             HomeView()
+                .environmentObject(SheetShow()) // データクラスのインスタンス紐付け
+                .environmentObject(SettingData()) // データクラスのインスタンス紐付け
         }
     }
 }

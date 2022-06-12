@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+
+
+
 struct HomeView: View {
     
     //ボタンが押されたときにtrueにすることで画面遷移させる
