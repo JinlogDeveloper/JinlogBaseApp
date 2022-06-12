@@ -13,6 +13,7 @@ struct JinlogBaseApp: App {
     var body: some Scene {
         WindowGroup {
             //MainView()
+            //sample()
             HomeView()
                 .environmentObject(SheetShow()) // データクラスのインスタンス紐付け
                 .environmentObject(SettingData()) // データクラスのインスタンス紐付け

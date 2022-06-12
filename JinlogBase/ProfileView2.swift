@@ -27,24 +27,32 @@ struct ProfileView2: View {
     @EnvironmentObject var setting: SettingData
     
     @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+    //OwnerProfile.sOwnerProfile　どういう意味かわかっていない？(yatake)
+    
+    @State var str = "aaa"
+    
+    
     var body: some View {
-        
+
         
         VStack {
-            
             Text("プロフィール画面")
-            Text(ownProfile.userId)
-            
+            Text("ユーザーID: " + ownProfile.userId)
+                .onAppear(perform: {
+                    setting.option1 = ownProfile.profile.userName
+                    
+                })
+    
             
             //Listはここから
             List{
                 //Sectionでジャンル別に項目を分類する
                 //SectionはListのカッコ内で結合できる
-                Section(header:Text("設定1")) {
+                Section(header:Text("プロフィール編集")) {
                     
                     //NavigationLinkはList内の各項目に追加する
                     NavigationLink(destination: ListView1()) {
-                        Text("文字列")
+                        Text("ユーザーネーム")
                     }.badge(setting.option1)
                     
                     NavigationLink(destination: ListView2()) {
@@ -75,7 +83,7 @@ struct ProfileView2: View {
         
         var body: some View {
             VStack(spacing: 20.0){
-                Text("文字列を入力")
+                Text("ユーザーネーム")
                     .font(.title)
                 
                 //入力した文字はObservableObjectで宣言した変数へ直接代入する
