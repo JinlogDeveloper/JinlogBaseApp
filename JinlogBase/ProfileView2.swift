@@ -14,8 +14,7 @@ class SheetShow: ObservableObject {
 //ユーザー情報や設定情報もアプリ内全体で共有
 //ListViewの画面とTabViewの5つ目のタブで使用
 class SettingData: ObservableObject {
-    @Published var option1:String = "abc"
-    @Published var option2:Int = 3
+    @Published var sex:Int = 1
     @Published var option3:Int = 5
     @Published var option4:Bool = false
     @Published var option5:Bool = false
@@ -29,8 +28,9 @@ struct ProfileView2: View {
     @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
     //OwnerProfile.sOwnerProfile　どういう意味かわかっていない？(yatake)
     
-    @State var str = "aaa"
-    
+    @State private var bufProfile = Profile()
+    @State private var bufUserId: String = ""
+  
     
     var body: some View {
 
@@ -38,11 +38,6 @@ struct ProfileView2: View {
         VStack {
             Text("プロフィール画面")
             Text("ユーザーID: " + ownProfile.userId)
-                .onAppear(perform: {
-                    setting.option1 = ownProfile.profile.userName
-                    
-                })
-    
             
             //Listはここから
             List{
@@ -51,23 +46,24 @@ struct ProfileView2: View {
                 Section(header:Text("プロフィール編集")) {
                     
                     //NavigationLinkはList内の各項目に追加する
-                    NavigationLink(destination: ListView1()) {
+                    NavigationLink(destination: ListNameView()) {
                         Text("ユーザーネーム")
-                    }.badge(setting.option1)
+                    //}.badge(setting.name)
+                }.badge(ownProfile.profile.userName)
                     
-                    NavigationLink(destination: ListView2()) {
-                        Text("数字")
-                    }.badge(setting.option2)
+                    NavigationLink(destination: ListSexView()) {
+                        Text("性別")
+                    }.badge(ownProfile.profile.sex.name)
                     
                 }
                 
                 
-                Text(ownProfile.profile.userName)
-                Text(CommonUtil.birthStr(date: ownProfile.profile.birthday, type: .yyyyMd))
-                Text(ownProfile.profile.sex.name)
-                Text(ownProfile.profile.area.name)
-                Text(ownProfile.profile.belong)
-                Text(ownProfile.profile.introMessage)
+                Text("ユーザー名：" + ownProfile.profile.userName)
+                Text("誕生日：" + CommonUtil.birthStr(date: ownProfile.profile.birthday, type: .yyyyMd))
+                Text("性別：" + ownProfile.profile.sex.name)
+                Text("都道府県：" + ownProfile.profile.area.name)
+                Text("所属：" + ownProfile.profile.belong)
+                Text("自己紹介：" + ownProfile.profile.introMessage)
             }
             .frame(width: 300)
             .background(.green)
@@ -76,10 +72,13 @@ struct ProfileView2: View {
         
     }
     
-    struct ListView1: View {
-        
+    struct ListNameView: View {
+        @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+        @State private var bufProfile = Profile()
+        @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
         //ObservableObjectで宣言した変数のインスタンス作成
         @EnvironmentObject var setting: SettingData
+        @Environment(\.presentationMode) var presentation
         
         var body: some View {
             VStack(spacing: 20.0){
@@ -87,7 +86,7 @@ struct ProfileView2: View {
                     .font(.title)
                 
                 //入力した文字はObservableObjectで宣言した変数へ直接代入する
-                TextField("name",text: $setting.option1)
+                TextField(ownProfile.profile.userName,text: $bufProfile.userName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: 300)
                     .padding()
@@ -95,33 +94,46 @@ struct ProfileView2: View {
                 Text("ここで入力した文字はリストに表示")
                     .multilineTextAlignment(.center)
                     .frame(width:300)
+                
+                
+                Button(
+                    action:{
+//                        bufProfile.userName = setting.name
+                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        self.presentation.wrappedValue.dismiss()
+                    }
+                ) {
+                    Text("登録")
+                        .frame(width: 180, height: 50)
+                }
+                .font(.system(size: 36))
+                .background(.yellow)
+                
+                
+                
+                
             }
         }
     }
     
-    struct ListView2: View {
-        
+    struct ListSexView: View {
         //ObservableObjectで宣言した変数のインスタンス作成
         @EnvironmentObject var setting: SettingData
         
         var body: some View {
             
             VStack(spacing:50){
-                Text("数字を選択")
+                Text("性別を選択")
                     .font(.title)
                 
                 //Pickerで選択
                 //選択した数字はObservableObjectで宣言した変数へ直接代入する
-                Picker(selection: $setting.option2, label: Text("数字を選択")) {
-                    Text("1").tag(1)
-                    Text("2").tag(2)
-                    Text("3").tag(3)
-                    Text("4").tag(4)
-                    Text("5").tag(5)
-                    Text("6").tag(6)
-                    Text("7").tag(7)
-                    Text("8").tag(8)
-                    Text("9").tag(9)
+                Picker(selection: $setting.sex, label: Text("性別を選択")) {
+                    Text("未選択").tag(1)
+                    Text("男").tag(2)
+                    Text("女").tag(3)
+                    Text("その他").tag(4)
+                    Text("秘密").tag(5)
                 }
                 //Pickerのデザインはホイールにしたかったのでスタイルを指定
                 .pickerStyle(WheelPickerStyle())
@@ -129,6 +141,24 @@ struct ProfileView2: View {
                 Text("Pickerでホイール選択\nここで選択した数字はリストに表示")
                     .multilineTextAlignment(.center)
                     .frame(width:300)
+                
+                
+                Button(
+                    action:{
+                        
+//
+//                        
+//                        bufProfile.sex= setting.sex
+//                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+//                        self.presentation.wrappedValue.dismiss()
+                    }
+                ) {
+                    Text("登録")
+                        .frame(width: 180, height: 50)
+                }
+                .font(.system(size: 36))
+                .background(.yellow)
+                
             }
         }
     }

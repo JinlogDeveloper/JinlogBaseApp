@@ -12,7 +12,7 @@ import SwiftUI
 struct JinlogBaseApp: App {
     var body: some Scene {
         WindowGroup {
-            //MainView()
+        //MainView()
             //sample()
             HomeView()
                 .environmentObject(SheetShow()) // データクラスのインスタンス紐付け
