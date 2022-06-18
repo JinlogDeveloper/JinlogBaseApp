@@ -14,11 +14,12 @@ class SheetShow: ObservableObject {
 //ユーザー情報や設定情報もアプリ内全体で共有
 //ListViewの画面とTabViewの5つ目のタブで使用
 class SettingData: ObservableObject {
-    @Published var sex:Int = 1
+    @Published var sexname:Int = 0
     @Published var option3:Int = 5
     @Published var option4:Bool = false
     @Published var option5:Bool = false
 }
+
 
 struct ProfileView2: View {
     //ObservableObjectで宣言した変数のインスタンス作成
@@ -76,9 +77,10 @@ struct ProfileView2: View {
         @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
         @State private var bufProfile = Profile()
         @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
-        //ObservableObjectで宣言した変数のインスタンス作成
-        @EnvironmentObject var setting: SettingData
+
         @Environment(\.presentationMode) var presentation
+        
+           
         
         var body: some View {
             VStack(spacing: 20.0){
@@ -86,7 +88,8 @@ struct ProfileView2: View {
                     .font(.title)
                 
                 //入力した文字はObservableObjectで宣言した変数へ直接代入する
-                TextField(ownProfile.profile.userName,text: $bufProfile.userName)
+              //  TextField(ownProfile.profile.userName,text: $bufProfile.userName)
+                TextField("aaa",text: $bufProfile.userName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: 300)
                     .padding()
@@ -98,7 +101,6 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-//                        bufProfile.userName = setting.name
                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
                         self.presentation.wrappedValue.dismiss()
                     }
@@ -113,12 +115,20 @@ struct ProfileView2: View {
                 
                 
             }
+            .onAppear {
+                bufProfile =  ownProfile.profile
+                
+            }
+        
         }
     }
     
     struct ListSexView: View {
-        //ObservableObjectで宣言した変数のインスタンス作成
-        @EnvironmentObject var setting: SettingData
+        private var ownProfile = OwnerProfile.sOwnerProfile
+        @State private var bufProfile = Profile()
+        @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+        
+        @Environment(\.presentationMode) var presentation
         
         var body: some View {
             
@@ -128,29 +138,26 @@ struct ProfileView2: View {
                 
                 //Pickerで選択
                 //選択した数字はObservableObjectで宣言した変数へ直接代入する
-                Picker(selection: $setting.sex, label: Text("性別を選択")) {
-                    Text("未選択").tag(1)
-                    Text("男").tag(2)
-                    Text("女").tag(3)
-                    Text("その他").tag(4)
-                    Text("秘密").tag(5)
+                Picker(selection: $bufProfile.sex, label: Text("性別を選択")) {
+                    ForEach(Sex.allCases, id: \.self) { selectedSex in
+                        Text(selectedSex.name).tag(selectedSex)
+                    }
+                }
                 }
                 //Pickerのデザインはホイールにしたかったのでスタイルを指定
                 .pickerStyle(WheelPickerStyle())
-                
-                Text("Pickerでホイール選択\nここで選択した数字はリストに表示")
-                    .multilineTextAlignment(.center)
-                    .frame(width:300)
-                
+                .onAppear {
+                    bufProfile =  ownProfile.profile
+                    
+                }
+
                 
                 Button(
                     action:{
+      
+                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        self.presentation.wrappedValue.dismiss()
                         
-//
-//                        
-//                        bufProfile.sex= setting.sex
-//                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
-//                        self.presentation.wrappedValue.dismiss()
                     }
                 ) {
                     Text("登録")
@@ -163,7 +170,6 @@ struct ProfileView2: View {
         }
     }
     
-}
 
 struct ProfileView2_Previews: PreviewProvider {
     static var previews: some View {

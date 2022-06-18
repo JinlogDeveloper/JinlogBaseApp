@@ -101,7 +101,7 @@ final class ProfileStore {
                     print("Error(\(#file):\(#line)) : getDocument()")
                     return
                 }
-                print("getDocument() : \(res)")
+//                print("getDocument() : \(res)")
                 
                 // データ取り出し
                 //TODO: きれいに書き直す
@@ -117,12 +117,12 @@ final class ProfileStore {
                 bufProfile.belong = res["belong"] as? String ?? ""
                 bufProfile.introMessage = res["introMessage"] as? String ?? ""
 
-                print("\(bufProfile.userName)")
-                print("\(bufProfile.birthday)")
-                print("\(bufProfile.sex)")
-                print("\(bufProfile.area)")
-                print("\(bufProfile.belong)")
-                print("\(bufProfile.introMessage)")
+//                print("\(bufProfile.userName)")
+//                print("\(bufProfile.birthday)")
+//                print("\(bufProfile.sex)")
+//                print("\(bufProfile.area)")
+//                print("\(bufProfile.belong)")
+//                print("\(bufProfile.introMessage)")
 
                 //TODO: 正しい方法で書き直す。このコールバックのやり方はNG。
                 prof.setPrifile(prof: bufProfile)
