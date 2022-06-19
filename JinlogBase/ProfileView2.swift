@@ -13,19 +13,17 @@ class SheetShow: ObservableObject {
 
 //ユーザー情報や設定情報もアプリ内全体で共有
 //ListViewの画面とTabViewの5つ目のタブで使用
-class SettingData: ObservableObject {
-    @Published var sexname:Int = 0
-    @Published var option3:Int = 5
-    @Published var option4:Bool = false
-    @Published var option5:Bool = false
-}
+//class SettingData: ObservableObject {
+//    @Published var sexname:Int = 0
+//    @Published var option3:Int = 5
+//    @Published var option4:Bool = false
+//    @Published var option5:Bool = false
+//}
 
 
 struct ProfileView2: View {
     //ObservableObjectで宣言した変数のインスタンス作成
     @EnvironmentObject var VShow: SheetShow
-    @EnvironmentObject var setting: SettingData
-    
     @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
     //OwnerProfile.sOwnerProfile　どういう意味かわかっていない？(yatake)
     
@@ -54,6 +52,11 @@ struct ProfileView2: View {
                     
                     NavigationLink(destination: ListSexView()) {
                         Text("性別")
+                    }.badge(ownProfile.profile.sex.name)
+                    
+                    
+                    NavigationLink(destination: ListSexView()) {
+                        Text("都道府県")
                     }.badge(ownProfile.profile.sex.name)
                     
                 }
@@ -148,7 +151,6 @@ struct ProfileView2: View {
                 .pickerStyle(WheelPickerStyle())
                 .onAppear {
                     bufProfile =  ownProfile.profile
-                    
                 }
 
                 
