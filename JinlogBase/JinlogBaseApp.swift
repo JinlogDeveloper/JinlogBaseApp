@@ -16,7 +16,6 @@ struct JinlogBaseApp: App {
             //sample()
             HomeView()
                 .environmentObject(SheetShow()) // データクラスのインスタンス紐付け
-                .environmentObject(SettingData()) // データクラスのインスタンス紐付け
         }
     }
 }

@@ -11,16 +11,6 @@ class SheetShow: ObservableObject {
     @Published var isFirstView:Binding<Bool> = Binding<Bool>.constant(false)
 }
 
-//ユーザー情報や設定情報もアプリ内全体で共有
-//ListViewの画面とTabViewの5つ目のタブで使用
-//class SettingData: ObservableObject {
-//    @Published var sexname:Int = 0
-//    @Published var option3:Int = 5
-//    @Published var option4:Bool = false
-//    @Published var option5:Bool = false
-//}
-
-
 struct ProfileView2: View {
     //ObservableObjectで宣言した変数のインスタンス作成
     @EnvironmentObject var VShow: SheetShow
@@ -91,7 +81,6 @@ struct ProfileView2: View {
                     .font(.title)
                 
                 //入力した文字はObservableObjectで宣言した変数へ直接代入する
-              //  TextField(ownProfile.profile.userName,text: $bufProfile.userName)
                 TextField("aaa",text: $bufProfile.userName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: 300)
