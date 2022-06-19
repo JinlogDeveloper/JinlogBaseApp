@@ -45,9 +45,9 @@ struct ProfileView2: View {
                     }.badge(ownProfile.profile.sex.name)
                     
                     
-                    NavigationLink(destination: ListSexView()) {
+                    NavigationLink(destination: ListAreaView()) {
                         Text("都道府県")
-                    }.badge(ownProfile.profile.sex.name)
+                    }.badge(ownProfile.profile.area.name)
                     
                 }
                 
@@ -159,6 +159,61 @@ struct ProfileView2: View {
                 
             }
         }
+    
+    
+    struct ListAreaView: View {
+        private var ownProfile = OwnerProfile.sOwnerProfile
+        @State private var bufProfile = Profile()
+        @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+        
+        @Environment(\.presentationMode) var presentation
+        
+        var body: some View {
+            
+            VStack(spacing:50){
+                Text("都道府県を選択")
+                    .font(.title)
+                
+                //Pickerで選択
+                //選択した数字はObservableObjectで宣言した変数へ直接代入する
+                Picker(selection: $bufProfile.area, label: Text("都道府県を選択")) {
+                    ForEach(Areas.allCases, id: \.self) { selectedAreas in
+                        Text(selectedAreas.name).tag(selectedAreas)
+                    }
+                }
+                }
+                //Pickerのデザインはホイールにしたかったのでスタイルを指定
+                .pickerStyle(WheelPickerStyle())
+                .onAppear {
+                    bufProfile =  ownProfile.profile
+                }
+
+                
+                Button(
+                    action:{
+      
+                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        self.presentation.wrappedValue.dismiss()
+                        
+                    }
+                ) {
+                    Text("登録")
+                        .frame(width: 180, height: 50)
+                }
+                .font(.system(size: 36))
+                .background(.yellow)
+                
+            }
+        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     }
     
 
