@@ -15,7 +15,7 @@ struct ProfileView2: View {
     //ObservableObjectで宣言した変数のインスタンス作成
     @EnvironmentObject var VShow: SheetShow
     @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
-    //OwnerProfile.sOwnerProfile　どういう意味かわかっていない？(yatake)
+
     
     @State private var bufProfile = Profile()
     @State private var bufUserId: String = ""
@@ -132,7 +132,7 @@ struct ProfileView2: View {
     }
     
     struct ListSexView: View {
-        private var ownProfile = OwnerProfile.sOwnerProfile
+        @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
         @State private var bufProfile = Profile()
         @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
         
@@ -337,7 +337,8 @@ struct ProfileView2: View {
                 //選択した数字はObservableObjectで宣言した変数へ直接代入する
                 DatePicker("誕生日を選択",selection: $bufProfile.birthday, displayedComponents: .date)
                 //Pickerのデザインはホイールにしたかったのでスタイルを指定
-                .pickerStyle(WheelPickerStyle())
+                    .datePickerStyle(WheelDatePickerStyle())
+                //.pickerStyle(WheelPickerStyle())
                 .onAppear {
                     bufProfile =  ownProfile.profile
                 }

@@ -15,19 +15,19 @@ struct HomeView: View {
     //ボタンが押されたときにtrueにすることで画面遷移させる
     @State var isShowSheetView: Bool = false
     @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
-   
+    
     
     var body: some View {
-        let _ =  ownProfile.loadProfile(uId: "aaa")
+        
         //NavigationView{
         VStack{
             HStack{
                 Spacer()
                 
                 //Sheet(Modal表示)を使用したViewへの画面遷移
-                .sheet(isPresented: $isShowSheetView){
+                    .sheet(isPresented: $isShowSheetView){
                         SettingView()
-                }
+                    }
                 //設定ボタン
                 Button(action:{
                     isShowSheetView = true
@@ -47,12 +47,18 @@ struct HomeView: View {
                 Spacer()
             }
             Spacer()
-
-        } //VStack　ここまで
-       
-  //  } //NavigationView　ここまで
             
-} //body ここまで
+        } //VStack　ここまで
+        .onAppear {
+            
+            let _ =  ownProfile.loadProfile(uId: "aaa")
+            
+        }
+        
+        
+        //  } //NavigationView　ここまで
+        
+    } //body ここまで
 } //HomeView　ここまで
 
 struct HomeView_Previews: PreviewProvider {
