@@ -50,8 +50,7 @@ struct HomeView: View {
             
         } //VStack　ここまで
         .onAppear {
-            
-            let _ =  ownProfile.loadProfile(uId: "aaa")
+            ownProfile.loadProfile(uId: "aaa")
             
         }
         
