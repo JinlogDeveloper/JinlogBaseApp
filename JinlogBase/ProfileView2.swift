@@ -15,18 +15,127 @@ struct ProfileView2: View {
     //ObservableObjectで宣言した変数のインスタンス作成
     @EnvironmentObject var VShow: SheetShow
     @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
-
-    
     @State private var bufProfile = Profile()
     @State private var bufUserId: String = ""
-  
+    
+    
+    // 撮影する写真を保持する状態変数
+    @State var captureImage: UIImage? = nil
+    
+    @State var showImage:UIImage? = nil
+    
+    // 撮影画面のsheet
+    @State var isShowSheet = false
+    @State var isPhotolibrary = false
+    @State var isShowAction = false
+    
+    
     
     var body: some View {
-
+        
         
         VStack {
             Text("プロフィール画面")
             Text("ユーザーID: " + ownProfile.userId)
+            
+            if showImage != nil {
+                
+                if let unwrapShowImage = showImage {
+                    // 表示する写真がある場合は画面に表示
+                    Image(uiImage: unwrapShowImage)
+                    // リサイズする
+                        .resizable()
+                    // アスペクト比（縦横比）を維持して画面内に
+                    // 収まるようにする
+                        .aspectRatio(contentMode: .fit)
+                }
+                
+            }
+            
+            
+            
+            // 「画像を選択」ボタン
+            Button(action: {
+                // ボタンをタップしたときのアクション
+                // 撮影写真を初期化する
+                captureImage = nil
+                // ActionSheetを表示する
+                isShowAction = true
+            }) {
+                // テキスト表示
+                Text("画像を選択")
+                // 横幅いっぱい
+                    .frame(maxWidth: .infinity)
+                // 高さ50ポイントを指定
+                    .frame(height: 50)
+                // 文字列をセンタリング指定
+                    .multilineTextAlignment(.center)
+                // 背景を青色に指定
+                    .background(Color.blue)
+                // 文字色を白色に指定
+                    .foregroundColor(Color.white)
+                
+                
+                
+            } // 「画像を選択」ボタンここまで
+            // 上下左右に余白を追加
+            .padding()
+            // sheetを表示
+            // 状態変数:$isShowActionに変化があったら実行
+            .actionSheet(isPresented: $isShowAction) {
+                // ActionSheetを表示するin
+                ActionSheet(title: Text("確認"),
+                            message: Text("選択してください"),
+                            buttons: [
+                                .default(Text("カメラ"), action: {
+                                    // カメラを選択
+                                    isPhotolibrary = false
+                                    // カメラが利用可能かチェック
+                                    if UIImagePickerController.isSourceTypeAvailable(.camera){
+                                        print("カメラは利用できます")
+                                        
+                                        // カメラが使えるなら、isShowSheetをtrue
+                                        isShowSheet = true
+                                    } else {
+                                        print("カメラは利用できません")
+                                        debugPrint("デバックプリント確認")
+                                    }
+                                }),
+                                .default(Text("フォトライブラリー"), action: {
+                                    // フォトライブラリーを選択
+                                    isPhotolibrary = true
+                                    // isShowSheetをtrue
+                                    isShowSheet = true
+                                }),
+                                // キャンセル
+                                .cancel(),
+                            ]) // ActionSheetここまで
+            } // .actionSheetここまで
+            // isPresentedで指定した状態変数がtrueのとき実行
+            .sheet(isPresented: $isShowSheet) {
+                if let unwrapCaptureImage = captureImage{
+                    // 撮影した写真がある→EffectViewを表示する
+                    EffectView(
+                        isShowSheet: $isShowSheet,
+                        captureImage: unwrapCaptureImage)
+                } else {
+                    // フォトライブラリーが選択された
+                    if  isPhotolibrary {
+                        // PHPickerViewController(フォトライブラリー)を表示
+                        PHPickerView(
+                            isShowSheet: $isShowSheet,
+                            captureImage: $captureImage)
+                    } else {
+                        // UIImagePickerController（写真撮影） を表示
+                        ImagePickerView(
+                            isShowSheet: $isShowSheet,
+                            captureImage: $captureImage)
+                    }
+                }
+                
+            } // 「画像を選択」ボタンのsheetここまで
+            
+            
             
             //Listはここから
             List{
@@ -37,7 +146,7 @@ struct ProfileView2: View {
                     //NavigationLinkはList内の各項目に追加する
                     NavigationLink(destination: ListNameView()) {
                         Text("ユーザーネーム")
-                }.badge(ownProfile.profile.userName)
+                    }.badge(ownProfile.profile.userName)
                     
                     NavigationLink(destination: ListBirthdayView()) {
                         Text("誕生日")
@@ -81,15 +190,16 @@ struct ProfileView2: View {
         }
         
     }
+  
     
     struct ListNameView: View {
         @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
         @State private var bufProfile = Profile()
         @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
-
+        
         @Environment(\.presentationMode) var presentation
         
-           
+        
         
         var body: some View {
             VStack(spacing: 20.0){
@@ -109,7 +219,7 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
                         self.presentation.wrappedValue.dismiss()
                     }
                 ) {
@@ -127,7 +237,7 @@ struct ProfileView2: View {
                 bufProfile =  ownProfile.profile
                 
             }
-        
+            
         }
     }
     
@@ -151,30 +261,30 @@ struct ProfileView2: View {
                         Text(selectedSex.name).tag(selectedSex)
                     }
                 }
-                }
-                //Pickerのデザインはホイールにしたかったのでスタイルを指定
-                .pickerStyle(WheelPickerStyle())
-                .onAppear {
-                    bufProfile =  ownProfile.profile
-                }
-
-                
-                Button(
-                    action:{
-      
-                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
-                        self.presentation.wrappedValue.dismiss()
-                        
-                    }
-                ) {
-                    Text("登録")
-                        .frame(width: 180, height: 50)
-                }
-                .font(.system(size: 36))
-                .background(.yellow)
-                
             }
+            //Pickerのデザインはホイールにしたかったのでスタイルを指定
+            .pickerStyle(WheelPickerStyle())
+            .onAppear {
+                bufProfile =  ownProfile.profile
+            }
+            
+            
+            Button(
+                action:{
+                    
+                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                    self.presentation.wrappedValue.dismiss()
+                    
+                }
+            ) {
+                Text("登録")
+                    .frame(width: 180, height: 50)
+            }
+            .font(.system(size: 36))
+            .background(.yellow)
+            
         }
+    }
     
     struct ListAreaView: View {
         private var ownProfile = OwnerProfile.sOwnerProfile
@@ -196,40 +306,40 @@ struct ProfileView2: View {
                         Text(selectedAreas.name).tag(selectedAreas)
                     }
                 }
-                }
-                //Pickerのデザインはホイールにしたかったのでスタイルを指定
-                .pickerStyle(WheelPickerStyle())
-                .onAppear {
-                    bufProfile =  ownProfile.profile
-                }
-
-                
-                Button(
-                    action:{
-      
-                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
-                        self.presentation.wrappedValue.dismiss()
-                        
-                    }
-                ) {
-                    Text("登録")
-                        .frame(width: 180, height: 50)
-                }
-                .font(.system(size: 36))
-                .background(.yellow)
-                
             }
+            //Pickerのデザインはホイールにしたかったのでスタイルを指定
+            .pickerStyle(WheelPickerStyle())
+            .onAppear {
+                bufProfile =  ownProfile.profile
+            }
+            
+            
+            Button(
+                action:{
+                    
+                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                    self.presentation.wrappedValue.dismiss()
+                    
+                }
+            ) {
+                Text("登録")
+                    .frame(width: 180, height: 50)
+            }
+            .font(.system(size: 36))
+            .background(.yellow)
+            
         }
+    }
     
     
     struct ListbelongView: View {
         @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
         @State private var bufProfile = Profile()
         @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
-
+        
         @Environment(\.presentationMode) var presentation
         
-           
+        
         
         var body: some View {
             VStack(spacing: 20.0){
@@ -249,7 +359,7 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
                         self.presentation.wrappedValue.dismiss()
                     }
                 ) {
@@ -267,7 +377,7 @@ struct ProfileView2: View {
                 bufProfile =  ownProfile.profile
                 
             }
-        
+            
         }
     }
     
@@ -275,10 +385,10 @@ struct ProfileView2: View {
         @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
         @State private var bufProfile = Profile()
         @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
-
+        
         @Environment(\.presentationMode) var presentation
         
-           
+        
         
         var body: some View {
             VStack(spacing: 20.0){
@@ -298,7 +408,7 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
                         self.presentation.wrappedValue.dismiss()
                     }
                 ) {
@@ -316,7 +426,7 @@ struct ProfileView2: View {
                 bufProfile =  ownProfile.profile
                 
             }
-        
+            
         }
     }
     
@@ -339,15 +449,15 @@ struct ProfileView2: View {
                 //Pickerのデザインはホイールにしたかったのでスタイルを指定
                     .datePickerStyle(WheelDatePickerStyle())
                 //.pickerStyle(WheelPickerStyle())
-                .onAppear {
-                    bufProfile =  ownProfile.profile
-                }
-
+                    .onAppear {
+                        bufProfile =  ownProfile.profile
+                    }
+                
                 
                 Button(
                     action:{
-      
-                       ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        
+                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
                         self.presentation.wrappedValue.dismiss()
                         
                     }
@@ -360,8 +470,8 @@ struct ProfileView2: View {
                 
             }
         }
-    
-    
+        
+        
     }
 }
 
