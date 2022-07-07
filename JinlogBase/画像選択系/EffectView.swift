@@ -13,6 +13,7 @@ struct EffectView: View {
     // 撮影した写真
     let captureImage: UIImage
     // 表示する写真
+    //オプショナル型でnilを許容する
     @Binding var showImage:UIImage?
     // シェア画面（UIActivityViewController）
     // 表示有無を管理する状態変数
@@ -155,6 +156,7 @@ struct EffectView_Previews: PreviewProvider {
         EffectView(
             isShowSheet: Binding.constant(true),
             captureImage: UIImage(named: "preview_use")!,
-            showImage:Binding.constant(true))
+            //↓この書き方で良いのか？なぞ、とりあえずエラーは出ない
+            showImage: Binding.constant(UIImage(named: "preview_use")!))
     }
 }

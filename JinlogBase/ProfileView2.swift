@@ -117,7 +117,8 @@ struct ProfileView2: View {
                     // 撮影した写真がある→EffectViewを表示する
                     EffectView(
                         isShowSheet: $isShowSheet,
-                        captureImage: unwrapCaptureImage)
+                        captureImage: unwrapCaptureImage,
+                        showImage:$showImage)
                 } else {
                     // フォトライブラリーが選択された
                     if  isPhotolibrary {
