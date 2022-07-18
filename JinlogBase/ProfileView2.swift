@@ -189,6 +189,10 @@ struct ProfileView2: View {
             .background(.green)
             
         }
+        .onAppear(){
+            showImage = ownProfile.profile.image
+            
+        }
         
     }
   

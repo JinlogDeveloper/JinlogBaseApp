@@ -19,6 +19,12 @@ struct EffectView: View {
     // 表示有無を管理する状態変数
     @State var isShowAcitivity = false
     
+    
+    @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+    @State private var bufProfile = Profile()
+    @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+    
+    
     var body: some View {
         // 縦方向にレイアウト
         VStack {
@@ -96,36 +102,18 @@ struct EffectView: View {
             } // 「エフェクト」ボタンここまで
             // スペースを追加
             .padding()
-            //            // 「シェア」ボタン
-            //            Button(action: {
-            //                // ボタンをタップしたときのアクション
-            //                // UIActivityViewController を表示する
-            //                isShowAcitivity = true
-            //            }) {
-            //                // テキスト表示する
-            //                Text("シェア")
-            //                    // 横幅いっぱい
-            //                    .frame(maxWidth: .infinity)
-            //                    // 高さ50ポイントを指定
-            //                    .frame(height: 50)
-            //                    // 文字列をセンタリング指定
-            //                    .multilineTextAlignment(.center)
-            //                    // 背景を青色に指定
-            //                    .background(Color.blue)
-            //                    // 文字色を白色に指定
-            //                    .foregroundColor(Color.white)
-            //            } // 「シェア」ボタンここまで
-            //            .sheet(isPresented: $isShowAcitivity) {
-            //                // UIActivityViewControllerを表示する
-            //                ActivityView(shareItems: [showImage!])
-            //            }
-            // スペースを追加
+        
             .padding()
             // 「閉じる」ボタン
             Button(action: {
                 // ボタンをタップしたときのアクション
                 // エフェクト編集画面を閉じる
+                bufProfile.image = showImage!
+                ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
                 isShowSheet = false
+                
+                
+                
             }) {
                 // テキスト表示する
                 Text("閉じる")
@@ -146,6 +134,7 @@ struct EffectView: View {
         // 写真が表示されるときに実行される
         .onAppear {
             // 撮影した写真を表示する写真に設定
+            bufProfile =  ownProfile.profile
             showImage = captureImage
         }  // .onAppearここまで
     } // bodyここまで
