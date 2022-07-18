@@ -9,6 +9,16 @@ import Foundation
 // swiftUIをimportしない！！ 場合によっては必要かも。。。
 // Firebaseをimportしない！！
 
+/// print()出力の先頭にファイル名と行数を挿入
+public func print(_ items: String...,
+                  fileName: String = #file, line: Int = #line,
+                  separator: String = " ", terminator: String = "\n") {
+    let header = "\(URL(fileURLWithPath: fileName).lastPathComponent)(\(line))  "
+    let content = items.map { "\($0)" }.joined(separator: separator)
+    Swift.print(header+content, terminator: terminator)
+}
+
+
 enum DateStrType {
     case yyyyMMdd
     case MMdd

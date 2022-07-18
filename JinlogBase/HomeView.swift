@@ -40,10 +40,18 @@ struct HomeView: View {
                 }
             }
             Spacer()
-            HStack{
+            VStack{
                 Spacer()
                 Text("ホーム画面")
                     .padding(.all, 20.0) //全ての辺に20余白
+                
+                Image(uiImage: ownProfile.profile.image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .background(.white)
+                    .padding(20)
+                    
                 Spacer()
             }
             Spacer()

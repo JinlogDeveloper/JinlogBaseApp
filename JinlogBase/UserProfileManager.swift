@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 // swiftUIをimportしない！！ 場合によっては必要かも。。。
 // Firebaseをimportしない！！
 
@@ -20,25 +21,30 @@ struct Profile {
     var belong: String = ""              /// 所属
     var introMessage: String = ""        /// 自己紹介
     var visibleBirthday: Bool = false    /// 生年月日を公開
-    // 下記などの理由もあり、
-    // 多くのSNSで生年月日の公開／非公開の設定がある
-    // 　・パスワードに関わる情報の場合がある
-    // 　・歳を知られたくない
-    // 　・どうでもいい相手から誕生日を祝われるのが邪魔くさい
+    var image: UIImage = UIImage()       /// 画像
+
 
     init () {
-        // = Date() でも問題はない。(その瞬間の年月日時分秒が入る)
-        // しかし、明確な値を入れておくことで、
-        // 　・デバッグ時にその値が初期値なのかそうでないかを判別し易い
-        // 　・不要な情報(時分秒)が00:00:00で初期化できる。
-        // 　・DatePickerの初期値にできる。(誕生日を入力する時の初期値が)
         birthday = Calendar(identifier: .gregorian)
             .date(from: DateComponents(year: 2000, month: 1, day: 1))!
     }
+    
+    /// プロフィールを標準出力する
+    func printProfile() {
+        print("userName        : \(userName)")
+        print("birthday        : \(birthday)")
+        print("sex             : \(sex)")
+        print("area            : \(area)")
+        print("belong          : \(belong)")
+        print("introMessage    : \(introMessage)")
+        print("visibleBirthday : \(visibleBirthday)")
+    }
+    
 }
 
 /// ***
 /// 特定ユーザのプロフィール
+/// 
 class UserProfile: ObservableObject {
 
     private(set) var userId: String = ""
@@ -47,10 +53,9 @@ class UserProfile: ObservableObject {
     // Storeを本クラスに持たせるか持たせないかは悩みどころ。
     // 一旦、本クラスに持たせてみる
     private let profStore = ProfileStore()
+    // 一旦、本クラスに持たせてみる
+    private let profStorage = ProfileStrage()
 
-    init(){
-        userId="abc"
-    }
     /// プロフィールを保存する
     /// - Parameters:
     ///   - uId: 保存するプロフィールのユーザID
@@ -62,16 +67,30 @@ class UserProfile: ObservableObject {
 
         res = UserProfile.isValid(uId: uId, prof: prof)
         guard res == 0 else {
-            print("Error(\(#file):\(#line)) : isValid()")
+            print("Error : isValid()")
             return ret
         }
         userId = uId
         profile = prof
 
-        res = profStore.storeProfile(uId: userId, prof: profile)
-        guard res == 0 else {
-            print("Error(\(#file):\(#line)) : storeProfile()")
-            return ret
+//        res = profStore.storeProfile(uId: userId, prof: profile)
+//       guard res == 0 else {
+//            print("Error(\(#file):\(#line)) : storeProfile()")
+//            return ret
+//        }
+        Task {
+            let res = await profStore.storeProfile(uId: userId, prof: profile)
+            guard res == 0 else {
+                print("Error : storeProfile()")
+                return
+            }
+        }
+        Task {
+            let res = await profStorage.saveProfileImage(uId: userId, image: profile.image)
+            guard res == 0 else {
+                print("Error : saveProfileImage()")
+                return
+            }
         }
 
         ret = 0
@@ -79,9 +98,13 @@ class UserProfile: ObservableObject {
     }
     
     /// プロフィールを読み込む
+    // Viewの描画に関わるインスタンスを更新する場合、必ずメインスレッドで実行する必要がある。
+    // 特に指定しない場合、Task{}はメインスレッドで実行されるとは限らない。
+    // MainActorを記載することでメインスレッドで実行させることができる。
+    @MainActor
     func loadProfile(uId: String) -> Int {
         var ret: Int = -1
-        var res: Int = 0
+//        var res: Int = 0
 
         guard !(uId.isEmpty) else {
             print("Error(\(#file):\(#line)) : uId is empty")
@@ -89,20 +112,35 @@ class UserProfile: ObservableObject {
         }
         userId = uId
 
-        res = profStore.loadProfile(prof: self)
-        guard res == 0 else {
-            print("Error(\(#file):\(#line)) : loadProfile()")
-            return ret
+//        res = profStore.loadProfile(prof: self)
+//        guard res == 0 else {
+//            print("Error(\(#file):\(#line)) : loadProfile()")
+//            return ret
+//        }
+        Task {
+            let res = await profStore.loadProfile(uId: userId)
+            guard res != nil else {
+                print("Error : loadProfile()")
+                return
+            }
+            profile = res!  // この行をメインスレッドで実行する必要がある
         }
-
+        Task {
+            let res = await profStorage.loadProfileImage(uId: userId)
+            guard res != nil else {
+                print("Error : loadProfileImage()")
+                return
+            }
+            profile.image = res!  // この行をメインスレッドで実行する必要がある
+        }
         ret = 0
         return ret
     }
 
     //TODO: 
-    func setPrifile(prof: Profile) {
-        profile = prof
-    }
+//    func setPrifile(prof: Profile) {
+//        profile = prof
+//    }
 
     /// ユーザIDとプロフィールが有効かチェックする
     /// - Parameters:
@@ -113,11 +151,11 @@ class UserProfile: ObservableObject {
         var ret: Int = -1
 
         guard !(uId.isEmpty) else {
-            print("Error(\(#file):\(#line)) : uId is empty")
+            print("Error : uId is empty")
             return ret
         }
         guard !(prof.userName.isEmpty) else {
-            print("Error(\(#file):\(#line)) : userName is empty")
+            print("Error : userName is empty")
             return ret
         }
         // 他にもチェックする必要があれば、ここに追加していく。
@@ -131,7 +169,6 @@ class UserProfile: ObservableObject {
 /// ***
 /// アプリ使用者本人のプロフィール ※シングルトンにする
 final class OwnerProfile: UserProfile {
-    override private init() {
-    }
+    override private init() {}
     static let sOwnerProfile = OwnerProfile()
 }
