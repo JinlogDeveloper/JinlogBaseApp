@@ -14,7 +14,7 @@ struct EffectView: View {
     let captureImage: UIImage
     // 表示する写真
     //オプショナル型でnilを許容する
-    @Binding var showImage:UIImage?
+    @Binding var showImage: UIImage?
     // シェア画面（UIActivityViewController）
     // 表示有無を管理する状態変数
     @State var isShowAcitivity = false
@@ -108,8 +108,7 @@ struct EffectView: View {
             Button(action: {
                 // ボタンをタップしたときのアクション
                 // エフェクト編集画面を閉じる
-                bufProfile.image = showImage!
-                ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: showImage!)
                 isShowSheet = false
                 
                 

@@ -7,21 +7,18 @@
 
 import Foundation
 import UIKit
-// swiftUIをimportしない！！ 場合によっては必要かも。。。
-// Firebaseをimportしない！！
 
 /// ***
 /// プロフィール定義
 // 型定義だけなので構造体とする
-struct Profile {
+struct Profile: Codable {
     var userName: String = ""            /// ユーザ名(プレイヤー名)
-    var birthday: Date = Date()                  /// 生年月日
+    var birthday: Date                   /// 生年月日
     var sex = Sex.unselected             /// 性別
     var area = Areas.unselected          /// 地域
     var belong: String = ""              /// 所属
     var introMessage: String = ""        /// 自己紹介
     var visibleBirthday: Bool = false    /// 生年月日を公開
-    var image: UIImage = UIImage()       /// 画像
 
 
     init () {
@@ -49,6 +46,8 @@ class UserProfile: ObservableObject {
 
     private(set) var userId: String = ""
     @Published private(set) var profile = Profile()
+    @Published private(set) var image = UIImage()       /// 画像
+                        //TODO: 初期画像を人型のシルエットにしたい
 
     // Storeを本クラスに持たせるか持たせないかは悩みどころ。
     // 一旦、本クラスに持たせてみる
@@ -61,23 +60,17 @@ class UserProfile: ObservableObject {
     ///   - uId: 保存するプロフィールのユーザID
     ///   - prof: 保存するプロフィール
     /// - Returns: 成功／失敗
-    func saveProfile(uId: String, prof: Profile) -> Int {
+    func saveProfile(uId: String, prof: Profile, img: UIImage) -> Int {
         var ret: Int = -1
-        var res: Int = 0
 
-        res = UserProfile.isValid(uId: uId, prof: prof)
-        guard res == 0 else {
-            print("Error : isValid()")
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
             return ret
         }
         userId = uId
         profile = prof
+        image = img
 
-//        res = profStore.storeProfile(uId: userId, prof: profile)
-//       guard res == 0 else {
-//            print("Error(\(#file):\(#line)) : storeProfile()")
-//            return ret
-//        }
         Task {
             let res = await profStore.storeProfile(uId: userId, prof: profile)
             guard res == 0 else {
@@ -86,7 +79,7 @@ class UserProfile: ObservableObject {
             }
         }
         Task {
-            let res = await profStorage.saveProfileImage(uId: userId, image: profile.image)
+            let res = await profStorage.saveProfileImage(uId: userId, image: image)
             guard res == 0 else {
                 print("Error : saveProfileImage()")
                 return
@@ -104,7 +97,6 @@ class UserProfile: ObservableObject {
     @MainActor
     func loadProfile(uId: String) -> Int {
         var ret: Int = -1
-//        var res: Int = 0
 
         guard !(uId.isEmpty) else {
             print("Error(\(#file):\(#line)) : uId is empty")
@@ -112,11 +104,6 @@ class UserProfile: ObservableObject {
         }
         userId = uId
 
-//        res = profStore.loadProfile(prof: self)
-//        guard res == 0 else {
-//            print("Error(\(#file):\(#line)) : loadProfile()")
-//            return ret
-//        }
         Task {
             let res = await profStore.loadProfile(uId: userId)
             guard res != nil else {
@@ -131,34 +118,8 @@ class UserProfile: ObservableObject {
                 print("Error : loadProfileImage()")
                 return
             }
-            profile.image = res!  // この行をメインスレッドで実行する必要がある
+            image = res!  // この行をメインスレッドで実行する必要がある
         }
-        ret = 0
-        return ret
-    }
-
-    //TODO: 
-//    func setPrifile(prof: Profile) {
-//        profile = prof
-//    }
-
-    /// ユーザIDとプロフィールが有効かチェックする
-    /// - Parameters:
-    ///   - uId: ユーザID
-    ///   - prof: プロフィール
-    /// - Returns: 成功／失敗
-    class func isValid(uId: String, prof: Profile) -> Int {
-        var ret: Int = -1
-
-        guard !(uId.isEmpty) else {
-            print("Error : uId is empty")
-            return ret
-        }
-        guard !(prof.userName.isEmpty) else {
-            print("Error : userName is empty")
-            return ret
-        }
-        // 他にもチェックする必要があれば、ここに追加していく。
 
         ret = 0
         return ret

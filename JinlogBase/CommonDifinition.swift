@@ -9,7 +9,7 @@ import Foundation
 // swiftUIをimportしない！！
 
 // 性別
-enum Sex: Int, CaseIterable {
+enum Sex: Int, Codable, CaseIterable {
     // CaseIterable : forEach()文などで.allCasesを使えるようにするために使用
     case unselected = 0
     case male
@@ -42,7 +42,7 @@ enum Sex: Int, CaseIterable {
 }
 
 // 地域
-enum Areas: Int, CaseIterable {
+enum Areas: Int, Codable, CaseIterable {
     // CaseIterable : forEach()文などで.allCasesを使えるようにするために使用
     case unselected = 0
     case hokkaido

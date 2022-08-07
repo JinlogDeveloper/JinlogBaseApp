@@ -111,7 +111,7 @@ struct ProfileView: View {
 
             Button(
                 action:{
-                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                     //TODO: エラー処理
                 }
             ) {

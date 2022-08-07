@@ -190,7 +190,7 @@ struct ProfileView2: View {
             
         }
         .onAppear(){
-            showImage = ownProfile.profile.image
+            showImage = ownProfile.image
             
         }
         
@@ -224,7 +224,7 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                         self.presentation.wrappedValue.dismiss()
                     }
                 ) {
@@ -277,7 +277,7 @@ struct ProfileView2: View {
             Button(
                 action:{
                     
-                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                     self.presentation.wrappedValue.dismiss()
                     
                 }
@@ -322,7 +322,7 @@ struct ProfileView2: View {
             Button(
                 action:{
                     
-                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                     self.presentation.wrappedValue.dismiss()
                     
                 }
@@ -364,7 +364,7 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                         self.presentation.wrappedValue.dismiss()
                     }
                 ) {
@@ -413,7 +413,7 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                         self.presentation.wrappedValue.dismiss()
                     }
                 ) {
@@ -462,7 +462,7 @@ struct ProfileView2: View {
                 Button(
                     action:{
                         
-                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile)
+                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                         self.presentation.wrappedValue.dismiss()
                         
                     }
