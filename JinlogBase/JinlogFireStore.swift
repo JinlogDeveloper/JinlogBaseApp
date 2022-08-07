@@ -110,3 +110,64 @@ final actor ProfileStore {
     }
 
 }
+
+/// 設定用のDBに直接アクセスする処理を集めたクラス
+final actor SettingStore {
+
+    private let db: CollectionReference
+
+    init() {
+        // Firebase未初期化の時だけ初期化実行
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
+        db = Firestore.firestore().collection(rootCollections.settings.rawValue)
+    }
+
+    /// データベースに設定を保存する
+    /// - Parameters:
+    ///   - uId: 保存する設定のユーザID
+    ///   - prof: 保存する設定
+    /// - Returns: 成功0／失敗-1
+    func storeSetting(uId: String, setting: Setting) async -> Int {
+        var ret: Int = -1
+
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
+            return ret
+        }
+
+        do {
+            try db.document(uId).setData(from: setting)
+            ret = 0
+            return ret
+        } catch {
+            print("Error : ", error.localizedDescription)
+            let errorCode = FirestoreErrorCode.Code(rawValue: error._code)
+            //TODO:
+            return ret
+        }
+    }
+
+    /// データベースから設定を読み込む
+    /// - Parameter uId: 読み込む設定のユーザID
+    /// - Returns: 成功Profile／失敗nil
+    func loadSetting(uId: String) async -> Setting? {
+
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
+            return nil
+        }
+
+        do {
+            let res = try await db.document(uId).getDocument(as: Setting.self)
+            return res
+        } catch {
+            print("Error : ", error.localizedDescription)
+            let errorCode = FirestoreErrorCode.Code(rawValue: error._code)
+            //TODO:
+            return nil
+        }
+    }
+
+}
