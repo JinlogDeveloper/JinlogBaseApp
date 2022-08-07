@@ -224,8 +224,11 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
-                        self.presentation.wrappedValue.dismiss()
+                        Task {
+                            await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                            //TODO:
+                            self.presentation.wrappedValue.dismiss()
+                        }
                     }
                 ) {
                     Text("登録")
@@ -276,10 +279,11 @@ struct ProfileView2: View {
             
             Button(
                 action:{
-                    
-                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
-                    self.presentation.wrappedValue.dismiss()
-                    
+                    Task {
+                        await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                        //TODO:
+                        self.presentation.wrappedValue.dismiss()
+                    }
                 }
             ) {
                 Text("登録")
@@ -321,10 +325,11 @@ struct ProfileView2: View {
             
             Button(
                 action:{
-                    
-                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
-                    self.presentation.wrappedValue.dismiss()
-                    
+                    Task {
+                        await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                        //TODO:
+                        self.presentation.wrappedValue.dismiss()
+                    }
                 }
             ) {
                 Text("登録")
@@ -364,8 +369,11 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
-                        self.presentation.wrappedValue.dismiss()
+                        Task {
+                            await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                            //TODO:
+                            self.presentation.wrappedValue.dismiss()
+                        }
                     }
                 ) {
                     Text("登録")
@@ -413,8 +421,11 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
-                        self.presentation.wrappedValue.dismiss()
+                        Task {
+                            await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                            //TODO:
+                            self.presentation.wrappedValue.dismiss()
+                        }
                     }
                 ) {
                     Text("登録")
@@ -461,10 +472,11 @@ struct ProfileView2: View {
                 
                 Button(
                     action:{
-                        
-                        ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
-                        self.presentation.wrappedValue.dismiss()
-                        
+                        Task {
+                            await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                            //TODO:
+                            self.presentation.wrappedValue.dismiss()
+                        }
                     }
                 ) {
                     Text("登録")

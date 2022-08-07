@@ -51,8 +51,10 @@ struct MainView: View {
 
             Button(
                 action:{
-                    ownProfile.loadProfile(uId: bufUserId)
-                    //TODO: エラー処理
+                    Task {
+                        await ownProfile.loadProfile(uId: bufUserId)
+                        //TODO: エラー処理
+                    }
                 }
             ) {
                 Text("読み込み")

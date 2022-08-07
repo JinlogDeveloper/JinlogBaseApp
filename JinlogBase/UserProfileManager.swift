@@ -60,8 +60,9 @@ class UserProfile: ObservableObject {
     ///   - uId: 保存するプロフィールのユーザID
     ///   - prof: 保存するプロフィール
     /// - Returns: 成功／失敗
-    func saveProfile(uId: String, prof: Profile, img: UIImage) -> Int {
+    func saveProfile(uId: String, prof: Profile, img: UIImage) async -> Int {
         var ret: Int = -1
+        var res: Int
 
         guard !(uId.isEmpty) else {
             print("Error : uId is empty")
@@ -71,19 +72,16 @@ class UserProfile: ObservableObject {
         profile = prof
         image = img
 
-        Task {
-            let res = await profStore.storeProfile(uId: userId, prof: profile)
-            guard res == 0 else {
-                print("Error : storeProfile()")
-                return
-            }
+        res = await profStore.storeProfile(uId: userId, prof: profile)
+        guard res == 0 else {
+            print("Error : storeProfile()")
+            return ret
         }
-        Task {
-            let res = await profStorage.saveProfileImage(uId: userId, image: image)
-            guard res == 0 else {
-                print("Error : saveProfileImage()")
-                return
-            }
+
+        res = await profStorage.saveProfileImage(uId: userId, image: image)
+        guard res == 0 else {
+            print("Error : saveProfileImage()")
+            return ret
         }
 
         ret = 0
@@ -95,7 +93,7 @@ class UserProfile: ObservableObject {
     // 特に指定しない場合、Task{}はメインスレッドで実行されるとは限らない。
     // MainActorを記載することでメインスレッドで実行させることができる。
     @MainActor
-    func loadProfile(uId: String) -> Int {
+    func loadProfile(uId: String) async -> Int {
         var ret: Int = -1
 
         guard !(uId.isEmpty) else {
@@ -104,22 +102,17 @@ class UserProfile: ObservableObject {
         }
         userId = uId
 
-        Task {
-            let res = await profStore.loadProfile(uId: userId)
-            guard res != nil else {
-                print("Error : loadProfile()")
-                return
-            }
-            profile = res!  // この行をメインスレッドで実行する必要がある
+        guard let res = await profStore.loadProfile(uId: userId) else {
+            print("Error : loadProfile()")
+            return ret
         }
-        Task {
-            let res = await profStorage.loadProfileImage(uId: userId)
-            guard res != nil else {
-                print("Error : loadProfileImage()")
-                return
-            }
-            image = res!  // この行をメインスレッドで実行する必要がある
+        profile = res  // この行をメインスレッドで実行する必要がある
+
+        guard let res = await profStorage.loadProfileImage(uId: userId) else {
+            print("Error : loadProfileImage()")
+            return ret
         }
+        image = res  // この行をメインスレッドで実行する必要がある
 
         ret = 0
         return ret

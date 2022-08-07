@@ -111,8 +111,10 @@ struct ProfileView: View {
 
             Button(
                 action:{
-                    ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
-                    //TODO: エラー処理
+                    Task {
+                        await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                        //TODO: エラー処理
+                    }
                 }
             ) {
                 Text("登録")
