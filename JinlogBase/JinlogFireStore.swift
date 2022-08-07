@@ -20,7 +20,7 @@ enum rootCollections: String {
 }
 
 /// プロフィール用のDBに直接アクセスする処理を集めたクラス
-final class ProfileStore {
+final actor ProfileStore {
 
     private let db: CollectionReference
 
@@ -82,6 +82,30 @@ final class ProfileStore {
             let errorCode = FirestoreErrorCode.Code(rawValue: error._code)
             //TODO:
             return nil
+        }
+    }
+
+    /// データベースから複数のプロフィールを読み込む
+    /// - Parameter uId: 読み込むプロフィールのユーザID配列
+    func loadProfiles(uId: [String]) async -> [Profile]? {
+        var ret: [Profile]? = nil
+
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
+            return ret
+        }
+
+        print(uId)
+        do {
+            let profs = try await db.whereField(FieldPath.documentID(), in: uId).getDocuments()
+                .documents.compactMap{ try $0.data(as: Profile.self) }
+            ret = profs
+            return ret
+        } catch {
+            print("Error : ", error.localizedDescription)
+            let errorCode = FirestoreErrorCode.Code(rawValue: error._code)
+            //TODO:
+            return ret
         }
     }
 
