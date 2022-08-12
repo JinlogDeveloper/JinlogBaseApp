@@ -59,6 +59,7 @@ class UserProfile: ObservableObject {
     /// - Parameters:
     ///   - uId: 保存するプロフィールのユーザID
     ///   - prof: 保存するプロフィール
+    ///   - image: 保存するプロフィール画像
     /// - Returns: 成功／失敗
     func saveProfile(uId: String, prof: Profile, img: UIImage) async -> Int {
         var ret: Int = -1
@@ -69,16 +70,14 @@ class UserProfile: ObservableObject {
             return ret
         }
         userId = uId
-        profile = prof
-        image = img
 
-        res = await profStore.storeProfile(uId: userId, prof: profile)
+        res = await saveProfile(uId: userId, prof: prof)
         guard res == 0 else {
-            print("Error : storeProfile()")
+            print("Error : saveProfile()")
             return ret
         }
 
-        res = await profStorage.saveProfileImage(uId: userId, image: image)
+        res = await saveProfileImage(uId: userId, img: img)
         guard res == 0 else {
             print("Error : saveProfileImage()")
             return ret
@@ -87,7 +86,65 @@ class UserProfile: ObservableObject {
         ret = 0
         return ret
     }
-    
+
+    /// プロフィールを保存する
+    /// - Parameters:
+    ///   - uId: 保存するプロフィールのユーザID
+    ///   - prof: 保存するプロフィール
+    /// - Returns: 成功／失敗
+    @MainActor
+    func saveProfile(uId: String, prof: Profile) async -> Int {
+        var ret: Int = -1
+        var res: Int
+
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
+            return ret
+        }
+        userId = uId
+        profile = prof
+
+        res = await profStore.storeProfile(uId: userId, prof: profile)
+        guard res == 0 else {
+            print("Error : storeProfile()")
+            return ret
+        }
+
+        ret = 0
+        return ret
+    }
+
+    /// プロフィール画像を保存する
+    /// - Parameters:
+    ///   - uId: 保存するプロフィールのユーザID
+    ///   - image: 保存するプロフィール画像
+    /// - Returns: 成功／失敗
+    @MainActor
+    func saveProfileImage(uId: String, img: UIImage) async -> Int {
+        var ret: Int = -1
+        var res: Int
+
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
+            return ret
+        }
+
+        let squareImage:UIImage = img.trimCenterSquare(length: 256)!
+
+        userId = uId
+        image = squareImage
+
+        res = await profStorage.saveProfileImage(uId: userId, image: image)
+        guard res == 0 else {
+            print("Error : saveProfileImage()")
+            image = UIImage()
+            return ret
+        }
+
+        ret = 0
+        return ret
+    }
+
     /// プロフィールを読み込む
     // Viewの描画に関わるインスタンスを更新する場合、必ずメインスレッドで実行する必要がある。
     // 特に指定しない場合、Task{}はメインスレッドで実行されるとは限らない。
