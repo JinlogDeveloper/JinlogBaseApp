@@ -78,9 +78,9 @@ class UserProfile: ObservableObject {
             return ret
         }
 
-        res = await saveProfileImage(uId: userId, img: img)
+        res = await saveProfile(uId: userId, img: img)
         guard res == 0 else {
-            print("Error : saveProfileImage()")
+            print("Error : saveProfile()")
             return ret
         }
 
@@ -121,7 +121,7 @@ class UserProfile: ObservableObject {
     ///   - image: 保存するプロフィール画像
     /// - Returns: 成功／失敗
     @MainActor
-    func saveProfileImage(uId: String, img: UIImage) async -> Int {
+    func saveProfile(uId: String, img: UIImage) async -> Int {
         var ret: Int = -1
         var res: Int
 
