@@ -37,16 +37,13 @@ extension UIImage {
             : CGPoint(x: (size.height - size.width) * scale / 2, y: 0.0)
 
         // 目的サイズの正方形画用紙を用意
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: squareSize * scale, height: squareSize * scale), false, 0.0)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: squareSize * scale, height: squareSize * scale), false, 1.0)
         // 切り出す正方形部分が、画用紙上に乗るように描画する。
         // つまり、元画像が正方形でない限り、X方向かY方向のどちらかが必ず画用紙の両外に描画される
         draw(in: CGRect(origin: origin, size: CGSize(width: size.width * scale, height: size.height * scale)))
         // 画用紙部分を取り出す
         retImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-
-        print("DEBUG : width:\(size.width), height:\(size.height)")
-        print("DEBUG : width:\(retImage!.size.width), height:\(retImage!.size.height)")
 
         return retImage!
     }

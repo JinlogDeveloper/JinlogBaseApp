@@ -48,6 +48,7 @@ class UserProfile: ObservableObject {
     @Published private(set) var profile = Profile()
     @Published private(set) var image = UIImage()       /// 画像
                         //TODO: 初期画像を人型のシルエットにしたい
+    let imageSize: CGFloat = 512
 
     // Storeを本クラスに持たせるか持たせないかは悩みどころ。
     // 一旦、本クラスに持たせてみる
@@ -129,7 +130,7 @@ class UserProfile: ObservableObject {
             return ret
         }
 
-        let squareImage:UIImage = img.trimCenterSquare(length: 256)!
+        let squareImage:UIImage = img.trimCenterSquare(length: imageSize)!
 
         userId = uId
         image = squareImage
