@@ -19,6 +19,10 @@ struct Profile: Codable {
     var belong: String = ""              /// 所属
     var introMessage: String = ""        /// 自己紹介
     var visibleBirthday: Bool = false    /// 生年月日を公開
+    //-----  Auth　で使うメール・パスワードの変数を追加してます  -----
+    var emailAddress :String = ""            //メールアドレス
+    var password :String = ""                //パスワード用
+    //-------------------------------------------------------
 
 
     init () {

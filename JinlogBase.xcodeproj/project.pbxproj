@@ -33,6 +33,22 @@
 		6FE40F94281CCD22004A9E1B /* ViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE40F93281CCD21004A9E1B /* ViewProfile.swift */; };
 		6FE40F9628203111004A9E1B /* JinlogFireStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE40F9528203111004A9E1B /* JinlogFireStore.swift */; };
 		6FF04AB428275E1500BCE9B8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6FF04AB328275E1500BCE9B8 /* GoogleService-Info.plist */; };
+		BE10615028BB63D2008372EA /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = BE10614F28BB63D2008372EA /* Charts */; };
+		BE10616A28BB64FB008372EA /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615428BB64FB008372EA /* TestView.swift */; };
+		BE10616B28BB64FB008372EA /* ProfileInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615528BB64FB008372EA /* ProfileInfoRow.swift */; };
+		BE10616C28BB64FB008372EA /* NewAccountView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615628BB64FB008372EA /* NewAccountView2.swift */; };
+		BE10616D28BB64FB008372EA /* NewAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615728BB64FB008372EA /* NewAccountView.swift */; };
+		BE10616E28BB64FB008372EA /* ButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615928BB64FB008372EA /* ButtonLabel.swift */; };
+		BE10616F28BB64FB008372EA /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615A28BB64FB008372EA /* TextFieldRow.swift */; };
+		BE10617028BB64FB008372EA /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615C28BB64FB008372EA /* UserInfoView.swift */; };
+		BE10617128BB64FB008372EA /* RadarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615D28BB64FB008372EA /* RadarChart.swift */; };
+		BE10617228BB64FB008372EA /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615E28BB64FB008372EA /* ProgressBar.swift */; };
+		BE10617328BB64FB008372EA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615F28BB64FB008372EA /* MainView.swift */; };
+		BE10617428BB64FB008372EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10616028BB64FB008372EA /* ContentView.swift */; };
+		BE10617528BB64FB008372EA /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10616228BB64FB008372EA /* LoginView.swift */; };
+		BE10617628BB64FB008372EA /* PwResetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10616328BB64FB008372EA /* PwResetDetail.swift */; };
+		BE10617728BB64FB008372EA /* CommonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10616528BB64FB008372EA /* CommonData.swift */; };
+		BE10617A28BB64FB008372EA /* JinlogAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10616928BB64FB008372EA /* JinlogAuth.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +75,21 @@
 		6FE40F93281CCD21004A9E1B /* ViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProfile.swift; sourceTree = "<group>"; };
 		6FE40F9528203111004A9E1B /* JinlogFireStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JinlogFireStore.swift; sourceTree = "<group>"; };
 		6FF04AB328275E1500BCE9B8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BE10615428BB64FB008372EA /* TestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		BE10615528BB64FB008372EA /* ProfileInfoRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoRow.swift; sourceTree = "<group>"; };
+		BE10615628BB64FB008372EA /* NewAccountView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountView2.swift; sourceTree = "<group>"; };
+		BE10615728BB64FB008372EA /* NewAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountView.swift; sourceTree = "<group>"; };
+		BE10615928BB64FB008372EA /* ButtonLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonLabel.swift; sourceTree = "<group>"; };
+		BE10615A28BB64FB008372EA /* TextFieldRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
+		BE10615C28BB64FB008372EA /* UserInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
+		BE10615D28BB64FB008372EA /* RadarChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarChart.swift; sourceTree = "<group>"; };
+		BE10615E28BB64FB008372EA /* ProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		BE10615F28BB64FB008372EA /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		BE10616028BB64FB008372EA /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BE10616228BB64FB008372EA /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		BE10616328BB64FB008372EA /* PwResetDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PwResetDetail.swift; sourceTree = "<group>"; };
+		BE10616528BB64FB008372EA /* CommonData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonData.swift; sourceTree = "<group>"; };
+		BE10616928BB64FB008372EA /* JinlogAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JinlogAuth.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +100,7 @@
 				6FE40F75281467AC004A9E1B /* FirebaseAnalytics in Frameworks */,
 				6FE40F7B281467AC004A9E1B /* FirebaseStorage in Frameworks */,
 				6FE40F77281467AC004A9E1B /* FirebaseAuth in Frameworks */,
+				BE10615028BB63D2008372EA /* Charts in Frameworks */,
 				0CA0EC542880DFD800A9B275 /* FirebaseFirestoreSwift in Frameworks */,
 				0CA0EC522880DFD800A9B275 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				0CA0EC502880DFD800A9B275 /* FirebaseFirestore in Frameworks */,
@@ -130,6 +162,9 @@
 				6FE40F9528203111004A9E1B /* JinlogFireStore.swift */,
 				0C2C8455287E7A6E009851FF /* JinlogStrage.swift */,
 				6F654BCB28A5D14D00108C73 /* ExtensionUIKit.swift */,
+				BE10615128BB64FB008372EA /* View */,
+				BE10616428BB64FB008372EA /* CommonFiles */,
+				BE10616828BB64FB008372EA /* Firebase */,
 				6FE40F822818297B004A9E1B /* Assets.xcassets */,
 				6FAC914928266B820008DCF8 /* Info.plist */,
 				6FF04AB328275E1500BCE9B8 /* GoogleService-Info.plist */,
@@ -146,6 +181,82 @@
 				6FE40F8F281B6305004A9E1B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BE10615128BB64FB008372EA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BE10616028BB64FB008372EA /* ContentView.swift */,
+				BE10616128BB64FB008372EA /* Login */,
+				BE10615228BB64FB008372EA /* CreateAccout */,
+				BE10615B28BB64FB008372EA /* Main */,
+				BE10615828BB64FB008372EA /* HelpParts */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		BE10615228BB64FB008372EA /* CreateAccout */ = {
+			isa = PBXGroup;
+			children = (
+				BE10615728BB64FB008372EA /* NewAccountView.swift */,
+				BE10615628BB64FB008372EA /* NewAccountView2.swift */,
+				BE10615528BB64FB008372EA /* ProfileInfoRow.swift */,
+				BE10615328BB64FB008372EA /* テスト用 */,
+			);
+			path = CreateAccout;
+			sourceTree = "<group>";
+		};
+		BE10615328BB64FB008372EA /* テスト用 */ = {
+			isa = PBXGroup;
+			children = (
+				BE10615428BB64FB008372EA /* TestView.swift */,
+			);
+			path = "テスト用";
+			sourceTree = "<group>";
+		};
+		BE10615828BB64FB008372EA /* HelpParts */ = {
+			isa = PBXGroup;
+			children = (
+				BE10615A28BB64FB008372EA /* TextFieldRow.swift */,
+				BE10615928BB64FB008372EA /* ButtonLabel.swift */,
+			);
+			path = HelpParts;
+			sourceTree = "<group>";
+		};
+		BE10615B28BB64FB008372EA /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				BE10615F28BB64FB008372EA /* MainView.swift */,
+				BE10615D28BB64FB008372EA /* RadarChart.swift */,
+				BE10615E28BB64FB008372EA /* ProgressBar.swift */,
+				BE10615C28BB64FB008372EA /* UserInfoView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		BE10616128BB64FB008372EA /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				BE10616228BB64FB008372EA /* LoginView.swift */,
+				BE10616328BB64FB008372EA /* PwResetDetail.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		BE10616428BB64FB008372EA /* CommonFiles */ = {
+			isa = PBXGroup;
+			children = (
+				BE10616528BB64FB008372EA /* CommonData.swift */,
+			);
+			path = CommonFiles;
+			sourceTree = "<group>";
+		};
+		BE10616828BB64FB008372EA /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				BE10616928BB64FB008372EA /* JinlogAuth.swift */,
+			);
+			path = Firebase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,6 +283,7 @@
 				0CA0EC4F2880DFD800A9B275 /* FirebaseFirestore */,
 				0CA0EC512880DFD800A9B275 /* FirebaseFirestoreCombine-Community */,
 				0CA0EC532880DFD800A9B275 /* FirebaseFirestoreSwift */,
+				BE10614F28BB63D2008372EA /* Charts */,
 			);
 			productName = CentralDataSample;
 			productReference = 6FE40F60281464C3004A9E1B /* JinlogBase.app */;
@@ -205,6 +317,7 @@
 			packageReferences = (
 				6FE40F73281467AC004A9E1B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				0CA0EC4E2880DFD800A9B275 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				BE10614E28BB63D2008372EA /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 6FE40F61281464C3004A9E1B /* Products */;
 			projectDirPath = "";
@@ -233,22 +346,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE10617028BB64FB008372EA /* UserInfoView.swift in Sources */,
+				BE10617328BB64FB008372EA /* MainView.swift in Sources */,
 				0CE527D128420BB100F17AC8 /* HomeView.swift in Sources */,
 				0CC110FE2844244500456AD6 /* SettingView.swift in Sources */,
+				BE10616B28BB64FB008372EA /* ProfileInfoRow.swift in Sources */,
+				BE10616C28BB64FB008372EA /* NewAccountView2.swift in Sources */,
 				0C2C8456287E7A6E009851FF /* JinlogStrage.swift in Sources */,
 				6FE40F892818297B004A9E1B /* JinlogBaseApp.swift in Sources */,
 				6FE40F92281C2FEF004A9E1B /* UserProfileManager.swift in Sources */,
 				0CD1158728722DC300533FE2 /* ImagePickerView.swift in Sources */,
+				BE10616F28BB64FB008372EA /* TextFieldRow.swift in Sources */,
 				6F8E68A32824D84200FF042B /* UserSettingManager.swift in Sources */,
+				BE10617628BB64FB008372EA /* PwResetDetail.swift in Sources */,
 				0CF7873A286A6F89003C6C40 /* PHPickerView.swift in Sources */,
+				BE10616A28BB64FB008372EA /* TestView.swift in Sources */,
+				BE10617428BB64FB008372EA /* ContentView.swift in Sources */,
 				6FE40F8B28182A0D004A9E1B /* CommonDifinition.swift in Sources */,
 				0CC111002844264800456AD6 /* ProfileView2.swift in Sources */,
+				BE10616D28BB64FB008372EA /* NewAccountView.swift in Sources */,
 				0CD1158528722BEB00533FE2 /* EffectView.swift in Sources */,
+				BE10617728BB64FB008372EA /* CommonData.swift in Sources */,
+				BE10616E28BB64FB008372EA /* ButtonLabel.swift in Sources */,
 				6F8E68A92826060900FF042B /* CommonUtil.swift in Sources */,
 				6FE40F882818297B004A9E1B /* ViewMain.swift in Sources */,
+				BE10617528BB64FB008372EA /* LoginView.swift in Sources */,
 				6FE40F94281CCD22004A9E1B /* ViewProfile.swift in Sources */,
 				6FE40F9628203111004A9E1B /* JinlogFireStore.swift in Sources */,
 				6F654BCC28A5D14D00108C73 /* ExtensionUIKit.swift in Sources */,
+				BE10617228BB64FB008372EA /* ProgressBar.swift in Sources */,
+				BE10617A28BB64FB008372EA /* JinlogAuth.swift in Sources */,
+				BE10617128BB64FB008372EA /* RadarChart.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +605,14 @@
 				minimumVersion = 8.0.0;
 			};
 		};
+		BE10614E28BB63D2008372EA /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -514,6 +650,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6FE40F73281467AC004A9E1B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		BE10614F28BB63D2008372EA /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE10614E28BB63D2008372EA /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
