@@ -47,10 +47,10 @@ struct UserInfoView: View {
             }
         }
         .padding(.all, 10)
-        .background(InAppColor.textFieldColor.opacity(0.9))
+        .background(InAppColor.textFieldColor)
         .cornerRadius(20)
         .frame(width: UIScreen.main.bounds.width - 40)
-        .shadow(radius: 3)
+        //.shadow(radius: 3)
 
     }
 }

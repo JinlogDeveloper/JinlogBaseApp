@@ -35,6 +35,7 @@ struct Radar :UIViewRepresentable{
         //凡例の設定
         chart.legend.font = .systemFont(ofSize: 15)
         chart.legend.horizontalAlignment = .center
+        chart.legend.yOffset = 10
         //chart.legend.enabled = false                              //凡例の非表示
 
         
@@ -86,7 +87,7 @@ struct Radar :UIViewRepresentable{
         dataSet.colors = [.gray]                                        //線の色
         dataSet.lineWidth = 0                                           //線の太さ
         dataSet.drawFilledEnabled = true                                //塗りつぶしするかどうか
-        dataSet.fill = Fill(color: UIColor(InAppColor.buttonColor))     //グラフ内の塗りつぶし色
+        dataSet.fill = Fill(color: UIColor(.white))     //グラフ内の塗りつぶし色
         dataSet.fillAlpha = 0.3                                         //塗りつぶしの透過率
         dataSet.drawValuesEnabled = false                               //値表示
         dataSet.highlightEnabled = false                                //ハイライト表示
@@ -97,10 +98,10 @@ struct Radar :UIViewRepresentable{
         //　2つ目のデータセット
         let dataSet2 = RadarChartDataSet(entries: entries2, label: "評価された自分")
     
-        dataSet2.colors = [UIColor(InAppColor.buttonColor2)]            //線の色
+        dataSet2.colors = [UIColor(InAppColor.buttonColor)]            //線の色
         dataSet2.lineWidth = 3                                          //線の太さ
         dataSet2.drawFilledEnabled = true                               //塗りつぶすかどうか
-        dataSet2.fill = Fill(color: UIColor(InAppColor.buttonColor2))   //グラフ内の塗りつぶし色
+        dataSet2.fill = Fill(color: UIColor(InAppColor.buttonColor))   //グラフ内の塗りつぶし色
         dataSet2.fillAlpha = 0.5                                        //塗りつぶしの透過率
         dataSet2.drawValuesEnabled = true                               //値の表示
         dataSet2.highlightEnabled = false                               //ハイライト表示

@@ -15,7 +15,7 @@ struct TopView: View {
     init(){
         //タブバーの背景色を変更する
         //UITabBar.appearance().backgroundColor = UIColor(InAppColor.buttonColor)
-        UITabBar.appearance().unselectedItemTintColor = UIColor(InAppColor.buttonColorRvs)
+        UITabBar.appearance().unselectedItemTintColor = UIColor(.gray)
         //UITabBar.appearance().unselectedItemTintColor = .lightGray
     }
     
@@ -88,107 +88,111 @@ struct TabPage1View: View {
     @State var num = 30
     @State var value :CGFloat = 0.3
     @State var score :[Double] = [3.5,4.8,2.5,3.5,2.8]
+    let characters = ["長所探し","気遣い","ユーモア","話術","推理力"]
+    let colors = [Color(red: 0.204, green: 0.368, blue: 0.499),
+                  Color(red: 0.020, green: 0.525, blue: 0.549),
+                  Color(red: 0.267, green: 0.765, blue: 0.545),
+                  Color(red: 1.000, green: 0.820, blue: 0.224),
+                  Color(red: 0.957, green: 0.471, blue: 0.259)]
+    
     
     var body: some View {
         
-        ZStack{
-            //背景色　ダークモード対応のため色はAssetsに登録
-            InAppColor.backColor
-                .edgesIgnoringSafeArea(.all)
-            
-            ScrollView{
+        ScrollView {
+            VStack {
+                ZStack {
+                    
+                    //背景色　ダークモード対応のため色はAssetsに登録
+                    InAppColor.backColor
+                                        
+                    //                        Text("ステータス画面")
+                    //
+                    //                        Circle()
+                    //                            .stroke(lineWidth: 30.0)
+                    //                            .opacity(0.1)
+                    //                            .foregroundColor(InAppColor.buttonColor)
+                    //                            .frame(width: UIScreen.main.bounds.width - 40,
+                    //                                   height: UIScreen.main.bounds.width - 40 )
+                    //
+                    //                        Circle()
+                    //                            .trim(from: 0.0, to: 0.3)
+                    //                            .stroke(style: StrokeStyle(lineWidth: 30.0, lineCap: .round, lineJoin: .round))
+                    //                            .foregroundColor(InAppColor.buttonColor)
+                    //                            .frame(width: UIScreen.main.bounds.width - 40,
+                    //                                   height: UIScreen.main.bounds.width - 40)
+                    //                            .rotationEffect(Angle(degrees: -90))
+                    //                            .opacity(0.5)
+                    
+                    
+                    //一旦ここにデータを作成。今後どっかへ移動させる
+                    Radar(entries: [
+                        RadarChartDataEntry(value: 2.6),
+                        RadarChartDataEntry(value: 2.8),
+                        RadarChartDataEntry(value: 4.1),
+                        RadarChartDataEntry(value: 5.0),
+                        RadarChartDataEntry(value: 3.4)]
+                          ,entries2: [
+                            RadarChartDataEntry(value: score[0]),
+                            RadarChartDataEntry(value: score[1]),
+                            RadarChartDataEntry(value: score[2]),
+                            RadarChartDataEntry(value: score[3]),
+                            RadarChartDataEntry(value: score[4])]
+                    )
+                    .frame(width: UIScreen.main.bounds.width,height: 420.0)
+                    
+                    //プログレスバーはviewで作成　　スタックで重ねて表示させる
+                    SquareProgressView(maxNum: $maxNum, num: $num)
+                        .frame(width: 300, height: 40)
+                        .cornerRadius(15)
+                        .offset(x: 0, y: 135)
+                    
+                } //Zstack
                 
-                VStack{
-                    
-                    ZStack{
-                        //Text("ステータス画面")
-                        
-                        //Circle()
-                        //    .stroke(lineWidth: 30.0)
-                        //    .opacity(0.1)
-                        //    .foregroundColor(InAppColor.buttonColor)
-                        //    .frame(width: UIScreen.main.bounds.width - 40,
-                        //           height: UIScreen.main.bounds.width - 40 )
-                        
-                        //Circle()
-                        //    .trim(from: 0.0, to: 0.3)
-                        //    .stroke(style: StrokeStyle(lineWidth: 30.0, lineCap: .round, lineJoin: .round))
-                        //    .foregroundColor(InAppColor.buttonColor)
-                        //    .frame(width: UIScreen.main.bounds.width - 40,
-                        //           height: UIScreen.main.bounds.width - 40)
-                        //    .rotationEffect(Angle(degrees: -90))
-                        //    .opacity(0.5)
-                        
-                        
-                        //一旦ここにデータを作成。今後どっかへ移動させる
-                        Radar(entries: [
-                            RadarChartDataEntry(value: 2.6),
-                            RadarChartDataEntry(value: 2.8),
-                            RadarChartDataEntry(value: 4.1),
-                            RadarChartDataEntry(value: 5.0),
-                            RadarChartDataEntry(value: 3.4)]
-                              ,entries2: [
-                                RadarChartDataEntry(value: score[0]),
-                                RadarChartDataEntry(value: score[1]),
-                                RadarChartDataEntry(value: score[2]),
-                                RadarChartDataEntry(value: score[3]),
-                                RadarChartDataEntry(value: score[4])]
-                        )
-                        .frame(width: UIScreen.main.bounds.width,height: 400.0)
-                        
-                        VStack{
-                            Spacer()
-                                .frame(height:270)
-                            
-                            //プログレスバーはviewで作成　　スタックで重ねて表示させる
-                            SquareProgressView(maxNum: $maxNum, num: $num)
-                                .frame(width: 300, height: 40)
-                                .cornerRadius(15)
-                            
+                                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        VStack {
+                            Text("ステータス")
+                                .padding(.bottom,1)
+                                .foregroundColor(.secondary)
+                            Text("\(num)")
+                                .font(.system(size: 35, weight: .thin, design: .rounded))
+                                
+                            withAnimation(){
+                                Stepper("ステータス",value: $num, in: 0...100)
+                                    .labelsHidden()
+                            }
                         }
-                    } //Zstack
-                    .frame(width: UIScreen.main.bounds.width)
-                    
-                    Spacer()
-                        .frame(height: 30)
-                    
-                    VStack{
-                        Stepper(value: $num, in: 0...100) {
-                            Text("ステータス：\(num)")
-                        }
-                        .frame(width:UIScreen.main.bounds.width  - 80)
+                        .padding(.top)
+
                         
-                        Stepper(value: $score[0], in: 0...5, step: 0.5) {
-                            Text("長所探し：\(String(score[0]))")
+                        ForEach(0 ..< 4) { num in
+                            VStack {
+                                HStack {
+                                    if score[num] > 4.99 {
+                                        Image(systemName: "crown.fill")
+                                            .foregroundColor(Color.yellow)
+                                    }
+                                    Text(self.characters[num])
+                                        .padding(.bottom,1)
+                                        .foregroundColor(.secondary)
+                                }
+                                ZStack {
+                                    RadialGradient(gradient: Gradient(colors: [colors[num].opacity(0.3), Color.white.opacity(0.4)]), center: .center, startRadius: 0, endRadius: 35)
+
+                                    Text(String(format: "%.1f", score[num]))
+                                        .font(.system(size: 35, weight: .thin, design: .rounded))
+                                }
+                                Stepper(self.characters[num],value: $score[num], in: 0...5, step: 0.1)
+                                    .labelsHidden()
+                            }
+                            .padding(.top)
                         }
-                        .frame(width:UIScreen.main.bounds.width  - 80)
-                        
-                        Stepper(value: $score[1], in: 0...5, step: 0.5) {
-                            Text("気遣い：\(String(score[1]))")
-                        }
-                        .frame(width:UIScreen.main.bounds.width  - 80)
-                        
-                        Stepper(value: $score[2], in: 0...5, step: 0.5) {
-                            Text("ユーモア：\(String(score[2]))")
-                        }
-                        .frame(width:UIScreen.main.bounds.width  - 80)
-                        
-                        Stepper(value: $score[3], in: 0...5, step: 0.5) {
-                            Text("話術：\(String(score[3]))")
-                        }
-                        .frame(width:UIScreen.main.bounds.width  - 80)
-                        
-                        Stepper(value: $score[4], in: 0...5, step: 0.5) {
-                            Text("推理力：\(String(score[4]))")
-                        }
-                        .frame(width:UIScreen.main.bounds.width  - 80)
-                    }
-                    .frame(width: UIScreen.main.bounds.width - 50)
-                    .background(.white)
-                    .cornerRadius(15)
-                } //Vstack
-            }
-        }
+                    } //HStack
+                } //ScrollView
+            } //Vstack
+        } //ScrollView
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
@@ -251,7 +255,7 @@ struct TabPage5View: View {
                     
                     Section(header:Text("プロフィール")) {
                         
-                        Text("プロフィール編集")
+                        NavigationLink("プロフィール編集", destination: ProfileView2())
                         Text("メールアドレス変更")
                         Text("パスワード変更")
                         Text("ステータス変更")
@@ -272,7 +276,7 @@ struct TabPage5View: View {
                     
                     Section(header:Text("プレーヤーリスト")) {
                         
-                        Text("お気に入りプレイヤー")
+                        NavigationLink("お気に入りプレイヤー",destination: PlayerList())
                         Text("ブロックしたプレイヤー")
                         
                     }
@@ -300,13 +304,22 @@ struct TabPage5View: View {
                                             isPresented: $isShowDialog,
                                             titleVisibility: .visible) {
                             Button("ログアウトする") {
-                                Task{
-                                    if(await firebaseAuth.SignOut() == 0){
+
+                                
+                                //----------------  一旦コメントにする  ----------------
+                                // FirebaseAuth を使うとエラーになるので一旦コメント化する
+                                // Authのバージョンだけ古い？　確認が必要
+
+//                                Task{
+//                                    if(await firebaseAuth.SignOut() == 0){
                                         withAnimation(.linear(duration: 0.4)){
                                             ReturnViewFrags.returnToLoginView.wrappedValue = false
                                         }
-                                    }
-                                }
+//                                    }
+//                                }
+                                //---------------------  ここまで  ---------------------
+
+                                    
                             }
                             Button("キャンセル", role: .cancel) {}
                         }

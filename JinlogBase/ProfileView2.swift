@@ -191,8 +191,8 @@ struct ProfileView2: View {
         }
         .onAppear(){
             showImage = ownProfile.image
-            
         }
+        .navigationBarTitleDisplayMode(.inline)
         
     }
   

@@ -137,10 +137,10 @@ struct LoginView: View {
 
 //            Task{
 //                if( await firebaseAuth.GetLoginState()){
-                    //トップ画面遷移のフラグを紐付け
-                    ReturnViewFrags.returnToLoginView = $moveToTopView
-                    //トップ画面へ遷移させる
-                    moveToTopView.toggle()
+//                    //トップ画面遷移のフラグを紐付け
+//                    ReturnViewFrags.returnToLoginView = $moveToTopView
+//                    //トップ画面へ遷移させる
+//                    moveToTopView.toggle()
 //                }
 //            }
             //---------------------  ここまで  ---------------------
