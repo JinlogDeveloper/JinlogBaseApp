@@ -66,22 +66,41 @@ final actor ProfileStore {
 
     /// データベースからプロフィールを読み込む
     /// - Parameter uId: 読み込むプロフィールのユーザID
-    /// - Returns: 成功Profile／失敗nil
-    func loadProfile(uId: String) async -> Profile? {
+    /// - Returns: Profile
+    func loadProfile(uId: String) async throws -> Profile {
 
         guard !(uId.isEmpty) else {
             print("Error : uId is empty")
-            return nil
+            throw JinlogError.argumentEmpty
         }
 
+        // ドキュメント取得
+        var document: DocumentSnapshot
         do {
-            let res = try await db.document(uId).getDocument(as: Profile.self)
-            return res
+            document = try await db.document(uId).getDocument(source: .server)
+            guard document.exists == true else {
+                print("Error : document not found")
+                throw JinlogError.noProfileInDB
+            }
         } catch {
             print("Error : ", error.localizedDescription)
             let errorCode = FirestoreErrorCode.Code(rawValue: error._code)
-            //TODO:
-            return nil
+            switch errorCode {
+            case .unavailable:
+                print("Error : network or server error")
+                throw JinlogError.networkServer
+            default:
+                throw JinlogError.unexpected
+            }
+        }
+
+        // ドキュメント変換
+        do {
+            let profile = try document.data(as: Profile.self)
+            return profile
+        } catch {
+            print("Error : ", error.localizedDescription)
+            throw JinlogError.unexpected
         }
     }
 

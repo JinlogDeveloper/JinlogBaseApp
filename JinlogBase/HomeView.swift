@@ -59,8 +59,11 @@ struct HomeView: View {
         } //VStack　ここまで
         .onAppear {
             Task {
-                await ownProfile.loadProfile(uId: "aaa")
-                //TODO: アラート
+                do {
+                    try await ownProfile.loadProfile(uId: "aaa")
+                } catch {
+                    //TODO: アラート
+                }
             }
         }
         

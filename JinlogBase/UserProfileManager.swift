@@ -151,33 +151,22 @@ class UserProfile: ObservableObject {
     }
 
     /// プロフィールを読み込む
-    // Viewの描画に関わるインスタンスを更新する場合、必ずメインスレッドで実行する必要がある。
-    // 特に指定しない場合、Task{}はメインスレッドで実行されるとは限らない。
-    // MainActorを記載することでメインスレッドで実行させることができる。
     @MainActor
-    func loadProfile(uId: String) async -> Int {
-        var ret: Int = -1
-
+    func loadProfile(uId: String) async throws {
         guard !(uId.isEmpty) else {
-            print("Error(\(#file):\(#line)) : uId is empty")
-            return ret
+            print("Error : uId is empty")
+            throw JinlogError.argumentEmpty
         }
         userId = uId
 
-        guard let res = await profStore.loadProfile(uId: userId) else {
-            print("Error : loadProfile()")
-            return ret
-        }
-        profile = res  // この行をメインスレッドで実行する必要がある
+        profile = Profile()
+        image = UIImage()
 
-        guard let res = await profStorage.loadProfileImage(uId: userId) else {
-            print("Error : loadProfileImage()")
-            return ret
-        }
-        image = res  // この行をメインスレッドで実行する必要がある
+        let bufProfile: Profile = try await profStore.loadProfile(uId: userId)
+        let bufImage: UIImage = try await profStorage.loadProfileImage(uId: userId)
 
-        ret = 0
-        return ret
+        profile = bufProfile
+        image = bufImage
     }
 
 } // UserProfile

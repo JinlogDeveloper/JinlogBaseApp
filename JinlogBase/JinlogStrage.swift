@@ -63,24 +63,38 @@ final class ProfileStrage {
 
     /// ストレージからプロフィール画像を読み込む
     /// - Parameter uId: 読み込むプロフィールのユーザID
-    /// - Returns: 成功Profile／失敗nil
-    func loadProfileImage(uId: String) async -> UIImage? {
+    /// - Returns: UIImage: プロフィール画像
+    func loadProfileImage(uId: String) async throws -> UIImage {
 
         guard !(uId.isEmpty) else {
             print("Error : uId is empty")
-            return nil
+            throw JinlogError.argumentEmpty
         }
         let ref: StorageReference = storage.child("\(uId).png")
         
         do {
             let res = try await ref.data(maxSize: sMaxDataSize)
-            let retImage = UIImage(data: res)
+            guard let retImage = UIImage(data: res) else {
+                print("Error : UIImage()")
+                throw JinlogError.unexpected
+            }
             print("imageDataSize   : \(res.count)[byte]")
             return retImage
         } catch {
             print("Error : ", error.localizedDescription)
-            //TODO:
-            return nil
+            let errCode = StorageErrorCode(rawValue: error._code)
+            switch errCode {
+            //case .〜〜〜
+                //TODO: 画像がない時のエラーを検出させる
+                //print("Error : Image  not found")
+                //throw JinlogError.networkServer
+            //case .〜〜〜
+                //TODO: ネットワークエラーを検出させる
+                //print("Error : network or server error")
+                //throw JinlogError.networkServer
+            default:
+                throw JinlogError.unexpected
+            }
         }
     }
 
