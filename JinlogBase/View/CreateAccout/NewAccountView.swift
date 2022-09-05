@@ -85,9 +85,9 @@ struct NewAccountView: View {
                 
                 Button(action: {
                     //とりあえず画面遷移だけさせる
-                    moveToNewAccoutView2 = true
+                    //moveToNewAccoutView2 = true
                     //　↓ 本番用はこっち
-                    //CheckInputInfomation()
+                    CheckInputInfomation()
                 }){
                     ButtonLabel(message: "アカウント登録", buttonColor: InAppColor.buttonColor)
                 }
@@ -128,24 +128,33 @@ struct NewAccountView: View {
             alertFlag = true
             return
         }
-        
-        Task{
-            //Firebaseへアカウントを登録
-            if(await firebaseAuth.CreateAccount(email: bufProfile.emailAddress,
-                                                password: bufProfile.password,
-                                                name: bufProfile.userName) == 0){
-                //FirebaseAuthでログイン
-                if(await firebaseAuth.SignIn(email: bufProfile.emailAddress,
-                                             password: bufProfile.password) == 0){
-                    //トップ画面へ一気に遷移する
-                    moveToNewAccoutView2 = true
-                }
+
+        Task {
+            do {
+                // アカウント登録
+                let _ = try await firebaseAuth.createAccount(
+                    email: bufProfile.emailAddress,
+                    password: bufProfile.password
+                )
+                // ログイン
+                let _ = try await firebaseAuth.signIn(
+                    email: bufProfile.emailAddress,
+                    password: bufProfile.password
+                )
+
+                //トップ画面へ一気に遷移する
+                print("アカウント登録 or ログイン成功")
+                moveToNewAccoutView2 = true
+
+            } catch {
+                print("ERROR : アカウント登録 or ログイン失敗")
+                //TODO: アラート
+                errMessage = "アカウント登録 or ログイン失敗"
+                alertFlag = true
             }
-            else{ alertFlag = true }
         }
     }
 } //View
-
 
 
 struct NewAccountView_Previews: PreviewProvider {

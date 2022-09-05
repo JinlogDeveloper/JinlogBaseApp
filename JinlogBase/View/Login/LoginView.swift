@@ -72,7 +72,7 @@ struct LoginView: View {
                             
                             
 //                            Task{
-//                                if(await firebaseAuth.SignIn(email: emailAddress, password:password) == 0){
+//                                if(await firebaseAuth.signIn(email: emailAddress, password:password) == 0){
                                     //ログイン成功時にテキストフィールドの値は削除
                                     emailAddress = ""
                                     password = ""
@@ -136,7 +136,7 @@ struct LoginView: View {
             // Authのバージョンだけ古い？　確認が必要
 
 //            Task{
-//                if( await firebaseAuth.GetLoginState()){
+//                if( await firebaseAuth.getLoginState()){
 //                    //トップ画面遷移のフラグを紐付け
 //                    ReturnViewFrags.returnToLoginView = $moveToTopView
 //                    //トップ画面へ遷移させる

@@ -6,36 +6,56 @@
 //
 
 import Foundation
-import FirebaseAuth
+import Firebase
+import CoreAudioTypes
 
+final actor FirebaseAuth {
 
+    private let auth: Auth
 
-actor FirebaseAuth {
-
+    init() {
+        // Firebase未初期化の時だけ初期化実行
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
+        auth = Auth.auth()
+    }
 
     //-------------------------------------------------------------------------------------------
     //サインイン処理
     //　　引数：メールアドレス、パスワード
-    //　　返り値：0　⇢　成功／-1　⇢　失敗
+    //　　返り値：ユーザID
     //　　処理：引数で指定された情報でログインの処理を行う
-
-    //　　■残作業：エラー処理がまだ追加できていない
-    
-    
-    func SignIn(email: String, password: String) async -> Int{
+    func signIn(email: String, password: String) async throws -> String {
         print("サインイン処理を実行\nemail:\(email)\npassword:\(password)")
-        
-        do{
-            let _ = try await Auth.auth().signIn(withEmail: email, password: password)
+
+        guard !(email.isEmpty) else {
+            print("Error : email is empty")
+            throw JinlogError.argumentEmpty
+        }
+        guard !(password.isEmpty) else {
+            print("Error : password is empty")
+            throw JinlogError.argumentEmpty
+        }
+
+        do {
+            let res = try await auth.signIn(withEmail: email, password: password)
             
             print("login success")
-            return 0
-            
-        } catch let signInError as NSError{
-    
-            print("login falre: %@" ,signInError)
-            return -1
-            
+            return res.user.uid
+
+        } catch {
+            print("Error : ", error.localizedDescription)
+
+            let errCode = AuthErrorCode.Code(rawValue: error._code)
+            switch errCode {
+            case .networkError:
+                throw JinlogError.networkServer
+            //case .〜〜〜:
+                //TODO: 複数エラー区別
+            default:
+                throw JinlogError.unexpected
+            }
         }
     }
 
@@ -43,43 +63,39 @@ actor FirebaseAuth {
     //-------------------------------------------------------------------------------------------
     //サインアウト処理
     //　　引数：なし
-    //　　返り値：0　⇢　成功／-1　⇢　失敗
     //　　処理：サインアウトの処理を行う
-    
-    //　　■残作業：エラー処理がまだちゃんと追加できていない
-
-
-    func SignOut() -> Int{
+    func signOut() throws {
         print("サインアウト処理を実行")
         
         do {
-            try Auth.auth().signOut()
-            return 0
-            
-        } catch let signOutError as NSError {
-            print("ログアウトエラー: %@",signOutError)
-            return -1
+            try auth.signOut()
+        } catch {
+            print("Error : ", error.localizedDescription)
+
+            let errCode = AuthErrorCode.Code(rawValue: error._code)
+            switch errCode {
+            case .networkError:
+                throw JinlogError.networkServer
+            //case .〜〜〜:
+                //TODO: 複数エラー区別
+            default:
+                throw JinlogError.unexpected
+            }
         }
     }
 
-    
     //-------------------------------------------------------------------------------------------
     //新しいアカウントの登録
     //　　引数：メールアドレス、パスワード、アカウント名
-    //　　返り値：なし
+    //　　返り値：ユーザID
     //　　処理：引数で指定された情報で新しいアカウントの作成を行う
-    
-    //　　■残作業：エラー処理がまだ追加できていない
-    
-    
-    func CreateAccount(email: String, password: String, name: String) async -> Int{
-
+    func createAccount(email: String, password: String/*, name: String*/) async throws -> String {
         print("アカウント作成処理を実行\nemail:\(email)\npassword:\(password)")
         
-        
         do {
-            let result = try await Auth.auth().createUser(withEmail: email, password: password)
-            
+            let result = try await auth.createUser(withEmail: email, password: password)
+
+            /*
             //アカウント情報変更のリクエストを出してユーザー名を登録する
             //createProfileChangeRequest()でアカウント情報の更新ができる
             
@@ -106,12 +122,24 @@ actor FirebaseAuth {
             //        print("アカウント情報の更新失敗")
             //    }
             //})
-            
-            return 0
+             */
+
+            print("new UID : \(result.user.uid)")
+            return result.user.uid
         }
         catch{
             print("アカウント作成に失敗しました")
-            return -1
+            print("Error : ", error.localizedDescription)
+
+            let errCode = AuthErrorCode.Code(rawValue: error._code)
+            switch errCode {
+            case .networkError:
+                throw JinlogError.networkServer
+            //case .〜〜〜:
+                //TODO: 複数エラー区別
+            default:
+                throw JinlogError.unexpected
+            }
         }
     }
 
@@ -123,7 +151,7 @@ actor FirebaseAuth {
     //　　処理：
     
  
-    func CheckUserExists(email :String ,alert :inout Bool) async -> Int{
+    func checkUserExists(email :String ,alert :inout Bool) async -> Int{
         
         print("アカウント情報がすでに存在しないか確認する")
         
@@ -138,7 +166,7 @@ actor FirebaseAuth {
 
         do{
             //サインイン方法を確認するメソッドで既に登録があるか確認する
-            let result = try await Auth.auth().fetchSignInMethods(forEmail: email)
+            let result = try await auth.fetchSignInMethods(forEmail: email)
             
             //返り値に何か情報が入っていれば既存のメールアドレス
             if(result != []){
@@ -164,11 +192,11 @@ actor FirebaseAuth {
     //　　返り値：0　⇢　送信成功／-1　⇢　失敗
     //　　処理：
 
-    func PasswordReset(email: String) async {
+    func passwordReset(email: String) async {
         print("パスワードの再設定処理\nメール送付先:\(email)")
         
         do{
-            try await Auth.auth().sendPasswordReset(withEmail: email)
+            try await auth.sendPasswordReset(withEmail: email)
         }
         catch let error as NSError{
             print("エラー発生: %@" ,error)
@@ -184,11 +212,11 @@ actor FirebaseAuth {
     //　　処理：ログイン状態を確認して状態をBool値で返す
     
  
-    func GetLoginState() -> Bool{
+    func getLoginState() -> Bool{
         print("ログイン状態を確認する")
         
         
-        if let _ = Auth.auth().currentUser {
+        if let _ = auth.currentUser {
             return true
         } else {
             return false
@@ -203,10 +231,10 @@ actor FirebaseAuth {
     //　　処理：ログインしているアカウントの情報を共通変数へ書き込む
     
  
-    func GetAccountName() -> String{
+    func getAccountName() -> String{
         print("アカウント情報を取得する")
         
-        guard let userName = Auth.auth().currentUser?.displayName else {return ""}
+        guard let userName = auth.currentUser?.displayName else {return ""}
         
         return userName
     }

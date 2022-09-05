@@ -30,7 +30,7 @@ struct PasswordResetDetail: View {
 
                 Button(action:{
                     //パスワード変更用のURLが入ったメールを送付
-                    Task{await firebaseAuth.PasswordReset(email: email)}
+                    Task{await firebaseAuth.passwordReset(email: email)}
                 }){
                     ButtonLabel(message: "送信", buttonColor: InAppColor.buttonColor)
                 }

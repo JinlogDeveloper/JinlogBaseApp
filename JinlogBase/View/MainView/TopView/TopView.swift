@@ -311,7 +311,7 @@ struct TabPage5View: View {
                                 // Authのバージョンだけ古い？　確認が必要
 
 //                                Task{
-//                                    if(await firebaseAuth.SignOut() == 0){
+//                                    if(await firebaseAuth.signOut() == 0){
                                         withAnimation(.linear(duration: 0.4)){
                                             ReturnViewFrags.returnToLoginView.wrappedValue = false
                                         }
