@@ -1,5 +1,5 @@
 //
-//  JinlogFireStore.swift
+//  JinlogFirestore.swift
 //  CentralDataSample
 //
 //  Created by MacBook Air M1 on 2022/05/03.
@@ -9,14 +9,9 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
-// 現状、ほぼメモとしての役割
 enum rootCollections: String {
-    case profiles = "profiles"  // 最低限のベースは作った
-    case settings = "settings"  // 構想までした
-    case friends = "friends"    // 構想までした
-    case games = "games"        // 超テキトー。イメージを膨らませる用
-    case logs = "logs"          // 超テキトー。イメージを膨らませる用
-    case events = "events"      // 超テキトー。イメージを膨らませる用
+    case profiles = "profiles"
+    case settings = "settings"
 }
 
 /// プロフィール用のDBに直接アクセスする処理を集めたクラス
@@ -25,10 +20,6 @@ final actor ProfileStore {
     private let db: CollectionReference
 
     init() {
-        // Firebase未初期化の時だけ初期化実行
-        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
-        }
         db = Firestore.firestore().collection(rootCollections.profiles.rawValue)
     }
 
@@ -36,31 +27,35 @@ final actor ProfileStore {
     /// - Parameters:
     ///   - uId: 保存するプロフィールのユーザID
     ///   - prof: 保存するプロフィール
-    /// - Returns: 成功／失敗
-    func storeProfile(uId: String, prof: Profile) async -> Int {
-        var ret: Int = -1
-        
+    func storeProfile(uId: String, prof: Profile) async throws {
+
         guard !(uId.isEmpty) else {
             print("Error : uId is empty")
-            return ret
+            throw JinlogError.argumentEmpty
         }
 
-        // 本人のみ書き込み可能とする処理を入れる？
-        // ※もちろんFirestoreのセキュリティルールは書いた上で
-        //guard userId == Authでサインイン中のuId else {
-        //    print("The userID does not match the owner's userID")
-        //    return ret
-        //}
-
+        // 辞書型に変換
+        var dictionary: [String : Any]
         do {
-            try db.document(uId).setData(from: prof)
-            ret = 0
-            return ret
+            dictionary = try Firestore.Encoder().encode(prof)
+        } catch {
+            print("Error : ", error.localizedDescription)
+            throw JinlogError.unexpected
+        }
+
+        // ドキュメント保存
+        do {
+            try await db.document(uId).setData(dictionary)
         } catch {
             print("Error : ", error.localizedDescription)
             let errorCode = FirestoreErrorCode.Code(rawValue: error._code)
-            //TODO:
-            return ret
+            switch errorCode {
+            case .unavailable:
+                print("Error : network or server error")
+                throw JinlogError.networkServer
+            default:
+                throw JinlogError.unexpected
+            }
         }
     }
 
@@ -78,10 +73,6 @@ final actor ProfileStore {
         var document: DocumentSnapshot
         do {
             document = try await db.document(uId).getDocument(source: .server)
-            guard document.exists == true else {
-                print("Error : document not found")
-                throw JinlogError.noProfileInDB
-            }
         } catch {
             print("Error : ", error.localizedDescription)
             let errorCode = FirestoreErrorCode.Code(rawValue: error._code)
@@ -92,6 +83,12 @@ final actor ProfileStore {
             default:
                 throw JinlogError.unexpected
             }
+        }
+
+        // ドキュメントなし
+        guard document.exists == true else {
+            print("Error : document not found")
+            throw JinlogError.noProfileInDB
         }
 
         // ドキュメント変換
@@ -136,10 +133,6 @@ final actor SettingStore {
     private let db: CollectionReference
 
     init() {
-        // Firebase未初期化の時だけ初期化実行
-        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
-        }
         db = Firestore.firestore().collection(rootCollections.settings.rawValue)
     }
 

@@ -20,6 +20,7 @@
 		6F654BCC28A5D14D00108C73 /* ExtensionUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F654BCB28A5D14D00108C73 /* ExtensionUIKit.swift */; };
 		6F8E68A32824D84200FF042B /* UserSettingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A22824D84200FF042B /* UserSettingManager.swift */; };
 		6F8E68A92826060900FF042B /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A82826060900FF042B /* CommonUtil.swift */; };
+		6FBEE52828C78B1000460320 /* JinlogFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE52728C78B1000460320 /* JinlogFirebase.swift */; };
 		6FE40F75281467AC004A9E1B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE40F74281467AC004A9E1B /* FirebaseAnalytics */; };
 		6FE40F77281467AC004A9E1B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE40F76281467AC004A9E1B /* FirebaseAuth */; };
 		6FE40F79281467AC004A9E1B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE40F78281467AC004A9E1B /* FirebaseFirestore */; };
@@ -28,7 +29,7 @@
 		6FE40F8B28182A0D004A9E1B /* CommonDifinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE40F8A28182A0D004A9E1B /* CommonDifinition.swift */; };
 		6FE40F90281B6305004A9E1B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FE40F8F281B6305004A9E1B /* Preview Assets.xcassets */; };
 		6FE40F92281C2FEF004A9E1B /* UserProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE40F91281C2FEF004A9E1B /* UserProfileManager.swift */; };
-		6FE40F9628203111004A9E1B /* JinlogFireStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE40F9528203111004A9E1B /* JinlogFireStore.swift */; };
+		6FE40F9628203111004A9E1B /* JinlogFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE40F9528203111004A9E1B /* JinlogFirestore.swift */; };
 		6FF04AB428275E1500BCE9B8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6FF04AB328275E1500BCE9B8 /* GoogleService-Info.plist */; };
 		BE10615028BB63D2008372EA /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = BE10614F28BB63D2008372EA /* Charts */; };
 		BE10616A28BB64FB008372EA /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615428BB64FB008372EA /* TestView.swift */; };
@@ -64,13 +65,14 @@
 		6F8E68A22824D84200FF042B /* UserSettingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingManager.swift; sourceTree = "<group>"; };
 		6F8E68A82826060900FF042B /* CommonUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUtil.swift; sourceTree = "<group>"; };
 		6FAC914928266B820008DCF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6FBEE52728C78B1000460320 /* JinlogFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JinlogFirebase.swift; sourceTree = "<group>"; };
 		6FE40F60281464C3004A9E1B /* JinlogBase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JinlogBase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FE40F822818297B004A9E1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6FE40F862818297B004A9E1B /* JinlogBaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JinlogBaseApp.swift; sourceTree = "<group>"; };
 		6FE40F8A28182A0D004A9E1B /* CommonDifinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonDifinition.swift; sourceTree = "<group>"; };
 		6FE40F8F281B6305004A9E1B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6FE40F91281C2FEF004A9E1B /* UserProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileManager.swift; sourceTree = "<group>"; };
-		6FE40F9528203111004A9E1B /* JinlogFireStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JinlogFireStore.swift; sourceTree = "<group>"; };
+		6FE40F9528203111004A9E1B /* JinlogFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JinlogFirestore.swift; sourceTree = "<group>"; };
 		6FF04AB328275E1500BCE9B8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BE10615428BB64FB008372EA /* TestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		BE10615528BB64FB008372EA /* ProfileInfoRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoRow.swift; sourceTree = "<group>"; };
@@ -142,15 +144,9 @@
 			isa = PBXGroup;
 			children = (
 				0C4693A8285EA6D2001EF460 /* JinlogBase.entitlements */,
-				6F2FB3E928C4D6B700F2876B /* JinlogError.swift */,
 				6FE40F862818297B004A9E1B /* JinlogBaseApp.swift */,
-				0CC110FF2844264800456AD6 /* ProfileView2.swift */,
-				6FE40F8A28182A0D004A9E1B /* CommonDifinition.swift */,
-				6F8E68A82826060900FF042B /* CommonUtil.swift */,
 				6FE40F91281C2FEF004A9E1B /* UserProfileManager.swift */,
 				6F8E68A22824D84200FF042B /* UserSettingManager.swift */,
-				6FE40F9528203111004A9E1B /* JinlogFireStore.swift */,
-				0C2C8455287E7A6E009851FF /* JinlogStrage.swift */,
 				6F654BCB28A5D14D00108C73 /* ExtensionUIKit.swift */,
 				BE10615128BB64FB008372EA /* View */,
 				BE10616428BB64FB008372EA /* CommonFiles */,
@@ -176,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				BE10616028BB64FB008372EA /* ContentView.swift */,
+				0CC110FF2844264800456AD6 /* ProfileView2.swift */,
 				BE10616128BB64FB008372EA /* Login */,
 				BE10615228BB64FB008372EA /* CreateAccout */,
 				BE10615B28BB64FB008372EA /* MainView */,
@@ -233,6 +230,9 @@
 		BE10616428BB64FB008372EA /* CommonFiles */ = {
 			isa = PBXGroup;
 			children = (
+				6F2FB3E928C4D6B700F2876B /* JinlogError.swift */,
+				6FE40F8A28182A0D004A9E1B /* CommonDifinition.swift */,
+				6F8E68A82826060900FF042B /* CommonUtil.swift */,
 				BE10616528BB64FB008372EA /* CommonData.swift */,
 			);
 			path = CommonFiles;
@@ -242,6 +242,9 @@
 			isa = PBXGroup;
 			children = (
 				BE10616928BB64FB008372EA /* JinlogAuth.swift */,
+				6FE40F9528203111004A9E1B /* JinlogFirestore.swift */,
+				0C2C8455287E7A6E009851FF /* JinlogStrage.swift */,
+				6FBEE52728C78B1000460320 /* JinlogFirebase.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				BE10617428BB64FB008372EA /* ContentView.swift in Sources */,
 				6FE40F8B28182A0D004A9E1B /* CommonDifinition.swift in Sources */,
 				0CC111002844264800456AD6 /* ProfileView2.swift in Sources */,
+				6FBEE52828C78B1000460320 /* JinlogFirebase.swift in Sources */,
 				BE10616D28BB64FB008372EA /* NewAccountView.swift in Sources */,
 				0CD1158528722BEB00533FE2 /* EffectView.swift in Sources */,
 				BE10617728BB64FB008372EA /* CommonData.swift in Sources */,
@@ -380,7 +384,7 @@
 				6F8E68A92826060900FF042B /* CommonUtil.swift in Sources */,
 				BE55BF5D28C2C61A0044A20B /* PlayerDetail.swift in Sources */,
 				BE10617528BB64FB008372EA /* LoginView.swift in Sources */,
-				6FE40F9628203111004A9E1B /* JinlogFireStore.swift in Sources */,
+				6FE40F9628203111004A9E1B /* JinlogFirestore.swift in Sources */,
 				6F654BCC28A5D14D00108C73 /* ExtensionUIKit.swift in Sources */,
 				BE10617228BB64FB008372EA /* ProgressBar.swift in Sources */,
 				BE10617A28BB64FB008372EA /* JinlogAuth.swift in Sources */,

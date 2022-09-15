@@ -225,7 +225,7 @@ struct ProfileView2: View {
                 Button(
                     action:{
                         Task {
-                            await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                            try await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                             //TODO:
                             self.presentation.wrappedValue.dismiss()
                         }
@@ -280,7 +280,7 @@ struct ProfileView2: View {
             Button(
                 action:{
                     Task {
-                        await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                        try await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                         //TODO:
                         self.presentation.wrappedValue.dismiss()
                     }
@@ -326,7 +326,7 @@ struct ProfileView2: View {
             Button(
                 action:{
                     Task {
-                        await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                        try await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                         //TODO:
                         self.presentation.wrappedValue.dismiss()
                     }
@@ -370,7 +370,7 @@ struct ProfileView2: View {
                 Button(
                     action:{
                         Task {
-                            await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                            try await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                             //TODO:
                             self.presentation.wrappedValue.dismiss()
                         }
@@ -422,7 +422,7 @@ struct ProfileView2: View {
                 Button(
                     action:{
                         Task {
-                            await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                            try await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                             //TODO:
                             self.presentation.wrappedValue.dismiss()
                         }
@@ -473,7 +473,7 @@ struct ProfileView2: View {
                 Button(
                     action:{
                         Task {
-                            await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
+                            try await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: ownProfile.image)
                             //TODO:
                             self.presentation.wrappedValue.dismiss()
                         }

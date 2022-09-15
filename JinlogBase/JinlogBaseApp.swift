@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
-// Firebaseをimportしない！！
 
 @main
 struct JinlogBaseApp: App {
+
+    init() {
+        JinlogFirebase.firebaseInit()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -9,16 +9,43 @@ import Foundation
 import Firebase
 import CoreAudioTypes
 
-final actor FirebaseAuth {
+final class FirebaseAuth {
+
+    static let sAuth = FirebaseAuth()
 
     private let auth: Auth
 
-    init() {
-        // Firebase未初期化の時だけ初期化実行
-        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
-        }
+    private(set) var uid: String
+    private(set) var isSignIn: Bool
+
+    private init() {
+        print("FirebaseAuth init()")
+
         auth = Auth.auth()
+
+        if auth.currentUser == nil {
+            print("init : isSignIn = false")
+            uid = ""
+            isSignIn = false
+        } else {
+            print("init : isSignIn = true")
+            uid = auth.currentUser!.uid
+            isSignIn = true
+        }
+
+        auth.addStateDidChangeListener({ (authen, user) in
+            // authの状態が変化する度にコールバックされる
+            if user == nil {
+                print("FirebaseAuth.isSignIn = false")
+                self.uid = ""
+                self.isSignIn = false
+            } else {
+                print("FirebaseAuth.isSignIn = true")
+                self.uid = user!.uid
+                self.isSignIn = true
+            }
+        })
+        //TODO: どこかでremoveStateDidChangeListener()
     }
 
     //-------------------------------------------------------------------------------------------
@@ -65,7 +92,10 @@ final actor FirebaseAuth {
     //　　引数：なし
     //　　処理：サインアウトの処理を行う
     func signOut() throws {
-        print("サインアウト処理を実行")
+        print("サインアウト処理を実行")        
+
+        isSignIn = false
+        uid = ""
         
         do {
             try auth.signOut()

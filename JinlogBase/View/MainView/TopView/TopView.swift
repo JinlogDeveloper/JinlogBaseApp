@@ -240,10 +240,10 @@ struct TabPage5View: View {
     @State var permitMessage = false
     @State var isShowDialog = false     //ダイアログボックスの表示フラグ
     
-    let firebaseAuth :FirebaseAuth = FirebaseAuth()
-    
     var body: some View {
         
+            //TODO: 実行時にエラーログが出る
+            //※動作はちゃんとしてるっぽい？
             NavigationView{
                 
                 List{
@@ -304,22 +304,12 @@ struct TabPage5View: View {
                                             isPresented: $isShowDialog,
                                             titleVisibility: .visible) {
                             Button("ログアウトする") {
-
-                                
-                                //----------------  一旦コメントにする  ----------------
-                                // FirebaseAuth を使うとエラーになるので一旦コメント化する
-                                // Authのバージョンだけ古い？　確認が必要
-
-//                                Task{
-//                                    if(await firebaseAuth.signOut() == 0){
-                                        withAnimation(.linear(duration: 0.4)){
-                                            ReturnViewFrags.returnToLoginView.wrappedValue = false
-                                        }
-//                                    }
-//                                }
-                                //---------------------  ここまで  ---------------------
-
-                                    
+                                Task {
+                                    try! FirebaseAuth.sAuth.signOut()
+                                    withAnimation(.linear(duration: 0.4)) {
+                                        ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
+                                    }
+                                }
                             }
                             Button("キャンセル", role: .cancel) {}
                         }

@@ -19,11 +19,6 @@ struct Profile: Codable {
     var belong: String = ""              /// 所属
     var introMessage: String = ""        /// 自己紹介
     var visibleBirthday: Bool = false    /// 生年月日を公開
-    //-----  Auth　で使うメール・パスワードの変数を追加してます  -----
-    var emailAddress :String = ""            //メールアドレス
-    var password :String = ""                //パスワード用
-    //-------------------------------------------------------
-
 
     init () {
         birthday = Calendar(identifier: .gregorian)
@@ -50,14 +45,12 @@ class UserProfile: ObservableObject {
 
     private(set) var userId: String = ""
     @Published private(set) var profile = Profile()
-    @Published private(set) var image = UIImage()       /// 画像
-                        //TODO: 初期画像を人型のシルエットにしたい
+    @Published private(set) var image = UIImage()
+
     let imageSize: CGFloat = 512
 
-    // Storeを本クラスに持たせるか持たせないかは悩みどころ。
-    // 一旦、本クラスに持たせてみる
+    // 本クラスに持たせるか持たせないかは悩みどころ。
     private let profStore = ProfileStore()
-    // 一旦、本クラスに持たせてみる
     private let profStorage = ProfileStrage()
 
     /// プロフィールを保存する
@@ -65,89 +58,65 @@ class UserProfile: ObservableObject {
     ///   - uId: 保存するプロフィールのユーザID
     ///   - prof: 保存するプロフィール
     ///   - image: 保存するプロフィール画像
-    /// - Returns: 成功／失敗
-    func saveProfile(uId: String, prof: Profile, img: UIImage) async -> Int {
-        var ret: Int = -1
-        var res: Int
+    @MainActor
+    func saveProfile(uId: String, prof: Profile, img: UIImage) async throws {
 
         guard !(uId.isEmpty) else {
             print("Error : uId is empty")
-            return ret
-        }
-        userId = uId
-
-        res = await saveProfile(uId: userId, prof: prof)
-        guard res == 0 else {
-            print("Error : saveProfile()")
-            return ret
+            throw JinlogError.argumentEmpty
         }
 
-        res = await saveProfile(uId: userId, img: img)
-        guard res == 0 else {
-            print("Error : saveProfile()")
-            return ret
-        }
-
-        ret = 0
-        return ret
+        try await saveProfile(uId: uId, prof: prof)
+        try await saveProfile(uId: uId, img: img)
     }
 
     /// プロフィールを保存する
     /// - Parameters:
     ///   - uId: 保存するプロフィールのユーザID
     ///   - prof: 保存するプロフィール
-    /// - Returns: 成功／失敗
     @MainActor
-    func saveProfile(uId: String, prof: Profile) async -> Int {
-        var ret: Int = -1
-        var res: Int
+    func saveProfile(uId: String, prof: Profile) async throws {
 
         guard !(uId.isEmpty) else {
             print("Error : uId is empty")
-            return ret
+            throw JinlogError.argumentEmpty
         }
+        guard !(prof.userName.isEmpty) else {
+            print("Error : userName is empty")
+            throw JinlogError.argumentEmpty
+        }
+
+        try await profStore.storeProfile(uId: uId, prof: prof)
+
         userId = uId
         profile = prof
-
-        res = await profStore.storeProfile(uId: userId, prof: profile)
-        guard res == 0 else {
-            print("Error : storeProfile()")
-            return ret
-        }
-
-        ret = 0
-        return ret
     }
 
     /// プロフィール画像を保存する
     /// - Parameters:
     ///   - uId: 保存するプロフィールのユーザID
-    ///   - image: 保存するプロフィール画像
-    /// - Returns: 成功／失敗
+    ///   - img: 保存するプロフィール画像
     @MainActor
-    func saveProfile(uId: String, img: UIImage) async -> Int {
-        var ret: Int = -1
+    func saveProfile(uId: String, img: UIImage) async throws {
         var res: Int
 
         guard !(uId.isEmpty) else {
             print("Error : uId is empty")
-            return ret
+            throw JinlogError.argumentEmpty
+        }
+        let squareImage: UIImage? = img.trimCenterSquare(length: imageSize)
+        guard squareImage != nil else {
+            throw JinlogError.unexpected
         }
 
-        let squareImage:UIImage = img.trimCenterSquare(length: imageSize)!
-
-        userId = uId
-        image = squareImage
-
-        res = await profStorage.saveProfileImage(uId: userId, image: image)
+        res = await profStorage.saveProfileImage(uId: uId, image: squareImage!)
         guard res == 0 else {
             print("Error : saveProfileImage()")
-            image = UIImage()
-            return ret
+            throw JinlogError.unexpected
         }
 
-        ret = 0
-        return ret
+        userId = uId
+        image = squareImage!
     }
 
     /// プロフィールを読み込む
@@ -158,14 +127,13 @@ class UserProfile: ObservableObject {
             throw JinlogError.argumentEmpty
         }
         userId = uId
-
         profile = Profile()
         image = UIImage()
 
         let bufProfile: Profile = try await profStore.loadProfile(uId: userId)
-        let bufImage: UIImage = try await profStorage.loadProfileImage(uId: userId)
-
         profile = bufProfile
+
+        let bufImage: UIImage = try await profStorage.loadProfileImage(uId: userId)
         image = bufImage
     }
 

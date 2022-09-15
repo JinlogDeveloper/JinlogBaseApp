@@ -14,10 +14,20 @@ struct ContentView: View {
     
     var body: some View {
         // Top画面で　NavigationView　の戻りボタン、上部空白部が出るのが嫌なのでフラグで画面切り替えに変更
-        if moveToMainView {
-            TopView()
-        }
-        else {
+
+        //moveToMainViewに対する何かしらの処理をしないと描画が更新されないため
+        if moveToMainView {}
+
+        if FirebaseAuth.sAuth.isSignIn {
+            if OwnerProfile.sOwnerProfile.profile.userName.isEmpty {
+                let _ = print("DEBUG : 初期プロフィール登録画面")
+                NewAccountView2(moveToTopView: $moveToMainView)
+            } else { 
+                let _ = print("DEBUG : メイン画面")
+                TopView()
+            }
+        } else {
+            let _ = print("DEBUG : ログイン画面")
             LoginView(moveToTopView: $moveToMainView)
         }
     }

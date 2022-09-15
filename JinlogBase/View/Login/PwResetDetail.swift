@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PasswordResetDetail: View {
     
-    @State var firebaseAuth = FirebaseAuth()
     @State var email :String = ""
     @Binding var showView: Bool
     
@@ -30,7 +29,10 @@ struct PasswordResetDetail: View {
 
                 Button(action:{
                     //パスワード変更用のURLが入ったメールを送付
-                    Task{await firebaseAuth.passwordReset(email: email)}
+                    Task{
+                        await FirebaseAuth.sAuth.passwordReset(email: email)
+                        
+                    }
                 }){
                     ButtonLabel(message: "送信", buttonColor: InAppColor.buttonColor)
                 }

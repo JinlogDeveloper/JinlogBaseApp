@@ -12,13 +12,11 @@ import SwiftUI
 ///  - Note: メールアドレス、パスワードを入力
 struct NewAccountView: View {
     
-    @Binding var moveToTopView :Bool                //Top画面への遷移フラグ
-    @State var moveToNewAccoutView2 = false         //次の画面への遷移フラグ
-    @State var bufProfile :Profile = Profile()      //入力するプロフィール情報の格納
+    @State var emailAddress :String = ""            //メールアドレス
+    @State var password :String = ""                //パスワード用
     @State var alertFlag = false                    //アラート画面の表示条件
     @State var errMessage = "エラー"                      //エラーメッセージ表示用
     
-    private let firebaseAuth = FirebaseAuth()        //firebaseのインスタンス
 
     //dismissは現在の画面を閉じるときに使用する
     @Environment (\.dismiss) var dismiss
@@ -31,12 +29,6 @@ struct NewAccountView: View {
             //背景
             LinearGradient(gradient: Gradient(colors: [.gray, .white]), startPoint: .topTrailing, endPoint: .bottomLeading)
                 .edgesIgnoringSafeArea(.all)
-            
-            //次の登録画面への画面遷移
-            NavigationLink(destination: NewAccountView2(moveToTopView: $moveToTopView, bufProfile: $bufProfile),
-                           isActive: $moveToNewAccoutView2){
-                EmptyView()     //画面には何も表示しない
-            }
             
             VStack{
                 Spacer().frame(height: 20)
@@ -68,10 +60,10 @@ struct NewAccountView: View {
 
                 //入力フォーム部分
                 VStack(spacing: 15.0){
-                    TextFieldRow(fieldText: $bufProfile.emailAddress, iconName: "envelope",
+                    TextFieldRow(fieldText: $emailAddress, iconName: "envelope",
                                  iconColor: InAppColor.buttonColor, text: "メールアドレス")
 
-                    SecureFieldRow(fieldText: $bufProfile.password, iconName: "lock",
+                    SecureFieldRow(fieldText: $password, iconName: "lock",
                                    iconColor: InAppColor.buttonColor, text: "パスワード")
                     
                     Text("※パスワードは半角英数字で6文字以上入力してください")
@@ -84,9 +76,6 @@ struct NewAccountView: View {
                 Spacer()
                 
                 Button(action: {
-                    //とりあえず画面遷移だけさせる
-                    //moveToNewAccoutView2 = true
-                    //　↓ 本番用はこっち
                     CheckInputInfomation()
                 }){
                     ButtonLabel(message: "アカウント登録", buttonColor: InAppColor.buttonColor)
@@ -116,14 +105,14 @@ struct NewAccountView: View {
     /// FirebaseAuthを検索して入力情報と重複がないか確認
     private func CheckInputInfomation() {
 
-        if bufProfile.emailAddress.isEmpty {
+        if emailAddress.isEmpty {
             //メールアドレスの未入力エラー
             errMessage = "メールアドレスを入力してください。"
             alertFlag = true
             return
         }
         
-        if bufProfile.password.count < 6 {
+        if password.count < 6 {
             //パスワードの入力エラー
             alertFlag = true
             return
@@ -132,24 +121,36 @@ struct NewAccountView: View {
         Task {
             do {
                 // アカウント登録
-                let _ = try await firebaseAuth.createAccount(
-                    email: bufProfile.emailAddress,
-                    password: bufProfile.password
+                let _ = try await FirebaseAuth.sAuth.createAccount(
+                    email: emailAddress,
+                    password: password
                 )
-                // ログイン
-                let _ = try await firebaseAuth.signIn(
-                    email: bufProfile.emailAddress,
-                    password: bufProfile.password
-                )
+                print("アカウント登録成功")
+
+                do {
+                    // ログイン
+                    let _ = try await FirebaseAuth.sAuth.signIn(
+                        email: emailAddress,
+                        password: password
+                    )
+                    print("ログイン成功")
+
+                } catch {
+                    print("ERROR : ログイン失敗")
+                    //TODO: アラート
+                    errMessage = "ログイン失敗"
+                    alertFlag = true
+
+                    try! FirebaseAuth.sAuth.signOut()
+                }
 
                 //トップ画面へ一気に遷移する
-                print("アカウント登録 or ログイン成功")
-                moveToNewAccoutView2 = true
-
+                ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
+                
             } catch {
-                print("ERROR : アカウント登録 or ログイン失敗")
+                print("ERROR : アカウント登録失敗")
                 //TODO: アラート
-                errMessage = "アカウント登録 or ログイン失敗"
+                errMessage = "アカウント登録失敗"
                 alertFlag = true
             }
         }
@@ -159,11 +160,10 @@ struct NewAccountView: View {
 
 struct NewAccountView_Previews: PreviewProvider {
     
-    @State static var moveToTopView :Bool = false          //Top画面への遷移フラグ
-    @State static var bufProfile :Profile = Profile()      //入力するプロフィール情報の格納
+    @State var emailAddress :String = ""
+    @State var password :String = ""
     
     static var previews: some View {
-        NewAccountView(moveToTopView: $moveToTopView)
-        //NewAccountView2(moveToMainView: $moveToTopView, bufProfile: $bufProfile)
+        NewAccountView()
     }
 }

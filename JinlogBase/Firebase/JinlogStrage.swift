@@ -22,10 +22,6 @@ final class ProfileStrage {
     private let storage: StorageReference
 
     init() {
-        // Firebase未初期化の時だけ初期化実行
-        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
-        }
         storage = Storage.storage().reference(withPath: rootReference.profiles.rawValue)
     }
 

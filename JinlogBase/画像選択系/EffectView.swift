@@ -109,7 +109,7 @@ struct EffectView: View {
                 // ボタンをタップしたときのアクション
                 // エフェクト編集画面を閉じる
                 Task {
-                    await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: showImage!)
+                    try await ownProfile.saveProfile(uId: bufUserId, prof: bufProfile, img: showImage!)
                     //TODO:
                     isShowSheet = false
                 }

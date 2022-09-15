@@ -59,8 +59,7 @@ struct NewAccountView2: View {
      -----------------------------------*/
     
     @Binding var moveToTopView :Bool            //Top画面への遷移フラグ(前画面から引き継ぎ)
-    @Binding var bufProfile :Profile            //入力するプロフィール情報の格納(前画面から引き継ぎ)
-    @State var firebaseAuth = FirebaseAuth()    //firebaseのインスタンス
+    @State var bufProfile = Profile()            //入力するプロフィール情報の格納(前画面から引き継ぎ)
     @State var alertFlag = false                //アラート画面の表示条件
     @State var showLoading = false              //ローディングアイコンの表示条件
     @State var pages: EditSelect? = nil         //編集中の項目の記憶、必要情報の取り出しに使用する列挙型
@@ -148,17 +147,23 @@ struct NewAccountView2: View {
                     //ローディングアイコン表示開始
                     showLoading = true
 
-                    //++++++++++++++++++++++++++++++++++
-                    // firestoreへの情報登録はここへ
-                    //++++++++++++++++++++++++++++++++++
+                    Task {
+                        do {
+                            try await OwnerProfile.sOwnerProfile.saveProfile(
+                                uId: FirebaseAuth.sAuth.uid,
+                                prof: bufProfile
+                            )
+                        } catch {
+                            print("ERROR : プロフィール登録失敗")
+                            //TODO: アラート
+                        }
+                    }
 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         //ローディングアイコン停止
                         showLoading = false
                         //トップ画面へ一気に遷移する
-                        ReturnViewFrags.returnToLoginView.wrappedValue = false
-                        ReturnViewFrags.returnToLoginView = $moveToTopView
-                        moveToTopView = true
+                        ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
                     }
                 }){
                     ButtonLabel(message: "登録", buttonColor: InAppColor.buttonColor)
@@ -183,6 +188,34 @@ struct NewAccountView2: View {
         } //Zstack
         //NavigationViewで画面上部に無駄なスペースができるので削除,Backボタンも非表示
         .navigationBarHidden(true)
+        .task {
+            //トップ画面遷移のフラグを紐付け
+            ReturnViewFrags.returnToLoginView = $moveToTopView
+
+            if FirebaseAuth.sAuth.isSignIn {
+
+                do {
+                    try await OwnerProfile.sOwnerProfile.loadProfile(
+                        uId: FirebaseAuth.sAuth.uid
+                    )
+                    print("プロフィール取得成功")
+                } catch {
+                    switch error {
+                    case JinlogError.noProfileInDB:
+                        print("ERROR : プロフィール取得失敗(プロフィールなし)")
+                    case JinlogError.networkServer:
+                        print("ERROR : プロフィール取得失敗(ネットワーク／サーバ)")
+                        //TODO: アラート
+                    default:
+                        print("ERROR : プロフィール取得失敗")
+                        //TODO: アラート
+                    }
+                }
+
+                //トップ画面へ遷移させる
+                ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
+            }
+        }
         
     } //body View
 } //View
@@ -194,6 +227,6 @@ struct NewAccountView2_Previews: PreviewProvider {
     @State static var bufProfile :Profile = Profile()      //入力するプロフィール情報の格納
 
     static var previews: some View {
-        NewAccountView2(moveToTopView: $moveToTopView, bufProfile: $bufProfile)
+        NewAccountView2(moveToTopView: $moveToTopView)
     }
 }

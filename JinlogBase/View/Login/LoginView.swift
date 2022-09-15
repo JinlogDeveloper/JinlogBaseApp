@@ -26,8 +26,6 @@ struct LoginView: View {
     @State var password :String = ""                //パスワード用、view側のTextFieldと連携
     @State var moveToCreateAccountView = false      //新規アカウント作成画面への遷移条件フラグ
     @State var moveToResetPassView = false          //パスワードリセット画面への遷移条件フラグ
-    
-    let firebaseAuth :FirebaseAuth = FirebaseAuth()
 
     
     var body: some View {
@@ -39,7 +37,7 @@ struct LoginView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 // 新規アカウント画面への遷移
-                NavigationLink(destination: NewAccountView(moveToTopView: $moveToTopView),
+                NavigationLink(destination: NewAccountView(),
                                isActive: $moveToCreateAccountView){
                     EmptyView()
                 }
@@ -64,54 +62,51 @@ struct LoginView: View {
                         
                         //ログインボタン
                         Button(action: {
+                            Task {
+                                do {
+                                    // ログイン
+                                    let _ = try await FirebaseAuth.sAuth.signIn(
+                                        email: emailAddress,
+                                        password: password
+                                    )
+                                    print("ログイン成功")
 
-
-                            //----------------  一旦コメントにする  ----------------
-                            // FirebaseAuth を使うとエラーになるので一旦コメント化する
-                            // Authのバージョンだけ古い？　確認が必要
-                            
-                            
-//                            Task{
-//                                if(await firebaseAuth.signIn(email: emailAddress, password:password) == 0){
                                     //ログイン成功時にテキストフィールドの値は削除
                                     emailAddress = ""
                                     password = ""
-                                    //どこからでもトップ画面へ戻れるように遷移のフラグを共通変数で保持
-                                    ReturnViewFrags.returnToLoginView = $moveToTopView
-                                    //トップ画面へ遷移
-                                    moveToTopView.toggle()
-//                                }
-//                            }
-                            //---------------------  ここまで  ---------------------
-                            
-                               
-                        }){
+                                    //トップ画面へ遷移させる
+                                    ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
+
+                                } catch {
+                                    print("ERROR : ログイン失敗")
+                                    //TODO: アラート
+                                }
+                            }
+                        }) {
                             ButtonLabel(message: "ログイン", buttonColor: InAppColor.buttonColor)
                         }
-                        
-                        //新規アカウント作成ボタン
-                        Button(action: {
-                            //どこからでもトップ画面へ戻れるように遷移のフラグを共通変数で保持させる
-                            ReturnViewFrags.returnToLoginView = $moveToCreateAccountView
-                            //アカウント登録画面へ移動
-                            moveToCreateAccountView = true
-                        }){
-                            ButtonLabel(message: "アカウント作成", buttonColor: InAppColor.buttonColor2)
+                    }
+                    
+                    //新規アカウント作成ボタン
+                    Button(action: {
+                        //アカウント登録画面へ移動
+                        moveToCreateAccountView = true
+                    }) {
+                        ButtonLabel(message: "アカウント作成", buttonColor: InAppColor.buttonColor2)
+                    }
+
+                    Spacer().frame(height: 5)
+
+                    //パスワード変更時の処理
+                    Button(action: {
+                        //下からのスライドアニメーションを付与
+                        withAnimation(.easeInOut(duration: 0.5)){
+                            moveToResetPassView.toggle()
                         }
-                        
-                        Spacer().frame(height: 5)
-                        
-                        //パスワード変更時の処理
-                        Button(action: {
-                            //下からのスライドアニメーションを付与
-                            withAnimation(.easeInOut(duration: 0.5)){
-                                moveToResetPassView.toggle()
-                            }
-                        }){
-                            Text("パスワードを忘れた場合")
-                                .foregroundColor(InAppColor.strColor)
-                                .underline()
-                        }
+                    }) {
+                        Text("パスワードを忘れた場合")
+                            .foregroundColor(InAppColor.strColor)
+                            .underline()
                     }
                     
                     Spacer()
@@ -129,23 +124,13 @@ struct LoginView: View {
             .navigationBarHidden(true)
         } //NavigationView
         .onAppear(){
-            
-            
-            //----------------  一旦コメントにする  ----------------
-            // FirebaseAuth を使うとエラーになるので一旦コメント化する
-            // Authのバージョンだけ古い？　確認が必要
+            //トップ画面遷移のフラグを紐付け
+            ReturnViewFrags.returnToLoginView = $moveToTopView
 
-//            Task{
-//                if( await firebaseAuth.getLoginState()){
-//                    //トップ画面遷移のフラグを紐付け
-//                    ReturnViewFrags.returnToLoginView = $moveToTopView
-//                    //トップ画面へ遷移させる
-//                    moveToTopView.toggle()
-//                }
-//            }
-            //---------------------  ここまで  ---------------------
-
-            
+            if FirebaseAuth.sAuth.isSignIn {
+                //トップ画面へ遷移させる
+                ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
+            }
         }
     }
 }
