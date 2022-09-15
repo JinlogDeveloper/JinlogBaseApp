@@ -305,7 +305,7 @@ struct TabPage5View: View {
                                             titleVisibility: .visible) {
                             Button("ログアウトする") {
                                 Task {
-                                    try! FirebaseAuth.sAuth.signOut()
+                                    try! Owner.sAuth.signOut()
                                     withAnimation(.linear(duration: 0.4)) {
                                         ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
                                     }

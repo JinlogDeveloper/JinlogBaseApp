@@ -18,8 +18,8 @@ struct ContentView: View {
         //moveToMainViewに対する何かしらの処理をしないと描画が更新されないため
         if moveToMainView {}
 
-        if FirebaseAuth.sAuth.isSignIn {
-            if OwnerProfile.sOwnerProfile.profile.userName.isEmpty {
+        if Owner.sAuth.isSignIn {
+            if Owner.sProfile.profile.userName.isEmpty {
                 let _ = print("DEBUG : 初期プロフィール登録画面")
                 NewAccountView2(moveToTopView: $moveToMainView)
             } else { 

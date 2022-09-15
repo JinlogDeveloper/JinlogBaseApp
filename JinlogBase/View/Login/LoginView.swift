@@ -65,7 +65,7 @@ struct LoginView: View {
                             Task {
                                 do {
                                     // ログイン
-                                    let _ = try await FirebaseAuth.sAuth.signIn(
+                                    let _ = try await Owner.sAuth.signIn(
                                         email: emailAddress,
                                         password: password
                                     )
@@ -127,7 +127,7 @@ struct LoginView: View {
             //トップ画面遷移のフラグを紐付け
             ReturnViewFrags.returnToLoginView = $moveToTopView
 
-            if FirebaseAuth.sAuth.isSignIn {
+            if Owner.sAuth.isSignIn {
                 //トップ画面へ遷移させる
                 ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
             }

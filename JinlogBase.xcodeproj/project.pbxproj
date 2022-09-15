@@ -18,6 +18,7 @@
 		0CF7873A286A6F89003C6C40 /* PHPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF78739286A6F89003C6C40 /* PHPickerView.swift */; };
 		6F2FB3EA28C4D6B700F2876B /* JinlogError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2FB3E928C4D6B700F2876B /* JinlogError.swift */; };
 		6F654BCC28A5D14D00108C73 /* ExtensionUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F654BCB28A5D14D00108C73 /* ExtensionUIKit.swift */; };
+		6F6DB17128D34856000A1E76 /* Owner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6DB17028D34856000A1E76 /* Owner.swift */; };
 		6F8E68A32824D84200FF042B /* UserSettingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A22824D84200FF042B /* UserSettingManager.swift */; };
 		6F8E68A92826060900FF042B /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A82826060900FF042B /* CommonUtil.swift */; };
 		6FBEE52828C78B1000460320 /* JinlogFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE52728C78B1000460320 /* JinlogFirebase.swift */; };
@@ -62,6 +63,7 @@
 		0CF78739286A6F89003C6C40 /* PHPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerView.swift; sourceTree = "<group>"; };
 		6F2FB3E928C4D6B700F2876B /* JinlogError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JinlogError.swift; sourceTree = "<group>"; };
 		6F654BCB28A5D14D00108C73 /* ExtensionUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIKit.swift; sourceTree = "<group>"; };
+		6F6DB17028D34856000A1E76 /* Owner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Owner.swift; sourceTree = "<group>"; };
 		6F8E68A22824D84200FF042B /* UserSettingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingManager.swift; sourceTree = "<group>"; };
 		6F8E68A82826060900FF042B /* CommonUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUtil.swift; sourceTree = "<group>"; };
 		6FAC914928266B820008DCF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				6FE40F862818297B004A9E1B /* JinlogBaseApp.swift */,
 				6FE40F91281C2FEF004A9E1B /* UserProfileManager.swift */,
 				6F8E68A22824D84200FF042B /* UserSettingManager.swift */,
+				6F6DB17028D34856000A1E76 /* Owner.swift */,
 				6F654BCB28A5D14D00108C73 /* ExtensionUIKit.swift */,
 				BE10615128BB64FB008372EA /* View */,
 				BE10616428BB64FB008372EA /* CommonFiles */,
@@ -376,6 +379,7 @@
 				BE10617428BB64FB008372EA /* ContentView.swift in Sources */,
 				6FE40F8B28182A0D004A9E1B /* CommonDifinition.swift in Sources */,
 				0CC111002844264800456AD6 /* ProfileView2.swift in Sources */,
+				6F6DB17128D34856000A1E76 /* Owner.swift in Sources */,
 				6FBEE52828C78B1000460320 /* JinlogFirebase.swift in Sources */,
 				BE10616D28BB64FB008372EA /* NewAccountView.swift in Sources */,
 				0CD1158528722BEB00533FE2 /* EffectView.swift in Sources */,

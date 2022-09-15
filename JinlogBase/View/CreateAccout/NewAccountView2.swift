@@ -149,8 +149,8 @@ struct NewAccountView2: View {
 
                     Task {
                         do {
-                            try await OwnerProfile.sOwnerProfile.saveProfile(
-                                uId: FirebaseAuth.sAuth.uid,
+                            try await Owner.sProfile.saveProfile(
+                                uId: Owner.sAuth.uid,
                                 prof: bufProfile
                             )
                         } catch {
@@ -192,11 +192,11 @@ struct NewAccountView2: View {
             //トップ画面遷移のフラグを紐付け
             ReturnViewFrags.returnToLoginView = $moveToTopView
 
-            if FirebaseAuth.sAuth.isSignIn {
+            if Owner.sAuth.isSignIn {
 
                 do {
-                    try await OwnerProfile.sOwnerProfile.loadProfile(
-                        uId: FirebaseAuth.sAuth.uid
+                    try await Owner.sProfile.loadProfile(
+                        uId: Owner.sAuth.uid
                     )
                     print("プロフィール取得成功")
                 } catch {

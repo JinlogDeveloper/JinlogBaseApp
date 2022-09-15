@@ -14,7 +14,7 @@ class SheetShow: ObservableObject {
 struct ProfileView2: View {
     //ObservableObjectで宣言した変数のインスタンス作成
     @EnvironmentObject var VShow: SheetShow
-    @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+    @ObservedObject private var ownProfile = Owner.sProfile
     @State private var bufProfile = Profile()
     @State private var bufUserId: String = ""
     
@@ -198,9 +198,9 @@ struct ProfileView2: View {
   
     
     struct ListNameView: View {
-        @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+        @ObservedObject private var ownProfile = Owner.sProfile
         @State private var bufProfile = Profile()
-        @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+        @State private var bufUserId: String = Owner.sProfile.userId
         
         @Environment(\.presentationMode) var presentation
         
@@ -250,9 +250,9 @@ struct ProfileView2: View {
     }
     
     struct ListSexView: View {
-        @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+        @ObservedObject private var ownProfile = Owner.sProfile
         @State private var bufProfile = Profile()
-        @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+        @State private var bufUserId: String = Owner.sProfile.userId
         
         @Environment(\.presentationMode) var presentation
         
@@ -296,9 +296,9 @@ struct ProfileView2: View {
     }
     
     struct ListAreaView: View {
-        private var ownProfile = OwnerProfile.sOwnerProfile
+        private var ownProfile = Owner.sProfile
         @State private var bufProfile = Profile()
-        @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+        @State private var bufUserId: String = Owner.sProfile.userId
         
         @Environment(\.presentationMode) var presentation
         
@@ -343,9 +343,9 @@ struct ProfileView2: View {
     
     
     struct ListbelongView: View {
-        @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+        @ObservedObject private var ownProfile = Owner.sProfile
         @State private var bufProfile = Profile()
-        @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+        @State private var bufUserId: String = Owner.sProfile.userId
         
         @Environment(\.presentationMode) var presentation
         
@@ -395,9 +395,9 @@ struct ProfileView2: View {
     }
     
     struct ListIntroMessageView: View {
-        @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+        @ObservedObject private var ownProfile = Owner.sProfile
         @State private var bufProfile = Profile()
-        @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+        @State private var bufUserId: String = Owner.sProfile.userId
         
         @Environment(\.presentationMode) var presentation
         
@@ -447,9 +447,9 @@ struct ProfileView2: View {
     }
     
     struct ListBirthdayView: View {
-        private var ownProfile = OwnerProfile.sOwnerProfile
+        private var ownProfile = Owner.sProfile
         @State private var bufProfile = Profile()
-        @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+        @State private var bufUserId: String = Owner.sProfile.userId
         
         @Environment(\.presentationMode) var presentation
         

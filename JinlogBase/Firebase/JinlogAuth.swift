@@ -11,14 +11,12 @@ import CoreAudioTypes
 
 final class FirebaseAuth {
 
-    static let sAuth = FirebaseAuth()
-
     private let auth: Auth
 
     private(set) var uid: String
     private(set) var isSignIn: Bool
 
-    private init() {
+    init() {
         print("FirebaseAuth init()")
 
         auth = Auth.auth()

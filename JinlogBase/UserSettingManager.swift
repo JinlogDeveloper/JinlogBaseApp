@@ -199,10 +199,3 @@ class UserSetting: ObservableObject {
         return ret
     }
 }
-
-/// ***
-/// アプリ使用者本人の設定 ※シングルトンにする
-final class OwnerSetting: UserSetting{
-    override private init() {}
-    static let sOwnerSetting = OwnerSetting()
-}

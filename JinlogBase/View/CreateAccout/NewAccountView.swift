@@ -121,7 +121,7 @@ struct NewAccountView: View {
         Task {
             do {
                 // アカウント登録
-                let _ = try await FirebaseAuth.sAuth.createAccount(
+                let _ = try await Owner.sAuth.createAccount(
                     email: emailAddress,
                     password: password
                 )
@@ -129,7 +129,7 @@ struct NewAccountView: View {
 
                 do {
                     // ログイン
-                    let _ = try await FirebaseAuth.sAuth.signIn(
+                    let _ = try await Owner.sAuth.signIn(
                         email: emailAddress,
                         password: password
                     )
@@ -141,7 +141,7 @@ struct NewAccountView: View {
                     errMessage = "ログイン失敗"
                     alertFlag = true
 
-                    try! FirebaseAuth.sAuth.signOut()
+                    try! Owner.sAuth.signOut()
                 }
 
                 //トップ画面へ一気に遷移する

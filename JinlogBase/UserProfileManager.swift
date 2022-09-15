@@ -138,10 +138,3 @@ class UserProfile: ObservableObject {
     }
 
 } // UserProfile
-
-/// ***
-/// アプリ使用者本人のプロフィール ※シングルトンにする
-final class OwnerProfile: UserProfile {
-    override private init() {}
-    static let sOwnerProfile = OwnerProfile()
-}

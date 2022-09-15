@@ -20,9 +20,9 @@ struct EffectView: View {
     @State var isShowAcitivity = false
     
     
-    @ObservedObject private var ownProfile = OwnerProfile.sOwnerProfile
+    @ObservedObject private var ownProfile = Owner.sProfile
     @State private var bufProfile = Profile()
-    @State private var bufUserId: String = OwnerProfile.sOwnerProfile.userId
+    @State private var bufUserId: String = Owner.sAuth.uid
     
     
     var body: some View {
