@@ -35,7 +35,7 @@
 		BE10615028BB63D2008372EA /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = BE10614F28BB63D2008372EA /* Charts */; };
 		BE10616A28BB64FB008372EA /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615428BB64FB008372EA /* TestView.swift */; };
 		BE10616B28BB64FB008372EA /* ProfileInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615528BB64FB008372EA /* ProfileInfoRow.swift */; };
-		BE10616C28BB64FB008372EA /* NewAccountView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615628BB64FB008372EA /* NewAccountView2.swift */; };
+		BE10616C28BB64FB008372EA /* NewProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615628BB64FB008372EA /* NewProfileView.swift */; };
 		BE10616D28BB64FB008372EA /* NewAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615728BB64FB008372EA /* NewAccountView.swift */; };
 		BE10616E28BB64FB008372EA /* ButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615928BB64FB008372EA /* ButtonLabel.swift */; };
 		BE10616F28BB64FB008372EA /* TextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE10615A28BB64FB008372EA /* TextFieldRow.swift */; };
@@ -78,7 +78,7 @@
 		6FF04AB328275E1500BCE9B8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BE10615428BB64FB008372EA /* TestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		BE10615528BB64FB008372EA /* ProfileInfoRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoRow.swift; sourceTree = "<group>"; };
-		BE10615628BB64FB008372EA /* NewAccountView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountView2.swift; sourceTree = "<group>"; };
+		BE10615628BB64FB008372EA /* NewProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProfileView.swift; sourceTree = "<group>"; };
 		BE10615728BB64FB008372EA /* NewAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountView.swift; sourceTree = "<group>"; };
 		BE10615928BB64FB008372EA /* ButtonLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonLabel.swift; sourceTree = "<group>"; };
 		BE10615A28BB64FB008372EA /* TextFieldRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldRow.swift; sourceTree = "<group>"; };
@@ -188,7 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				BE10615728BB64FB008372EA /* NewAccountView.swift */,
-				BE10615628BB64FB008372EA /* NewAccountView2.swift */,
+				BE10615628BB64FB008372EA /* NewProfileView.swift */,
 				BE10615528BB64FB008372EA /* ProfileInfoRow.swift */,
 				BE10615328BB64FB008372EA /* テスト用 */,
 			);
@@ -363,7 +363,7 @@
 				BE10617028BB64FB008372EA /* UserInfoView.swift in Sources */,
 				BE10617328BB64FB008372EA /* TopView.swift in Sources */,
 				BE10616B28BB64FB008372EA /* ProfileInfoRow.swift in Sources */,
-				BE10616C28BB64FB008372EA /* NewAccountView2.swift in Sources */,
+				BE10616C28BB64FB008372EA /* NewProfileView.swift in Sources */,
 				0C2C8456287E7A6E009851FF /* JinlogStrage.swift in Sources */,
 				6F2FB3EA28C4D6B700F2876B /* JinlogError.swift in Sources */,
 				6FE40F892818297B004A9E1B /* JinlogBaseApp.swift in Sources */,

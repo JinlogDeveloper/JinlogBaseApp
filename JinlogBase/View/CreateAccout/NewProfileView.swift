@@ -1,5 +1,5 @@
 //
-//  NewAccountView2.swift
+//  NewProfileView.swift
 //  LoginScreen
 //
 //  Created by Ken Oonishi on 2022/08/15.
@@ -50,7 +50,7 @@ extension AnyTransition {
 
 
 
-struct NewAccountView2: View {
+struct NewProfileView: View {
     
     /*-----------------------------------
      新規アカウント登録の２画面目
@@ -221,12 +221,12 @@ struct NewAccountView2: View {
 } //View
 
 
-struct NewAccountView2_Previews: PreviewProvider {
+struct NewProfileView_Previews: PreviewProvider {
     
     @State static var moveToTopView :Bool = false          //Top画面への遷移フラグ
     @State static var bufProfile :Profile = Profile()      //入力するプロフィール情報の格納
 
     static var previews: some View {
-        NewAccountView2(moveToTopView: $moveToTopView)
+        NewProfileView(moveToTopView: $moveToTopView)
     }
 }

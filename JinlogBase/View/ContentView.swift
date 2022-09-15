@@ -21,7 +21,7 @@ struct ContentView: View {
         if Owner.sAuth.isSignIn {
             if Owner.sProfile.profile.userName.isEmpty {
                 let _ = print("DEBUG : 初期プロフィール登録画面")
-                NewAccountView2(moveToTopView: $moveToMainView)
+                NewProfileView(moveToTopView: $moveToMainView)
             } else { 
                 let _ = print("DEBUG : メイン画面")
                 TopView()
