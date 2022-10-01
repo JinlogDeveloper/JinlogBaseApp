@@ -5,6 +5,8 @@
 //  Created by Ken Oonishi on 2022/06/18.
 //
 
+//TODO: Xcode14.0にアップデートしたら、ビルドエラーが発生してしまう
+/*
 import SwiftUI
 import Charts
 
@@ -161,3 +163,4 @@ struct Radar_Preview :PreviewProvider {
         )
     }
 }
+*/

@@ -123,7 +123,8 @@ struct TabPage1View: View {
                     //                            .rotationEffect(Angle(degrees: -90))
                     //                            .opacity(0.5)
                     
-                    
+                    //TODO: Xcode14.0にアップデートしたら、ビルドエラーが発生してしまう
+                    /*
                     //一旦ここにデータを作成。今後どっかへ移動させる
                     Radar(entries: [
                         RadarChartDataEntry(value: 2.6),
@@ -139,7 +140,7 @@ struct TabPage1View: View {
                             RadarChartDataEntry(value: score[4])]
                     )
                     .frame(width: UIScreen.main.bounds.width,height: 420.0)
-                    
+                    */
                     //プログレスバーはviewで作成　　スタックで重ねて表示させる
                     SquareProgressView(maxNum: $maxNum, num: $num)
                         .frame(width: 300, height: 40)
