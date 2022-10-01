@@ -214,12 +214,7 @@ struct TabPage2View: View {
 
 struct TabPage3View: View {
     var body: some View {
-        
-        VStack{
-            Text("3ページめのタブ")
-                .font(.title)
-            
-        }
+        GameView()
     }
 }
 
@@ -328,7 +323,7 @@ struct TopView_Previews: PreviewProvider {
             .previewInterfaceOrientation(.portrait)
         //        TabPage1View()
         //        TabPage2View()
-        //        TabPage3View()
+        TabPage3View()
         //        TabPage4View()
         TabPage5View()
     }
