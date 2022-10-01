@@ -6,20 +6,25 @@
 //
 
 import Foundation
-// swiftUIをimportしない！！ 場合によっては必要かも。。。
+import UIKit
 // Firebaseをimportしない！！
 
 /// print()出力の先頭にファイル名と行数を挿入
 public func print(_ items: String...,
-                  fileName: String = #file, line: Int = #line,
+                  filePath: String = #file, line: Int = #line,
                   separator: String = " ", terminator: String = "\n") {
-    let header = "\(URL(fileURLWithPath: fileName).lastPathComponent)(\(line))  "
+    let timeStamp = CommonUtil.birthStr(type: .yyyyMMddHHmmssSSS)
+    let fileName = URL(fileURLWithPath: filePath).lastPathComponent
+
+    let header = "\(timeStamp) \(fileName)(\(line))  "
     let content = items.map { "\($0)" }.joined(separator: separator)
+
     Swift.print(header+content, terminator: terminator)
 }
 
 
 enum DateStrType {
+    case yyyyMMddHHmmssSSS
     case yyyyMMdd
     case MMdd
     case yyyyMd
@@ -34,13 +39,15 @@ final class CommonUtil {
     /// - Parameter date: 日付
     /// - Parameter type: フォーマット
     /// - Returns: フォーマットされた日付の文字列
-    class func birthStr(date: Date, type: DateStrType) -> String {
+    class func birthStr(date: Date = Date(), type: DateStrType) -> String {
         var retStr = ""
         let formatter = DateFormatter()
 
         formatter.calendar = Calendar(identifier: .gregorian)
         formatter.locale = Locale(identifier: "ja_JP")
         switch type {
+        case .yyyyMMddHHmmssSSS:
+            formatter.dateFormat = "yyyy/MM/dd HH:mm:ss.SSS"     // 2022/12/31 23:59:59.999
         case .yyyyMMdd:
             formatter.dateFormat = "yyyy'/'MM'/'dd"     // 2000/01/01
         case .MMdd:
