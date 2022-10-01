@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UIKit
+import SwiftUI
 
 extension UIImage {
 
@@ -47,4 +47,33 @@ extension UIImage {
 
         return retImage!
     }
+
+    func createQRCode(sourceText: String) -> UIImage? {
+        guard let data = sourceText.data(using: .utf8) else {
+            return nil
+        }
+
+        // inputCorrectionLevel(誤り訂正レベル)： 低 ← L, M, Q, H → 高 
+        guard let qr = CIFilter(
+            name: "CIQRCodeGenerator", 
+            parameters: ["inputMessage": data, "inputCorrectionLevel": "H"]
+        ) else {
+            return nil
+        }
+        
+        let matrixSize = CGAffineTransform(scaleX: 10, y: 10)
+        
+        guard let ciImage = qr.outputImage?.transformed(by: matrixSize) else {
+            return nil
+        }
+        
+        guard let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent) else {
+            return nil
+        }
+        
+        let image = UIImage(cgImage: cgImage)
+        
+        return image
+    }
+    
 }
