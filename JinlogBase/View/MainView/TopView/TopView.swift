@@ -19,6 +19,7 @@ struct TopView: View {
         //UITabBar.appearance().unselectedItemTintColor = .lightGray
     }
     
+    @State var selectTabIndex = 0
     @State var opacity :Double = 0
     
     
@@ -34,34 +35,34 @@ struct TopView: View {
             //タブ毎に画面(View)が1つ必要になる
             //タブのアイコンは「SF Symbols」っていうソフトでデフォルトで使えるアイコンが確認できる。
             
-            TabView{
-                TabPage1View()
+            TabView(selection: $selectTabIndex) {
+                TabPage1View().tag(0)
                     .tabItem{
                         Image(systemName: "house.fill")
                         Text("ホーム")
                     }
                 
-                TabPage2View()
+                TabPage2View().tag(1)
                     .tabItem{
                         Image(systemName: "calendar")
                         Text("イベント")
                     }
                 //.badge(newEvent > 0 ? "New" : nil)
                 
-                TabPage3View()
+                TabPage3View().tag(2)
                     .tabItem{
                         Image(systemName: "gamecontroller")
                         Text("ゲーム")
                     }
                 
-                TabPage4View()
+                TabPage4View().tag(3)
                     .tabItem{
                         Image(systemName: "message.fill")
                         Text("チャット")
                     }
                 //.badge(unRead > 0 ? "\(unRead)" : nil)
                 
-                TabPage5View()
+                TabPage5View().tag(4)
                     .tabItem{
                         Image(systemName: "gearshape")
                         Text("設定")
