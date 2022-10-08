@@ -19,7 +19,6 @@
 		6F8E68A32824D84200FF042B /* UserSettingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A22824D84200FF042B /* UserSettingManager.swift */; };
 		6F8E68A92826060900FF042B /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A82826060900FF042B /* CommonUtil.swift */; };
 		6FBEE52828C78B1000460320 /* JinlogFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE52728C78B1000460320 /* JinlogFirebase.swift */; };
-		6FDBA94A28E8441300334AB4 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA94928E8441300334AB4 /* Charts */; };
 		6FDBA94D28E844A200334AB4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA94C28E844A200334AB4 /* FirebaseAnalytics */; };
 		6FDBA94F28E844A200334AB4 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA94E28E844A200334AB4 /* FirebaseAnalyticsSwift */; };
 		6FDBA95128E844A200334AB4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA95028E844A200334AB4 /* FirebaseAuth */; };
@@ -106,7 +105,6 @@
 			files = (
 				6FDBA94F28E844A200334AB4 /* FirebaseAnalyticsSwift in Frameworks */,
 				6FDBA94D28E844A200334AB4 /* FirebaseAnalytics in Frameworks */,
-				6FDBA94A28E8441300334AB4 /* Charts in Frameworks */,
 				6FDBA95328E844A200334AB4 /* FirebaseFirestore in Frameworks */,
 				6FDBA95728E844A200334AB4 /* FirebaseStorage in Frameworks */,
 				6FDBA95128E844A200334AB4 /* FirebaseAuth in Frameworks */,
@@ -302,7 +300,6 @@
 			);
 			name = JinlogBase;
 			packageProductDependencies = (
-				6FDBA94928E8441300334AB4 /* Charts */,
 				6FDBA94C28E844A200334AB4 /* FirebaseAnalytics */,
 				6FDBA94E28E844A200334AB4 /* FirebaseAnalyticsSwift */,
 				6FDBA95028E844A200334AB4 /* FirebaseAuth */,
@@ -340,7 +337,6 @@
 			);
 			mainGroup = 6FE40F57281464C3004A9E1B;
 			packageReferences = (
-				6FDBA94828E8441300334AB4 /* XCRemoteSwiftPackageReference "Charts" */,
 				6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 6FE40F61281464C3004A9E1B /* Products */;
@@ -619,15 +615,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		6FDBA94828E8441300334AB4 /* XCRemoteSwiftPackageReference "Charts" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielgindi/Charts.git";
-			requirement = {
-				kind = versionRange;
-				maximumVersion = 4.1.0;
-				minimumVersion = 4.1.0;
-			};
-		};
 		6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -640,11 +627,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6FDBA94928E8441300334AB4 /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6FDBA94828E8441300334AB4 /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
-		};
 		6FDBA94C28E844A200334AB4 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
