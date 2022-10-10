@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Charts
+//import Charts
 
 struct PlayerDetail: View {
     
