@@ -33,6 +33,10 @@ struct GameView: View {
                 let _ = print("DEBUG : GameViewDiscussion()")
                 GameViewDiscussion(gm: gm)
                 
+            case .voting:
+                let _ = print("DEBUG : GameViewVoting()")
+                GameViewVoting(gm: gm)
+                
             default:
                 let _ = print("ERROR : EmptyView()")
                 EmptyView()
@@ -69,7 +73,7 @@ struct GameViewTop: View {
                 Button("ゲームに参加する") {
                     Task {
                         do {
-                            try await gm.joinGame(gId: inputGameId)
+                            try await gm.joinGame(gId: inputGameId, uId: Owner.sAuth.uid)
                         } catch {
                             //TODO:
                             print("ERROR")
@@ -90,6 +94,7 @@ struct GameViewRecruitPlayers: View {
             Text("ゲーム参加者募集中")
                 .font(.system(size: 31, weight: .thin))
             
+            //TODO: メソッドで作る
             let qrCode: UIImage? = UIImage().createQRCode(sourceText: gm.gameId)
             if qrCode != nil {
                 Image(uiImage: qrCode!)
@@ -251,8 +256,140 @@ struct GameViewDiscussion: View {
     func runEveryInterval() {
         if 0 < timerCount {
             timerCount -= 1
+        } else {
+            timer?.invalidate() // タイマ削除
+            if gm.gameState.hostUserId == Owner.sAuth.uid {
+                Task {
+                    do {
+                        try await gm.startVote()
+                    } catch {
+                        //TODO:
+                        print("ERROR")
+                    }
+                }
+            }
         }
     }
+}
+
+struct GameViewVoting: View {
+    @ObservedObject var gm: GameMaster
+    
+    var body: some View {
+        VStack{
+            Text("投票画面")
+                .font(.system(size: 31, weight: .thin))
+                .padding()
+            
+            let own = gm.gamePlayers.first(where: {$0.userId == Owner.sAuth.uid})
+            if own == nil {
+                //TODO error
+                EmptyView()
+            } else if own?.voteUserId == "" {
+                // 未投票
+                beforeVote(gm: gm)
+            } else {
+                // 投票済
+                afterVote(gm: gm)
+            }
+
+        }
+    }
+    
+    struct beforeVote: View {
+        @ObservedObject var gm: GameMaster
+        
+        var body: some View {
+            VStack {
+                Text("投票先を選んでください").padding()
+                
+                List {
+                    ForEach(gm.gamePlayers, id: \.self) { player in
+                        if (player.userId != Owner.sAuth.uid) && (player.alived) {
+                            // 本人以外の生存者
+                            Button(player.userId) {
+                                //TODO: 「投票先はこの人でいいですか？はい/いいえ」的な確認ダイアログ表示
+                                Task {
+                                    do {
+                                        try await gm.vote(uId: Owner.sAuth.uid, voteForId: player.userId)
+                                    } catch {
+                                        //TODO:
+                                        print("ERROR")
+                                    }
+                                }
+                            }
+                        } else {
+                            if player.userId == Owner.sAuth.uid {
+                                Text(player.userId).background(Color.blue)  // 本人
+                            } else {
+                                Text(player.userId).background(Color.gray)  // 既死者
+                            }
+                        }
+                        
+                    }
+                }
+
+            }
+        }
+    }
+    
+    struct afterVote: View {
+        @ObservedObject var gm: GameMaster
+
+        var body: some View {
+
+            let own = gm.gamePlayers.first(where: {$0.userId == Owner.sAuth.uid})
+            if own == nil {
+                //TODO error
+                EmptyView()
+            } else {
+                
+                VStack {
+                    Text("投票先 選択済み").padding()
+                    Text("しばらくお待ちください").padding()
+                    
+                    List {
+                        ForEach(gm.gamePlayers, id: \.self) { player in
+                            if player.userId == Owner.sAuth.uid {
+                                Text(player.userId).background(Color.blue)      // 本人
+                            } else if player.alived == false {
+                                Text(player.userId).background(Color.gray)      // 既死者
+                            } else if player.userId == own!.voteUserId {
+                                Text(player.userId).background(Color.red)       // 投票先
+                            } else {
+                                Text(player.userId)                             // それ以外
+                            }
+                        }
+                    }
+                    
+                }
+                .onChange(of: gm.gamePlayers) { players in
+                    // 全員が投票したら投票結果発表フェーズへ
+                    // ※主催者スマホに処理させる
+                    print("onChange()")
+                    if gm.gameState.hostUserId == Owner.sAuth.uid {
+                        print("owner")
+                        let alivedUserNum = players.filter({$0.alived}).count
+                        let alivedVotedUserNum = players.filter({$0.alived && ($0.voteUserId != "")}).count
+                        print("alivedUserNum:\(alivedUserNum) alivedVotedUserNum:\(alivedVotedUserNum)")
+                        
+                        if alivedUserNum == alivedVotedUserNum {
+                            Task {
+                                do {
+                                    try await gm.startAnnounceVoteResult()
+                                } catch {
+                                    //TODO:
+                                    print("ERROR")
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    
 }
 
 struct GameView_Previews: PreviewProvider {
@@ -262,5 +399,6 @@ struct GameView_Previews: PreviewProvider {
         GameViewWaitingStart(gm: GameMaster())
         GameViewConfirmingRole(gm: GameMaster())
         GameViewDiscussion(gm: GameMaster())
+        GameViewVoting(gm: GameMaster())
     }
 }

@@ -45,7 +45,7 @@ enum GamePhase: Int, Codable {
     // n日目（昼）
     case discussion                     // 議論
     case voting                         // 投票
-    case resultVoting                   // 投票結果発表
+    case annouceVoteResult              // 投票結果発表
     // n日目（夜）
     case medium                         // 霊媒師ターン
     case fortuneTeller                  // 占い師ターン
@@ -103,7 +103,7 @@ struct GameState: Codable {
 }
 
 /// ゲーム参加者
-struct GamePlayer: Codable {
+struct GamePlayer: Codable, Hashable {
     var userId: String              = ""            // UID
     var role: GameRole              = .nothing      // 役職
     var alived: Bool                = true          // 生存有無
@@ -157,6 +157,7 @@ final class GameMaster: ObservableObject, DelegateGameListener {
         }
     }
     
+    /// 新規ゲームを作成する
     @MainActor func createGame(uId: String) async throws {
         gameId = ""
         gameState = GameState()
@@ -181,12 +182,17 @@ final class GameMaster: ObservableObject, DelegateGameListener {
         print("success createGame()  gameId : \(gameId)")
     }
     
-    @MainActor func joinGame(gId: String) async throws {
+    /// ゲームに参加する
+    @MainActor func joinGame(gId: String, uId: String) async throws {
         //gameId = ""
         gameState = GameState()
         
         guard !(gId.isEmpty) else {
             print("Error : gId is empty")
+            throw JinlogError.argumentEmpty
+        }
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
             throw JinlogError.argumentEmpty
         }
         
@@ -201,7 +207,7 @@ final class GameMaster: ObservableObject, DelegateGameListener {
         
         // プレイヤーをゲームに追加
         var newPlayer = GamePlayer()
-        newPlayer.userId = Owner.sProfile.userId
+        newPlayer.userId = uId
         try await gameStore.storeNewPlayer(gameId: gId, player: newPlayer)
         
         // リアルタイム更新登録
@@ -296,6 +302,67 @@ final class GameMaster: ObservableObject, DelegateGameListener {
         var bufState = gameState
         bufState.progress.phase = .discussion
         bufState.progress.phaseTimer = 30   //TODO: 
+        try await gameStore.updateGame(gameId: gameId, game: bufState)
+    }
+
+    //TODO: 
+    @MainActor func startVote() async throws {
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            throw JinlogError.unexpected
+        }
+
+        // フェーズ更新
+        var bufState = gameState
+        bufState.progress.phase = .voting
+        bufState.progress.phaseTimer = 0 
+        try await gameStore.updateGame(gameId: gameId, game: bufState)
+    }
+
+    //TODO: 
+    @MainActor func vote(uId: String, voteForId: String) async throws {
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
+            throw JinlogError.argumentEmpty
+        }
+        guard !(voteForId.isEmpty) else {
+            print("Error : voteForId is empty")
+            throw JinlogError.argumentEmpty
+        }
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            throw JinlogError.unexpected
+        }
+        
+        // 投票
+        var bufPlayers = gamePlayers
+        guard bufPlayers.firstIndex(where: {$0.userId == voteForId}) != nil else {
+            // 投票先UIDがこのゲームに登録されてない
+            print("Error : uId(\(voteForId) is not in this game")
+            throw JinlogError.unexpected
+        }
+        guard let idx = bufPlayers.firstIndex(where: {$0.userId == uId}) else {
+            // 投票者がこのゲームに登録されてない
+            print("Error : uId(\(uId) is not in this game")
+            throw JinlogError.unexpected
+        }
+        bufPlayers[idx].voteUserId = voteForId
+        
+        // DB更新
+        try await gameStore.updateGame(gameId: gameId, player: bufPlayers[idx])
+    }
+
+    //TODO: 
+    @MainActor func startAnnounceVoteResult() async throws {
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            throw JinlogError.unexpected
+        }
+
+        // フェーズ更新
+        var bufState = gameState
+        bufState.progress.phase = .annouceVoteResult
+        bufState.progress.phaseTimer = 0 
         try await gameStore.updateGame(gameId: gameId, game: bufState)
     }
 
