@@ -172,19 +172,6 @@ struct GameViewConfirmingRole: View {
                 
                 if (gm.gameState.hostUserId == Owner.sAuth.uid) &&
                     (gm.gamePlayers.filter({$0.confirmedRole}).count == gm.gamePlayers.count) {
-                    // 全員が役職を確認したら議論フェーズへ
-                    // ※主催者スマホに処理させる
-                    Text("全員が役職を確認しました").padding()
-                    Button("議論を開始する") {
-                        Task {
-                            do {
-                                try await gm.startDiscussion()
-                            } catch {
-                                //TODO:
-                                print("ERROR")
-                            }
-                        }
-                    }.padding()
                 } else {
                     
                     Text("あなたの役職は \(player!.role.name) です")
@@ -207,11 +194,33 @@ struct GameViewConfirmingRole: View {
                     }                       
                     
                 }
-            }else {
+            } else {
                 Text("えらー").padding()
                 //TODO:
             }
             
+        }
+        .onChange(of: gm.gamePlayers) { players in
+            // 全員が役職を確認したら議論フェーズへ
+            // ※主催者スマホに処理させる
+            print("onChange()")
+            if gm.gameState.hostUserId == Owner.sAuth.uid {
+                print("owner")
+                let alivedUserNum = players.filter({$0.alived}).count
+                let alivedConfirmedUserNum = players.filter({$0.alived && ($0.confirmedRole)}).count
+                print("alivedUserNum:\(alivedUserNum) alivedConfirmedUserNum:\(alivedConfirmedUserNum)")
+                
+                if alivedUserNum == alivedConfirmedUserNum {
+                    Task {
+                        do {
+                            try await gm.startDiscussion()
+                        } catch {
+                            //TODO:
+                            print("ERROR")
+                        }
+                    }
+                }
+            }
         }
     }
 }
