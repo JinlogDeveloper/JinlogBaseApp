@@ -228,14 +228,29 @@ struct GameViewConfirmingRole: View {
 struct GameViewDiscussion: View {
     @ObservedObject var gm: GameMaster
     
+    @State private var timerCount: Int = 0
+    @State private var timer: Timer? = nil
+    
     var body: some View {
         VStack{
             Text("〜議論中〜")
                 .font(.system(size: 31, weight: .thin))
                 .padding()
-            Text("残り時間 **分 **秒")
+            Text("残り時間 \(timerCount/60)分 \(timerCount%60)秒")
                 .font(.system(size: 31, weight: .thin))
                 .padding()
+        }
+        .onAppear() {
+            timerCount = gm.gameState.progress.phaseTimer
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                runEveryInterval()
+            }
+        }
+    }
+    
+    func runEveryInterval() {
+        if 0 < timerCount {
+            timerCount -= 1
         }
     }
 }

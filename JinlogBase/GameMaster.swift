@@ -91,6 +91,7 @@ struct GameRule: Codable {
 struct GameProgress: Codable {
     var days: Int                   = 0             // 経過日数
     var phase: GamePhase            = .nothing      // フェーズ
+    var phaseTimer: Int             = 0             // フェーズの残り時間
 }
 
 
@@ -294,6 +295,7 @@ final class GameMaster: ObservableObject, DelegateGameListener {
         // フェーズ更新
         var bufState = gameState
         bufState.progress.phase = .discussion
+        bufState.progress.phaseTimer = 30   //TODO: 
         try await gameStore.updateGame(gameId: gameId, game: bufState)
     }
 
