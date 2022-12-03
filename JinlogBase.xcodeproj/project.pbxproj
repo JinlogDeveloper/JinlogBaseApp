@@ -51,6 +51,11 @@
 		BE55BF5928C2BF0F0044A20B /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE55BF5828C2BF0F0044A20B /* PlayerRow.swift */; };
 		BE55BF5B28C2C2E00044A20B /* PlayerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE55BF5A28C2C2E00044A20B /* PlayerList.swift */; };
 		BE55BF5D28C2C61A0044A20B /* PlayerDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE55BF5C28C2C61A0044A20B /* PlayerDetail.swift */; };
+		FC8B8A3C293BBDCD00E7B154 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8B8A3B293BBDCD00E7B154 /* ScannerViewModel.swift */; };
+		FC8B8A3E293BBE1600E7B154 /* SecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8B8A3D293BBE1600E7B154 /* SecondView.swift */; };
+		FC8B8A40293BBE7800E7B154 /* QrCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8B8A3F293BBE7800E7B154 /* QrCodeScannerView.swift */; };
+		FC8B8A42293BBED500E7B154 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8B8A41293BBED500E7B154 /* CameraPreview.swift */; };
+		FC8B8A44293BBF3F00E7B154 /* QrCodeCameraDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8B8A43293BBF3F00E7B154 /* QrCodeCameraDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +101,11 @@
 		BE55BF5828C2BF0F0044A20B /* PlayerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRow.swift; sourceTree = "<group>"; };
 		BE55BF5A28C2C2E00044A20B /* PlayerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerList.swift; sourceTree = "<group>"; };
 		BE55BF5C28C2C61A0044A20B /* PlayerDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetail.swift; sourceTree = "<group>"; };
+		FC8B8A3B293BBDCD00E7B154 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
+		FC8B8A3D293BBE1600E7B154 /* SecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondView.swift; sourceTree = "<group>"; };
+		FC8B8A3F293BBE7800E7B154 /* QrCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrCodeScannerView.swift; sourceTree = "<group>"; };
+		FC8B8A41293BBED500E7B154 /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
+		FC8B8A43293BBF3F00E7B154 /* QrCodeCameraDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrCodeCameraDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +139,11 @@
 			isa = PBXGroup;
 			children = (
 				6FDBA95B28E84B1F00334AB4 /* GameView.swift */,
+				FC8B8A3D293BBE1600E7B154 /* SecondView.swift */,
+				FC8B8A3B293BBDCD00E7B154 /* ScannerViewModel.swift */,
+				FC8B8A3F293BBE7800E7B154 /* QrCodeScannerView.swift */,
+				FC8B8A41293BBED500E7B154 /* CameraPreview.swift */,
+				FC8B8A43293BBF3F00E7B154 /* QrCodeCameraDelegate.swift */,
 			);
 			path = GameView;
 			sourceTree = "<group>";
@@ -389,18 +404,23 @@
 				6FBEE52828C78B1000460320 /* JinlogFirebase.swift in Sources */,
 				6FDBA95928E849AA00334AB4 /* GameMaster.swift in Sources */,
 				BE10616D28BB64FB008372EA /* NewAccountView.swift in Sources */,
+				FC8B8A44293BBF3F00E7B154 /* QrCodeCameraDelegate.swift in Sources */,
 				0CD1158528722BEB00533FE2 /* EffectView.swift in Sources */,
 				BE10617728BB64FB008372EA /* CommonData.swift in Sources */,
 				BE10616E28BB64FB008372EA /* ButtonLabel.swift in Sources */,
 				6F8E68A92826060900FF042B /* CommonUtil.swift in Sources */,
+				FC8B8A42293BBED500E7B154 /* CameraPreview.swift in Sources */,
 				BE55BF5D28C2C61A0044A20B /* PlayerDetail.swift in Sources */,
 				BE10617528BB64FB008372EA /* LoginView.swift in Sources */,
 				6FE40F9628203111004A9E1B /* JinlogFirestore.swift in Sources */,
 				6F654BCC28A5D14D00108C73 /* ExtensionUIKit.swift in Sources */,
+				FC8B8A3C293BBDCD00E7B154 /* ScannerViewModel.swift in Sources */,
+				FC8B8A3E293BBE1600E7B154 /* SecondView.swift in Sources */,
 				BE10617228BB64FB008372EA /* ProgressBar.swift in Sources */,
 				BE10617A28BB64FB008372EA /* JinlogAuth.swift in Sources */,
 				BE10617128BB64FB008372EA /* RadarChart.swift in Sources */,
 				6FDBA95C28E84B1F00334AB4 /* GameView.swift in Sources */,
+				FC8B8A40293BBE7800E7B154 /* QrCodeScannerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,7 +478,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -513,7 +533,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -532,7 +552,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"JinlogBase/Preview Content\"";
-				DEVELOPMENT_TEAM = JT37Y364HP;
+				DEVELOPMENT_TEAM = 44C462XR3H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JinlogBase/Info.plist;
@@ -548,7 +568,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = sample.JinlgBase20220928;
+				PRODUCT_BUNDLE_IDENTIFIER = sample.JinlgBase20221204;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -566,7 +586,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"JinlogBase/Preview Content\"";
-				DEVELOPMENT_TEAM = JT37Y364HP;
+				DEVELOPMENT_TEAM = 44C462XR3H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JinlogBase/Info.plist;
@@ -582,7 +602,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = sample.JinlgBase20220928;
+				PRODUCT_BUNDLE_IDENTIFIER = sample.JinlgBase20221204;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
