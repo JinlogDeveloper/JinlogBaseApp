@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+
 struct SecondView: View {
     @ObservedObject var viewModel : ScannerViewModel
     
