@@ -48,6 +48,7 @@ struct GameView: View {
 struct GameViewTop: View {
     @ObservedObject var gm: GameMaster
     
+    // ★名前が抽象的すぎる！
     @ObservedObject var viewModel = ScannerViewModel()
     
     @State private var inputGameId = ""

@@ -28,6 +28,7 @@ class CameraPreview: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // ★なくしてOK！
     @objc func onClick(){
         delegate?.onSimulateScanning()
     }
