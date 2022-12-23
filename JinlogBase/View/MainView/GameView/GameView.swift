@@ -48,8 +48,7 @@ struct GameView: View {
 struct GameViewTop: View {
     @ObservedObject var gm: GameMaster
     
-    // ★名前が抽象的すぎる！
-    @ObservedObject var viewModel = ScannerViewModel()
+    @ObservedObject var qrcodeScannerSetting = QRCodeScannerSetting()
     
     @State private var inputGameId = ""
     
@@ -71,7 +70,7 @@ struct GameViewTop: View {
                 HStack{
                     Button(action:{
                         print("QRcordを読み取るカメラ起動")
-                        viewModel.isShowing = true
+                        qrcodeScannerSetting.isShowing = true
                         
                     },label:{
                         Image(systemName: "person.badge.plus")
@@ -102,18 +101,14 @@ struct GameViewTop: View {
                         }
                     }
                 }
-                
-                
-                
-                .fullScreenCover(isPresented: $viewModel.isShowing) {
-                    SecondView(viewModel: viewModel)
-                    
+                .fullScreenCover(isPresented: $qrcodeScannerSetting.isShowing) {
+                    QRCodeScannerView(qrcodeScannerSetting: qrcodeScannerSetting)
                 }
                 
                 
             }.padding()
             
-        }.onChange(of: viewModel.lastQrCode){ newValue in
+        }.onChange(of: qrcodeScannerSetting.qrcodeString){ newValue in
             inputGameId = newValue
         }
     }
@@ -229,7 +224,7 @@ struct GameViewConfirmingRole: View {
                     } else {
                         Text("役職を確認済み").padding()
                         Text("しばらくお待ちください").padding()
-                    }                       
+                    }
                     
                 }
             } else {
@@ -325,7 +320,7 @@ struct GameViewVoting: View {
                 // 投票済
                 afterVote(gm: gm)
             }
-
+            
         }
     }
     
@@ -361,16 +356,16 @@ struct GameViewVoting: View {
                         
                     }
                 }
-
+                
             }
         }
     }
     
     struct afterVote: View {
         @ObservedObject var gm: GameMaster
-
+        
         var body: some View {
-
+            
             let own = gm.gamePlayers.first(where: {$0.userId == Owner.sAuth.uid})
             if own == nil {
                 //TODO error
@@ -418,7 +413,7 @@ struct GameViewVoting: View {
                         }
                     }
                 }
-
+                
             }
         }
     }

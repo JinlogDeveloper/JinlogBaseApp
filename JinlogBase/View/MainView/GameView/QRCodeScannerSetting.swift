@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ScannerViewModel: ObservableObject {
+class QRCodeScannerSetting: ObservableObject {
     
     /// QRコードを読み取る時間間隔
     ///     // ★（参考：変更しなくてOK！）
@@ -15,14 +15,14 @@ class ScannerViewModel: ObservableObject {
     let scanInterval: Double = 1.0
     // ★（参考：変更しなくてOK！）
     // ★lastScanedQrCode のように、より精度の高い文言にする考え方もあります！
-   
-    @Published var lastQrCode: String = "QRコード"
+    
+    @Published var qrcodeString: String = "QRコード"
     @Published var isShowing: Bool = false
     
     /// QRコード読み取り時に実行される。
     /// 引数のアンダースコア　引数ラベルの省略
     func onFoundQrCode(_ code: String) {
-        self.lastQrCode = code
+        self.qrcodeString = code
         // ★（参考：変更しなくてOK！）
         // ★呼び元がこのViewを非表示にすべきという考え方もあります！
         // ★「誰が主導権を持っているか」という考え方です！
