@@ -139,9 +139,9 @@
 			isa = PBXGroup;
 			children = (
 				6FDBA95B28E84B1F00334AB4 /* GameView.swift */,
+				FC8B8A3B293BBDCD00E7B154 /* QRCodeScannerSetting.swift */,
 				FC8B8A3D293BBE1600E7B154 /* QRCodeScannerView.swift */,
 				FC8B8A3F293BBE7800E7B154 /* QRCodeScannerProcess.swift */,
-				FC8B8A3B293BBDCD00E7B154 /* QRCodeScannerSetting.swift */,
 				FC8B8A41293BBED500E7B154 /* CameraPreview.swift */,
 				FC8B8A43293BBF3F00E7B154 /* QRCodeCameraDelegate.swift */,
 			);

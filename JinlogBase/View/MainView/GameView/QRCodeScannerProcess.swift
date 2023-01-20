@@ -19,22 +19,33 @@ struct QRCodeScannerProcess: UIViewRepresentable {
     private let delegate = QrCodeCameraDelegate()
     private let metadataOutput = AVCaptureMetadataOutput()
     
-    func interval(delay: Double) -> QRCodeScannerProcess {
-        print("interval")
-        delegate.scanInterval = delay
-        return self
-    }
-    //@escaping クロージャをエスケープ（エスケープクロージャ）
-    func found(r: @escaping (String) -> Void) -> QRCodeScannerProcess {
-        print("found")
-        delegate.onResult = r
+    //表示するViewの初期状態のインスタンスを生成するメソッド
+    func makeUIView(context: UIViewRepresentableContext<QRCodeScannerProcess>) -> QRCodeScannerProcess.UIViewType {
+        let cameraView = CameraPreview(session: session)
         
-        return self
+        //カメラの認証ステータスの確認
+        checkCameraAuthorizationStatus(cameraView)
+        
+        return cameraView
     }
     
+    private func checkCameraAuthorizationStatus(_ uiView: CameraPreview) {
+        
+        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        if cameraAuthorizationStatus == .authorized {
+            setupCamera(uiView)
+        } else {
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.sync {
+                    if granted {
+                        self.setupCamera(uiView)
+                    }
+                }
+            }
+        }
+    }
     
     func setupCamera(_ uiView: CameraPreview) {
-        print("setupCamera")
         if let backCamera = AVCaptureDevice.default(for: AVMediaType.video) {
             if let input = try? AVCaptureDeviceInput(device: backCamera) {
                 session.sessionPreset = .photo //画質の設定
@@ -61,46 +72,23 @@ struct QRCodeScannerProcess: UIViewRepresentable {
         
     }
     
-    
-    //表示するViewの初期状態のインスタンスを生成するメソッド
-    func makeUIView(context: UIViewRepresentableContext<QRCodeScannerProcess>) -> QRCodeScannerProcess.UIViewType {
-        print("makeUIView")
-        let cameraView = CameraPreview(session: session)
-        
-        checkCameraAuthorizationStatus(cameraView)
-        
-        return cameraView
-    }
-    
-    
-    static func dismantleUIView(_ uiView: CameraPreview, coordinator: ()) {
-        print("dismantleUIView")
-        uiView.session.stopRunning()
-    }
-    
-    private func checkCameraAuthorizationStatus(_ uiView: CameraPreview) {
-        print("checkCameraAuthorizationStatus")
-        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        if cameraAuthorizationStatus == .authorized {
-            setupCamera(uiView)
-        } else {
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                DispatchQueue.main.sync {
-                    if granted {
-                        self.setupCamera(uiView)
-                    }
-                }
-            }
-        }
-    }
     //表示するビューの状態が更新されるたびに呼び出され更新を反映させる
     func updateUIView(_ uiView: CameraPreview, context: UIViewRepresentableContext<QRCodeScannerProcess>) {
-        print("updateUIView")
         uiView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         uiView.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
     
+    //@escaping クロージャをエスケープ（エスケープクロージャ）
+    func found(r: @escaping (String) -> Void) -> QRCodeScannerProcess {
+        delegate.onResult = r
+        
+        return self
+    }
     
+    //UIViewを解体する
+    static func dismantleUIView(_ uiView: CameraPreview, coordinator: ()) {
+        uiView.session.stopRunning()
+    }
     
 }
 

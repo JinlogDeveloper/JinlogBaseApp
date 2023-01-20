@@ -19,6 +19,7 @@ class CameraPreview: UIView {
     //    weak　弱参照(参照カウントとして数えられない。)
     weak var delegate: QrCodeCameraDelegate?
     
+    //super: スーパークラスの実装を呼び出している。
     init(session: AVCaptureSession) {
         super.init(frame: .zero)
         self.session = session
@@ -28,10 +29,6 @@ class CameraPreview: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // ★なくしてOK！
-    @objc func onClick(){
-        delegate?.onSimulateScanning()
-    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
