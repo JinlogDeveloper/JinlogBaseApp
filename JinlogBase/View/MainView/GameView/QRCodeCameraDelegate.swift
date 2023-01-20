@@ -9,8 +9,6 @@ import AVFoundation
 
 class QrCodeCameraDelegate: NSObject, AVCaptureMetadataOutputObjectsDelegate {
     
-    var lastTime = Date(timeIntervalSince1970: 0)
-    
     var onResult: (String) -> Void = { _  in }
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
@@ -23,7 +21,7 @@ class QrCodeCameraDelegate: NSObject, AVCaptureMetadataOutputObjectsDelegate {
     
     
     func foundBarcode(_ stringValue: String) {
-        
+        //インターバル毎に処理するのを辞めたら、foundBarcodeが一回しかはしらなくなったかも？原因不明
         self.onResult(stringValue)
         
     }

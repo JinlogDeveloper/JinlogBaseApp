@@ -20,17 +20,21 @@ class QRCodeScannerSetting: ObservableObject {
         // 今回は、QRCodeScannerViewを閉じる命令もここでした方が分かりやすい。
         //QRcodeを見つけたら、文字列がゲーム参加の文字列か確認
         //正しければ、QRcode読み取り画面を閉じてゲームに参加させる。
+        //正しいかどうかの判断基準 文字数が20文字
         //正しくなければ、QRcodeを読み取り続ける。(間違っている旨のテキストをQRcode読み取り画面に表示する。)
         
         
+        if qrcode.count == 20 {
+            
+            self.qrcodeString = qrcode
+            isShowing = false
+            
+        } else {
+            self.qrcodeString = "QRコードが正しくありません。"
+            print("文字数:\(qrcode.count)")
+            print(qrcode)
+            
+        }
         
-        
-        self.qrcodeString = qrcode
-        print(qrcode)
-        
-        // ★（参考：変更しなくてOK！）
-        // ★呼び元がこのViewを非表示にすべきという考え方もあります！
-        // ★「誰が主導権を持っているか」という考え方です！
-        isShowing = false
     }
 }
