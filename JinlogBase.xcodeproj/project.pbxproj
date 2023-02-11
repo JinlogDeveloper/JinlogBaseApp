@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0C2C8456287E7A6E009851FF /* JinlogStrage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C8455287E7A6E009851FF /* JinlogStrage.swift */; };
+		0C5374F6299724750044E0A0 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0C5374F5299724750044E0A0 /* FirebaseAnalytics */; };
+		0C5374F8299724750044E0A0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0C5374F7299724750044E0A0 /* FirebaseAuth */; };
+		0C5374FA299724750044E0A0 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0C5374F9299724750044E0A0 /* FirebaseFirestoreSwift */; };
+		0C5374FC299724750044E0A0 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 0C5374FB299724750044E0A0 /* FirebaseStorage */; };
 		0C66B9DF2841AD9F00CDA29B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0C66B9DE2841AD9F00CDA29B /* .gitignore */; };
 		0CC111002844264800456AD6 /* ProfileView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC110FF2844264800456AD6 /* ProfileView2.swift */; };
 		0CD1158528722BEB00533FE2 /* EffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD1158428722BEB00533FE2 /* EffectView.swift */; };
@@ -19,12 +23,6 @@
 		6F8E68A32824D84200FF042B /* UserSettingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A22824D84200FF042B /* UserSettingManager.swift */; };
 		6F8E68A92826060900FF042B /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8E68A82826060900FF042B /* CommonUtil.swift */; };
 		6FBEE52828C78B1000460320 /* JinlogFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBEE52728C78B1000460320 /* JinlogFirebase.swift */; };
-		6FDBA94D28E844A200334AB4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA94C28E844A200334AB4 /* FirebaseAnalytics */; };
-		6FDBA94F28E844A200334AB4 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA94E28E844A200334AB4 /* FirebaseAnalyticsSwift */; };
-		6FDBA95128E844A200334AB4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA95028E844A200334AB4 /* FirebaseAuth */; };
-		6FDBA95328E844A200334AB4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA95228E844A200334AB4 /* FirebaseFirestore */; };
-		6FDBA95528E844A200334AB4 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA95428E844A200334AB4 /* FirebaseFirestoreSwift */; };
-		6FDBA95728E844A200334AB4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6FDBA95628E844A200334AB4 /* FirebaseStorage */; };
 		6FDBA95928E849AA00334AB4 /* GameMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDBA95828E849AA00334AB4 /* GameMaster.swift */; };
 		6FDBA95C28E84B1F00334AB4 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDBA95B28E84B1F00334AB4 /* GameView.swift */; };
 		6FE40F892818297B004A9E1B /* JinlogBaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE40F862818297B004A9E1B /* JinlogBaseApp.swift */; };
@@ -113,12 +111,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FDBA94F28E844A200334AB4 /* FirebaseAnalyticsSwift in Frameworks */,
-				6FDBA94D28E844A200334AB4 /* FirebaseAnalytics in Frameworks */,
-				6FDBA95328E844A200334AB4 /* FirebaseFirestore in Frameworks */,
-				6FDBA95728E844A200334AB4 /* FirebaseStorage in Frameworks */,
-				6FDBA95128E844A200334AB4 /* FirebaseAuth in Frameworks */,
-				6FDBA95528E844A200334AB4 /* FirebaseFirestoreSwift in Frameworks */,
+				0C5374F6299724750044E0A0 /* FirebaseAnalytics in Frameworks */,
+				0C5374FC299724750044E0A0 /* FirebaseStorage in Frameworks */,
+				0C5374F8299724750044E0A0 /* FirebaseAuth in Frameworks */,
+				0C5374FA299724750044E0A0 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,12 +311,10 @@
 			);
 			name = JinlogBase;
 			packageProductDependencies = (
-				6FDBA94C28E844A200334AB4 /* FirebaseAnalytics */,
-				6FDBA94E28E844A200334AB4 /* FirebaseAnalyticsSwift */,
-				6FDBA95028E844A200334AB4 /* FirebaseAuth */,
-				6FDBA95228E844A200334AB4 /* FirebaseFirestore */,
-				6FDBA95428E844A200334AB4 /* FirebaseFirestoreSwift */,
-				6FDBA95628E844A200334AB4 /* FirebaseStorage */,
+				0C5374F5299724750044E0A0 /* FirebaseAnalytics */,
+				0C5374F7299724750044E0A0 /* FirebaseAuth */,
+				0C5374F9299724750044E0A0 /* FirebaseFirestoreSwift */,
+				0C5374FB299724750044E0A0 /* FirebaseStorage */,
 			);
 			productName = CentralDataSample;
 			productReference = 6FE40F60281464C3004A9E1B /* JinlogBase.app */;
@@ -352,7 +346,7 @@
 			);
 			mainGroup = 6FE40F57281464C3004A9E1B;
 			packageReferences = (
-				6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0C5374F4299724750044E0A0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 6FE40F61281464C3004A9E1B /* Products */;
 			projectDirPath = "";
@@ -635,46 +629,35 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		0C5374F4299724750044E0A0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
-				kind = versionRange;
-				maximumVersion = 9.5.0;
-				minimumVersion = 9.5.0;
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6FDBA94C28E844A200334AB4 /* FirebaseAnalytics */ = {
+		0C5374F5299724750044E0A0 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0C5374F4299724750044E0A0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		6FDBA94E28E844A200334AB4 /* FirebaseAnalyticsSwift */ = {
+		0C5374F7299724750044E0A0 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsSwift;
-		};
-		6FDBA95028E844A200334AB4 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0C5374F4299724750044E0A0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		6FDBA95228E844A200334AB4 /* FirebaseFirestore */ = {
+		0C5374F9299724750044E0A0 /* FirebaseFirestoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
-		};
-		6FDBA95428E844A200334AB4 /* FirebaseFirestoreSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0C5374F4299724750044E0A0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
 		};
-		6FDBA95628E844A200334AB4 /* FirebaseStorage */ = {
+		0C5374FB299724750044E0A0 /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6FDBA94B28E844A200334AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 0C5374F4299724750044E0A0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
