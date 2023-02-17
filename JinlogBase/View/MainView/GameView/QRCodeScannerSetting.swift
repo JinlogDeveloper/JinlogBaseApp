@@ -33,6 +33,7 @@ class QRCodeScannerSetting: ObservableObject {
             self.qrcodeString = "QRコードが正しくありません。"
             print("文字数:\(qrcode.count)")
             print(qrcode)
+            isShowing = false
             
         }
         
