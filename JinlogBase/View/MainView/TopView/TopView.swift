@@ -104,7 +104,7 @@ struct TabPage1View: View {
                 ZStack {
                     
                     //背景色　ダークモード対応のため色はAssetsに登録
-                    InAppColor.backColor
+                    //InAppColor.backColor
                                         
                     //                        Text("ステータス画面")
                     //

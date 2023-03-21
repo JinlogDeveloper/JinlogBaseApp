@@ -24,11 +24,11 @@ struct SquareProgressView: View {
                     ZStack(alignment: .leading) {
                         
                         Rectangle()
-                            .foregroundColor(InAppColor.buttonColorRvs)
+                            .foregroundColor(InAppColor.mainColor2)
                             .opacity(0.5)
                         
                         Rectangle()
-                            .foregroundColor(InAppColor.buttonColor)
+                            .foregroundColor(InAppColor.accent1)
                             .opacity(0.6)
                             .frame(minWidth: 0, idealWidth:self.getProgressBarWidth(geometry: geometry),
                                    maxWidth: self.getProgressBarWidth(geometry: geometry))

@@ -33,11 +33,6 @@ struct NewAccountView: View {
             VStack{
                 Spacer().frame(height: 20)
                 
-                //タイトル部分
-//                Text("JINLOG")
-//                    //.padding()
-//                    .foregroundColor(InAppColor.strColor)
-//                    .font(.system(size: 40, weight: .thin))
                 VStack {
                     Text("アカウント作成")
                         .padding(30)

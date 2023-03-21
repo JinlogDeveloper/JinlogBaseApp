@@ -33,7 +33,9 @@ struct LoginView: View {
             
             ZStack{
                 // 背景色　ダークモード対応のため色はAssetsに登録
-                LinearGradient(gradient: Gradient(colors: [.gray, .white]), startPoint: .topTrailing, endPoint: .bottom)
+                LinearGradient(gradient: Gradient(colors: [InAppColor.accent1, InAppColor.backColor]),
+                               startPoint: .top,
+                               endPoint: .init(x: 0.5, y: 0.6))
                     .edgesIgnoringSafeArea(.all)
                 
                 // 新規アカウント画面への遷移
@@ -48,8 +50,13 @@ struct LoginView: View {
                     // タイトル部分
                     Text("JINLOG")
                         .padding()
-                        .foregroundColor(InAppColor.strColor)
-                        .font(.system(size: 80, weight: .thin))
+                        .foregroundColor(.white)
+                        .font(.system(size: 80, weight: .light))
+                        .background(Text("JINLOG")
+                            .foregroundColor(InAppColor.accent1)
+                            .font(.system(size: 80, weight: .heavy))
+                            .blur(radius: 20))
+                                    
                     
                     Spacer()
                     
@@ -58,7 +65,7 @@ struct LoginView: View {
                         TextFieldRow(fieldText: $emailAddress, iconName: "person", iconColor: InAppColor.buttonColor, text: "Email")
                         SecureFieldRow(fieldText: $password, iconName: "lock", iconColor: InAppColor.buttonColor, text: "Password")
                         
-                        Spacer().frame(height: 15)
+                        Spacer().frame(height: 50)
                         
                         //ログインボタン
                         Button(action: {
@@ -92,10 +99,11 @@ struct LoginView: View {
                         //アカウント登録画面へ移動
                         moveToCreateAccountView = true
                     }) {
-                        ButtonLabel(message: "アカウント作成", buttonColor: InAppColor.buttonColor2)
+                        ButtonLabel_Outline(message: "アカウント作成", buttonColor: InAppColor.accent1)
                     }
+                    .padding(.vertical, 6)
 
-                    Spacer().frame(height: 5)
+                    Spacer().frame(height: 50)
 
                     //パスワード変更時の処理
                     Button(action: {
@@ -105,7 +113,7 @@ struct LoginView: View {
                         }
                     }) {
                         Text("パスワードを忘れた場合")
-                            .foregroundColor(InAppColor.strColor)
+                            .foregroundColor(.secondary)
                             .underline()
                     }
                     

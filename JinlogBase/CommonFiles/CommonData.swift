@@ -11,14 +11,18 @@ import SwiftUI
 
 //-------------------------------------------------------------------------------------
 //アプリ内配色の定数を作成する
-struct InAppColor{
-    static let backColor = Color("BackGroundColor")
+struct InAppColor {
+    static let accent1 = Color("AccentColor")
+    static let accent2 = Color("AccentColor2")
+    static let mainColor1 = Color("MainColor1")
+    static let mainColor2 = Color("MainColor2")
+
+    static let backColor = Color("BaseColor")
     static let buttonColor = Color("ButtonColor")
-    static let buttonColorRvs = Color("ButtonColorReverse")
     static let buttonColor2 = Color("ButtonColor2")
     static let strColor = Color("StringColor")
     static let strColorRvs = Color("StringColorReverse")
-    static let textFieldColor = Color("StringFieldColor")
+    static let textFieldColor = Color("MainColor1")
 }
 
 
