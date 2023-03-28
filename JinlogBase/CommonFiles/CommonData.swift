@@ -16,6 +16,7 @@ struct InAppColor {
     static let accent2 = Color("AccentColor2")
     static let mainColor1 = Color("MainColor1")
     static let mainColor2 = Color("MainColor2")
+    static let pointColor = Color("PointColor")
 
     static let backColor = Color("BaseColor")
     static let buttonColor = Color("ButtonColor")

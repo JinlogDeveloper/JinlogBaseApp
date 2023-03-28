@@ -18,136 +18,42 @@ struct ProfileView2: View {
     @State private var bufProfile = Profile()
     @State private var bufUserId: String = ""
     
-    
-    // 撮影する写真を保持する状態変数
-    @State var captureImage: UIImage? = nil
-    
     @State var showImage:UIImage? = nil
-    
-    // 撮影画面のsheet
-    @State var isShowSheet = false
-    @State var isPhotolibrary = false
-    @State var isShowAction = false
-    
+    @State var editMode: Bool = false
     
     
     var body: some View {
         
         
         VStack {
-            Text("プロフィール画面")
-            Text("ユーザーID: " + ownProfile.userId)
             
-            if showImage != nil {
-                
-                if let unwrapShowImage = showImage {
-                    // 表示する写真がある場合は画面に表示
-                    Image(uiImage: unwrapShowImage)
-                    // リサイズする
-                        .resizable()
-                    // アスペクト比（縦横比）を維持して画面内に
-                    // 収まるようにする
-                        .aspectRatio(contentMode: .fit)
-                }
-                
+            ZStack {
+                Color(UIColor(InAppColor.mainColor2))
+                    .ignoresSafeArea()
+                    .shadow(radius: 7)
+                    .frame(height: 210)
+                //Text("プロフィール画面")
+                UserImageView(showImage: showImage)
             }
             
-            
-            
-            // 「画像を選択」ボタン
-            Button(action: {
-                // ボタンをタップしたときのアクション
-                // 撮影写真を初期化する
-                captureImage = nil
-                // ActionSheetを表示する
-                isShowAction = true
-            }) {
-                // テキスト表示
-                Text("画像を選択")
-                // 横幅いっぱい
-                    .frame(maxWidth: .infinity)
-                // 高さ50ポイントを指定
-                    .frame(height: 50)
-                // 文字列をセンタリング指定
-                    .multilineTextAlignment(.center)
-                // 背景を青色に指定
-                    .background(Color.blue)
-                // 文字色を白色に指定
-                    .foregroundColor(Color.white)
-                
-                
-                
-            } // 「画像を選択」ボタンここまで
-            // 上下左右に余白を追加
-            .padding()
-            // sheetを表示
-            // 状態変数:$isShowActionに変化があったら実行
-            .actionSheet(isPresented: $isShowAction) {
-                // ActionSheetを表示するin
-                ActionSheet(title: Text("確認"),
-                            message: Text("選択してください"),
-                            buttons: [
-                                .default(Text("カメラ"), action: {
-                                    // カメラを選択
-                                    isPhotolibrary = false
-                                    // カメラが利用可能かチェック
-                                    if UIImagePickerController.isSourceTypeAvailable(.camera){
-                                        print("カメラは利用できます")
-                                        
-                                        // カメラが使えるなら、isShowSheetをtrue
-                                        isShowSheet = true
-                                    } else {
-                                        print("カメラは利用できません")
-                                        debugPrint("デバックプリント確認")
-                                    }
-                                }),
-                                .default(Text("フォトライブラリー"), action: {
-                                    // フォトライブラリーを選択
-                                    isPhotolibrary = true
-                                    // isShowSheetをtrue
-                                    isShowSheet = true
-                                }),
-                                // キャンセル
-                                .cancel(),
-                            ]) // ActionSheetここまで
-            } // .actionSheetここまで
-            // isPresentedで指定した状態変数がtrueのとき実行
-            .sheet(isPresented: $isShowSheet) {
-                if let unwrapCaptureImage = captureImage{
-                    // 撮影した写真がある→EffectViewを表示する
-                    EffectView(
-                        isShowSheet: $isShowSheet,
-                        captureImage: unwrapCaptureImage,
-                        showImage:$showImage)
-                } else {
-                    // フォトライブラリーが選択された
-                    if  isPhotolibrary {
-                        // PHPickerViewController(フォトライブラリー)を表示
-                        PHPickerView(
-                            isShowSheet: $isShowSheet,
-                            captureImage: $captureImage)
-                    } else {
-                        // UIImagePickerController（写真撮影） を表示
-                        ImagePickerView(
-                            isShowSheet: $isShowSheet,
-                            captureImage: $captureImage)
+            if editMode {
+                //Listはここから
+                List {
+                    //Sectionでジャンル別に項目を分類する
+                    //SectionはListのカッコ内で結合できる
+                    Section(header:Text("ユーザーネーム")) {
+                        //NavigationLinkはList内の各項目に追加する
+                        NavigationLink(destination: ListNameView()) {
+                            Text(ownProfile.profile.userName)
+                        }//.badge(ownProfile.profile.userName)
                     }
-                }
-                
-            } // 「画像を選択」ボタンのsheetここまで
-            
-            
-            
-            //Listはここから
-            List{
-                //Sectionでジャンル別に項目を分類する
-                //SectionはListのカッコ内で結合できる
-                Section(header:Text("プロフィール編集")) {
                     
-                    //NavigationLinkはList内の各項目に追加する
-                    NavigationLink(destination: ListNameView()) {
-                        Text("ユーザーネーム")
-                    }.badge(ownProfile.profile.userName)
+                    Section(header:Text("メールアドレス")) {
+                        NavigationLink(destination: ListBirthdayView()) {
+                            Text("sample.com")
+                        }//.badge(CommonUtil.birthStr(date: ownProfile.profile.birthday, type: .yyyyMd))
+                    }
+                    .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 5, trailing: 20))
                     
                     NavigationLink(destination: ListBirthdayView()) {
                         Text("誕生日")
@@ -157,7 +63,6 @@ struct ProfileView2: View {
                         Text("性別")
                     }.badge(ownProfile.profile.sex.name)
                     
-                    
                     NavigationLink(destination: ListAreaView()) {
                         Text("都道府県")
                     }.badge(ownProfile.profile.area.name)
@@ -166,36 +71,192 @@ struct ProfileView2: View {
                         Text("所属")
                     }.badge(ownProfile.profile.belong)
                     
-                    
-                    
                     NavigationLink(destination: ListIntroMessageView()) {
                         Text("自己紹介")
                     }.badge(ownProfile.profile.introMessage)
-                    
-                    
-                    
-                    
                 }
-                
-                
-                Text("ユーザー名：" + ownProfile.profile.userName)
-                Text("誕生日：" + CommonUtil.birthStr(date: ownProfile.profile.birthday, type: .yyyyMd))
-                Text("性別：" + ownProfile.profile.sex.name)
-                Text("都道府県：" + ownProfile.profile.area.name)
-                Text("所属：" + ownProfile.profile.belong)
-                Text("自己紹介：" + ownProfile.profile.introMessage)
             }
-            .frame(width: 300)
-            .background(.green)
-            
+            else {
+                List {
+                    //Sectionでジャンル別に項目を分類する
+                    //SectionはListのカッコ内で結合できる
+                    Section(header:Text("ユーザーネーム")) {
+                        //NavigationLinkはList内の各項目に追加する
+                        Text(ownProfile.profile.userName)
+                    }
+                    
+                    Section(header:Text("メールアドレス")) {
+                        Text("sample.com")
+                    }
+                    .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 5, trailing: 20))
+                    
+                    Text("誕生日")
+                        .badge(CommonUtil.birthStr(date: ownProfile.profile.birthday, type: .yyyyMd))
+                    Text("性別")
+                        .badge(ownProfile.profile.sex.name)
+                    Text("都道府県")
+                        .badge(ownProfile.profile.area.name)
+                    Text("所属")
+                        .badge(ownProfile.profile.belong)
+                    Text("自己紹介")
+                        .badge(ownProfile.profile.introMessage)
+                }
+            }
         }
         .onAppear(){
             showImage = ownProfile.image
         }
         .navigationBarTitleDisplayMode(.inline)
-        
+        .navigationTitle("プロフィール")
+        .toolbar {
+            // ナビゲーションバー左に編集アイコン追加
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    editMode.toggle()
+                } label: {
+                    if editMode {
+                        Text("編集終了")
+                            .foregroundColor(.white)
+                            .padding(5)
+                            .background(InAppColor.accent1)
+                            .clipShape(Capsule())
+                    }
+                    else {
+                        Text("編集")
+                            .font(.system(size: 19))
+                    }
+                }
+
+            }
+        }
     }
-  
+    
+    struct UserImageView: View {
+        
+        @State var showImage:UIImage? = nil
+        // 撮影画面のsheet
+        @State var isShowSheet = false
+        @State var isPhotolibrary = false
+        @State var isShowAction = false
+        // 撮影する写真を保持する状態変数
+        @State var captureImage: UIImage? = nil
+        
+        var body: some View {
+            
+            VStack {
+                // 「画像を選択」ボタン
+                Button(action: {
+                    // ボタンをタップしたときのアクション
+                    // 撮影写真を初期化する
+                    captureImage = nil
+                    // ActionSheetを表示する
+                    isShowAction = true
+                }) {
+                    
+                    ZStack {
+                        if showImage != nil {
+                            if let unwrapShowImage = showImage {
+                                // 表示する写真がある場合は画面に表示
+                                Image(uiImage: unwrapShowImage)
+                                //Image("bbb")
+                                
+                                // リサイズする
+                                    .resizable()
+                                // アスペクト比（縦横比）を維持して画面内に
+                                // 収まるようにする
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 110, height: 110)
+                                    .clipShape(Circle())
+                            }
+                        } else
+                        {
+                            Image("bbb")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 110)
+                                .clipShape(Circle())
+                        }
+                        
+                        Image(systemName: "camera.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 35)
+                            .foregroundStyle(InAppColor.mainColor1, InAppColor.buttonColor)
+                            .offset(x: 45, y: 45)
+                    }
+                } // 「画像を選択」ボタンここまで
+                // 上下左右に余白を追加
+                .padding(5)
+                
+                // sheetを表示
+                // 状態変数:$isShowActionに変化があったら実行
+                .actionSheet(isPresented: $isShowAction) {
+                    // ActionSheetを表示するin
+                    ActionSheet(title: Text("確認"),
+                                message: Text("選択してください"),
+                                buttons: [
+                                    .default(Text("カメラ"), action: {
+                                        // カメラを選択
+                                        isPhotolibrary = false
+                                        // カメラが利用可能かチェック
+                                        if UIImagePickerController.isSourceTypeAvailable(.camera){
+                                            print("カメラは利用できます")
+                                            
+                                            // カメラが使えるなら、isShowSheetをtrue
+                                            isShowSheet = true
+                                        } else {
+                                            print("カメラは利用できません")
+                                            debugPrint("デバックプリント確認")
+                                        }
+                                    }),
+                                    .default(Text("フォトライブラリー"), action: {
+                                        // フォトライブラリーを選択
+                                        isPhotolibrary = true
+                                        // isShowSheetをtrue
+                                        isShowSheet = true
+                                    }),
+                                    // キャンセル
+                                    .cancel(),
+                                ]) // ActionSheetここまで
+                } // .actionSheetここまで
+                // isPresentedで指定した状態変数がtrueのとき実行
+                .sheet(isPresented: $isShowSheet) {
+                    if let unwrapCaptureImage = captureImage{
+                        // 撮影した写真がある→EffectViewを表示する
+                        EffectView(
+                            isShowSheet: $isShowSheet,
+                            captureImage: unwrapCaptureImage,
+                            showImage:$showImage)
+                    } else {
+                        // フォトライブラリーが選択された
+                        if  isPhotolibrary {
+                            // PHPickerViewController(フォトライブラリー)を表示
+                            PHPickerView(
+                                isShowSheet: $isShowSheet,
+                                captureImage: $captureImage)
+                        } else {
+                            // UIImagePickerController（写真撮影） を表示
+                            ImagePickerView(
+                                isShowSheet: $isShowSheet,
+                                captureImage: $captureImage)
+                        }
+                    }
+                    
+                } // 「画像を選択」ボタンのsheetここまで
+                //Text(ownProfile.profile.userName)
+
+                Text("プレーヤー名")
+                    .font(.system(size: 22))
+                //Text("ID: " + ownProfile.userId)
+                Text("ID: aaaaaaaaaaaaa")
+                    .foregroundColor(.secondary)
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(InAppColor.mainColor2)
+            //.clipped()
+        }
+    }
     
     struct ListNameView: View {
         @ObservedObject private var ownProfile = Owner.sProfile
@@ -340,7 +401,6 @@ struct ProfileView2: View {
             
         }
     }
-    
     
     struct ListbelongView: View {
         @ObservedObject private var ownProfile = Owner.sProfile
@@ -497,3 +557,4 @@ struct ProfileView2_Previews: PreviewProvider {
         ProfileView2()
     }
 }
+
