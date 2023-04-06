@@ -30,7 +30,7 @@ struct TopView: View {
             //InAppColor.backColor
             //.edgesIgnoringSafeArea(.all)
             
-
+            
             //TabViewの宣言部
             //タブ毎に画面(View)が1つ必要になる
             //タブのアイコンは「SF Symbols」っていうソフトでデフォルトで使えるアイコンが確認できる。
@@ -86,113 +86,66 @@ struct TopView: View {
 struct TabPage1View: View {
     
     @State var maxNum = 100
-    @State var num = 30
-    @State var value :CGFloat = 0.3
-    @State var score :[Double] = [3.5,4.8,2.5,3.5,2.8]
+    @State var num = 45
     let characters = ["長所探し","気遣い","ユーモア","話術","推理力"]
-    let colors = [Color(red: 0.204, green: 0.368, blue: 0.499),
-                  Color(red: 0.020, green: 0.525, blue: 0.549),
-                  Color(red: 0.267, green: 0.765, blue: 0.545),
-                  Color(red: 1.000, green: 0.820, blue: 0.224),
-                  Color(red: 0.957, green: 0.471, blue: 0.259)]
     
     
     var body: some View {
         
-        ScrollView {
-            VStack {
+        VStack {
+            Text("ステータス情報").font(.system(size: 22))
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(InAppColor.accent1)
+                .clipped()
+                .shadow(radius: 5)
+            
+            ScrollView {
                 ZStack {
-                    
                     //背景色　ダークモード対応のため色はAssetsに登録
-                    //InAppColor.backColor
-                                        
-                    //                        Text("ステータス画面")
-                    //
-                    //                        Circle()
-                    //                            .stroke(lineWidth: 30.0)
-                    //                            .opacity(0.1)
-                    //                            .foregroundColor(InAppColor.buttonColor)
-                    //                            .frame(width: UIScreen.main.bounds.width - 40,
-                    //                                   height: UIScreen.main.bounds.width - 40 )
-                    //
-                    //                        Circle()
-                    //                            .trim(from: 0.0, to: 0.3)
-                    //                            .stroke(style: StrokeStyle(lineWidth: 30.0, lineCap: .round, lineJoin: .round))
-                    //                            .foregroundColor(InAppColor.buttonColor)
-                    //                            .frame(width: UIScreen.main.bounds.width - 40,
-                    //                                   height: UIScreen.main.bounds.width - 40)
-                    //                            .rotationEffect(Angle(degrees: -90))
-                    //                            .opacity(0.5)
+                    InAppColor.mainColor1
                     
-                    //TODO: Xcode14.0にアップデートしたら、ビルドエラーが発生してしまう
-                    /*
-                    //一旦ここにデータを作成。今後どっかへ移動させる
-                    Radar(entries: [
-                        RadarChartDataEntry(value: 2.6),
-                        RadarChartDataEntry(value: 2.8),
-                        RadarChartDataEntry(value: 4.1),
-                        RadarChartDataEntry(value: 5.0),
-                        RadarChartDataEntry(value: 3.4)]
-                          ,entries2: [
-                            RadarChartDataEntry(value: score[0]),
-                            RadarChartDataEntry(value: score[1]),
-                            RadarChartDataEntry(value: score[2]),
-                            RadarChartDataEntry(value: score[3]),
-                            RadarChartDataEntry(value: score[4])]
-                    )
-                    .frame(width: UIScreen.main.bounds.width,height: 420.0)
-                    */
-                    //プログレスバーはviewで作成　　スタックで重ねて表示させる
-                    SquareProgressView(maxNum: $maxNum, num: $num)
-                        .frame(width: 300, height: 40)
-                        .cornerRadius(15)
-                        .offset(x: 0, y: 135)
-                    
-                } //Zstack
-                
-                                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        VStack {
-                            Text("ステータス")
-                                .padding(.bottom,1)
-                                .foregroundColor(.secondary)
-                            Text("\(num)")
-                                .font(.system(size: 35, weight: .thin, design: .rounded))
-                                
-                            withAnimation(){
-                                Stepper("ステータス",value: $num, in: 0...100)
-                                    .labelsHidden()
-                            }
-                        }
-                        .padding(.top)
-
+                    VStack {
+                        RadarChartView(width: 320,
+                                       MainColor: Color.init(white: 0.6),
+                                       SubtleColor: Color.init(white: 0.7),
+                                       quantity_incrementalDividers: 3,
+                                       dimensions: MakeDimensions(),
+                                       data: MakeDataPoint())
                         
-                        ForEach(0 ..< 4) { num in
-                            VStack {
+                        //プログレスバーはviewで作成　　スタックで重ねて表示させる
+                        //HStack {
+                        SquareProgressView(maxNum: $maxNum, num: $num)
+                            .frame(width: 250, height: 30)
+                            .cornerRadius(15)
+                        //Stepper("ステータス",value: $num, in: 0...100)
+                        //.labelsHidden()
+                        //}
+                            .offset(y: -30)
+                    }
+                }
+                        
+                VStack {
+                    ForEach(0..<personalityData.count, id: \.self) { num in
+                        VStack {
+                            if personalityData[num].display {
                                 HStack {
-                                    if score[num] > 4.99 {
-                                        Image(systemName: "crown.fill")
-                                            .foregroundColor(Color.yellow)
-                                    }
-                                    Text(self.characters[num])
-                                        .padding(.bottom,1)
+                                    Text(personalityData[num].rayCase.rawValue)
+                                        .padding(.leading, 100)
                                         .foregroundColor(.secondary)
+                                    Spacer()
+                                    Text(String(format: "%.1f", personalityData[num].point))
+                                        .font(.system(size: 20))
+                                        .padding(.trailing, 100)
                                 }
-                                ZStack {
-                                    RadialGradient(gradient: Gradient(colors: [colors[num].opacity(0.3), Color.white.opacity(0.4)]), center: .center, startRadius: 0, endRadius: 35)
-
-                                    Text(String(format: "%.1f", score[num]))
-                                        .font(.system(size: 35, weight: .thin, design: .rounded))
-                                }
-                                Stepper(self.characters[num],value: $score[num], in: 0...5, step: 0.1)
-                                    .labelsHidden()
+                                Divider()
                             }
-                            .padding(.top)
                         }
+                        
                     } //HStack
-                } //ScrollView
-            } //Vstack
+                } //Vstack
+                
+            }
         } //ScrollView
         .edgesIgnoringSafeArea(.all)
     }
@@ -239,80 +192,80 @@ struct TabPage5View: View {
     
     var body: some View {
         
-            //TODO: 実行時にエラーログが出る
-            //※動作はちゃんとしてるっぽい？
-            NavigationView{
+        //TODO: 実行時にエラーログが出る
+        //※動作はちゃんとしてるっぽい？
+        NavigationView{
+            
+            List{
                 
-                List{
+                //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+                //　本当は　NavigationList　を入れるところだけど
+                //　まだ画面ができてないので　Text　で仮に作成してます
+                //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+                
+                Section(header:Text("プロフィール")) {
                     
-                    //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
-                    //　本当は　NavigationList　を入れるところだけど
-                    //　まだ画面ができてないので　Text　で仮に作成してます
-                    //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+                    NavigationLink("プロフィール編集", destination: ProfileView2())
+                    Text("メールアドレス変更")
+                    Text("パスワード変更")
+                    Text("ステータス変更")
                     
-                    Section(header:Text("プロフィール")) {
-                        
-                        NavigationLink("プロフィール編集", destination: ProfileView2())
-                        Text("メールアドレス変更")
-                        Text("パスワード変更")
-                        Text("ステータス変更")
-                        
+                }
+                
+                Section(header:Text("メッセージ・コメント")) {
+                    
+                    Toggle(isOn: $permitComment){
+                        Text("コメントの許可")
                     }
                     
-                    Section(header:Text("メッセージ・コメント")) {
-                        
-                        Toggle(isOn: $permitComment){
-                            Text("コメントの許可")
-                        }
-                        
-                        Toggle(isOn: $permitMessage){
-                            Text("メッセージの許可")
-                        }
-                        
+                    Toggle(isOn: $permitMessage){
+                        Text("メッセージの許可")
                     }
                     
-                    Section(header:Text("プレーヤーリスト")) {
-                        
-                        NavigationLink("お気に入りプレイヤー",destination: PlayerList())
-                        Text("ブロックしたプレイヤー")
-                        
-                    }
-
-                    Section(){
-                        Button(action: {}){
-                            Text("アカウント編集")
-                                .foregroundColor(Color.red)
-                        }
-                    }
-                } //List
-                .navigationTitle(Text("設定"))
-                //.navigationBarTitleDisplayMode(.inline)
-                //.navigationBarHidden(true)
-                .toolbar {
-                    // ナビゲーションバー左にアイコン追加
-                    ToolbarItem(placement: .navigationBarTrailing){
-                        Button(action: { isShowDialog = true }) {
-                            VStack{
-                                Image(systemName: "rectangle.portrait.and.arrow.right")
-                                Text("ログアウト").font(.system(size: 10))
-                            }
-                        }
-                        .confirmationDialog("ログアウト操作\n続行していいですか",
-                                            isPresented: $isShowDialog,
-                                            titleVisibility: .visible) {
-                            Button("ログアウトする") {
-                                Task {
-                                    try! Owner.sAuth.signOut()
-                                    withAnimation(.linear(duration: 0.4)) {
-                                        ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
-                                    }
-                                }
-                            }
-                            Button("キャンセル", role: .cancel) {}
-                        }
+                }
+                
+                Section(header:Text("プレーヤーリスト")) {
+                    
+                    NavigationLink("お気に入りプレイヤー",destination: PlayerList())
+                    Text("ブロックしたプレイヤー")
+                    
+                }
+                
+                Section(){
+                    Button(action: {}){
+                        Text("アカウント編集")
+                            .foregroundColor(Color.red)
                     }
                 }
-            } //NavigationView
+            } //List
+            .navigationTitle(Text("設定"))
+            //.navigationBarTitleDisplayMode(.inline)
+            //.navigationBarHidden(true)
+            .toolbar {
+                // ナビゲーションバー左にアイコン追加
+                ToolbarItem(placement: .navigationBarTrailing){
+                    Button(action: { isShowDialog = true }) {
+                        VStack{
+                            Image(systemName: "rectangle.portrait.and.arrow.right")
+                            Text("ログアウト").font(.system(size: 10))
+                        }
+                    }
+                    .confirmationDialog("ログアウト操作\n続行していいですか",
+                                        isPresented: $isShowDialog,
+                                        titleVisibility: .visible) {
+                        Button("ログアウトする") {
+                            Task {
+                                try! Owner.sAuth.signOut()
+                                withAnimation(.linear(duration: 0.4)) {
+                                    ReturnViewFrags.returnToLoginView.wrappedValue.toggle()
+                                }
+                            }
+                        }
+                        Button("キャンセル", role: .cancel) {}
+                    }
+                }
+            }
+        } //NavigationView
     } //bodyView
 } //View
 

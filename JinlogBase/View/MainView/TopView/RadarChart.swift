@@ -6,161 +6,264 @@
 //
 
 //TODO: Xcode14.0にアップデートしたら、ビルドエラーが発生してしまう
-/*
+
 import SwiftUI
-import Charts
 
-struct Radar :UIViewRepresentable{
-    
-    var entries: [RadarChartDataEntry]
-    var entries2: [RadarChartDataEntry]
-    
-    
-    //　レーダーチャート本体部分
-    func makeUIView(context: Context) -> RadarChartView{
-        
-        let chart = RadarChartView()
-        chart.data = addData()                              //データのセット（必ず必要）
-        
-        //--------------------------
-        //全体の設定
-        chart.innerWebColor = UIColor(InAppColor.textFieldColor)    //周囲のグリッド色
-        chart.webColor = UIColor(InAppColor.backColor)              //メインのグリッド色
-        chart.webLineWidth = 0                                      //軸線の太さ
-        chart.innerWebLineWidth = 2                                 //目盛線の太さ
-        //chart.backgroundColor = UIColor(Color.gray)               //グラフの背景色
-        //chart.drawWeb = false                                     //グラフのグリッド表示
-        //chart.skipWebLineCount = 2                                //メイン軸の表示間隔
 
-        
-        //--------------------------
-        //凡例の設定
-        chart.legend.font = .systemFont(ofSize: 15)
-        chart.legend.horizontalAlignment = .center
-        chart.legend.yOffset = 10
-        //chart.legend.enabled = false                              //凡例の非表示
 
-        
-        //--------------------------
-        //Y軸の設定
-        chart.yAxis.drawLabelsEnabled = false                       //Y軸のラベル表示
-        chart.yAxis.axisMaximum = 5                                 //Y軸最大値
-        chart.yAxis.axisMinimum = 0                                 //Y軸の最小値
-        chart.yAxis.axisMaximum = 5                                 //Y軸の最大値
-        chart.yAxis.setLabelCount(4, force: true)                   //Y軸のラベル数　forceをtrueにすると強制表示
-        //chart.yAxis.drawLabelsEnabled = false                     //Y軸のラベル表示
-        //chart.yAxis.granularity = 1                               //Y軸の値間隔
-        
-        
-        //--------------------------
-        //X軸の設定
-        chart.xAxis.valueFormatter = MyAxisFormatter()              //X軸の項目表示を変更
-        chart.xAxis.labelFont = .systemFont(ofSize: 15)             //X軸ラベルのフォントサイズ
-        //chart.xAxis.drawLabelsEnabled = false                     //X軸のラベル表示
+///  仮のパーソナリティデータ
+let personalityData = [
+    Personality(rayCase: .Intelligence, point: 5.8, display: true),
+    Personality(rayCase: .Funny, point: 6.5, display: false),
+    Personality(rayCase: .Empathy, point: 3.8, display: false),
+    Personality(rayCase: .Veracity, point: 8.5, display: true),
+    Personality(rayCase: .Selflessness, point: 7.6, display: false),
+    Personality(rayCase: .Authenticity, point: 2.9, display: false),
+    Personality(rayCase: .Boldness, point: 4.7, display: true),
+    Personality(rayCase: .LookAdvantages, point: 3.2, display: false),
+    Personality(rayCase: .Concern, point: 9.1, display: false),
+    Personality(rayCase: .Humor, point: 7.6, display: true),
+    Personality(rayCase: .Conversation, point: 6.3, display: false),
+    Personality(rayCase: .Deductive, point: 5.5, display: true)
+]
 
-        
-        //--------------------------
-        //アニメーション
-        chart.animate(xAxisDuration: 1, yAxisDuration: 1)           //XY軸のアニメーション設定
-        
-        
-        return chart
-    }
-    
-    
-    //データ更新時の表示アップデート
-    func updateUIView(_ uiView: RadarChartView, context: Context) {
-        
-        uiView.data = addData()
-        
-    }
 
-    
-    //　レーダーチャートに追加するデータ
-    func addData() -> RadarChartData{
 
-        let data = RadarChartData()                                     //登録するデータ群のセット
-        
 
-        //--------------------------
-       //　1つ目のデータセット
-        let dataSet = RadarChartDataSet(entries: entries, label: "理想の自分")
-        
-        dataSet.colors = [.gray]                                        //線の色
-        dataSet.lineWidth = 0                                           //線の太さ
-        dataSet.drawFilledEnabled = true                                //塗りつぶしするかどうか
-        dataSet.fill = Fill(color: UIColor(.white))     //グラフ内の塗りつぶし色
-        dataSet.fillAlpha = 0.3                                         //塗りつぶしの透過率
-        dataSet.drawValuesEnabled = false                               //値表示
-        dataSet.highlightEnabled = false                                //ハイライト表示
-
-        data.addDataSet(dataSet)                                        //データセットの追加
-        
-        
-        //　2つ目のデータセット
-        let dataSet2 = RadarChartDataSet(entries: entries2, label: "評価された自分")
-    
-        dataSet2.colors = [UIColor(InAppColor.buttonColor)]            //線の色
-        dataSet2.lineWidth = 3                                          //線の太さ
-        dataSet2.drawFilledEnabled = true                               //塗りつぶすかどうか
-        dataSet2.fill = Fill(color: UIColor(InAppColor.buttonColor))   //グラフ内の塗りつぶし色
-        dataSet2.fillAlpha = 0.5                                        //塗りつぶしの透過率
-        dataSet2.drawValuesEnabled = true                               //値の表示
-        dataSet2.highlightEnabled = false                               //ハイライト表示
-        
-        data.addDataSet(dataSet2)                                       //データセットの追加
-        
-        return data
-    }
-    
-    
-    typealias UIViewType = RadarChartView
-    
+enum RayCase:String, CaseIterable {
+    case Intelligence = "賢さ"
+    case Funny = "面白さ"
+    case Empathy = "共感性"
+    case Veracity = "誠実さ"
+    case Selflessness = "利他主義"
+    case Authenticity = "信頼性"
+    case Boldness = "大胆さ"
+    case LookAdvantages = "長所探し"
+    case Concern = "気遣い"
+    case Humor = "ユーモア"
+    case Conversation = "話術"
+    case Deductive = "推理力"
 }
 
 
-/*-----  X軸のラベル表示を変更するために Formatterクラスをオーバーライドして作成　-----
+/// パーソナリティの構造体
+struct Personality {
+    var rayCase: RayCase    //特徴一覧
+    var point: Double       //ポイント
+    var display: Bool       //表示
+}
 
-　　標準の場合、X軸のラベル表示は「Double型」で固定されてる
-　　数字じゃなくて文字を入れたいので、カスタムフォーマットを作成
+/// グラフデータの構造体
+struct DataPoint:Identifiable {
+    var id = UUID()
+    var entrys:[RayEntry] = []
+    var color:Color
+    
+    init(color: Color) {
+        for i in 0..<personalityData.count {
+            if personalityData[i].display {
+                entrys.append(RayEntry(rayCase: personalityData[i].rayCase, value: personalityData[i].point))
+            }
+        }
+        self.color = color
+    }
+}
 
--------------------------------------------------------------------------*/
- 
-class MyAxisFormatter :IAxisValueFormatter{
+struct Ray:Identifiable {
+    var id = UUID()
+    var name:String
+    var maxVal:Double
+    var rayCase:RayCase
+    init(maxVal:Double, rayCase:RayCase) {
+        self.rayCase = rayCase
+        self.name = rayCase.rawValue
+        self.maxVal = maxVal
+    }
+}
 
-    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+struct RayEntry {
+    var rayCase:RayCase
+    var value:Double
+}
+
+/// ラベル・グラフ数値の配列データ作成
+func MakeDimensions() -> [Ray] {
+    var dimensions:[Ray] = []
+    
+    for i in 0..<personalityData.count {
+        if personalityData[i].display {
+            dimensions.append(Ray(maxVal: 10, rayCase: personalityData[i].rayCase))
+        }
+    }
+    return dimensions
+}
+
+/// グラフ1つ分のデータを作成
+func MakeDataPoint() -> [DataPoint] {
+    var data:[DataPoint] = []
+    data.append(DataPoint(color: .orange))
+    return data
+}
+
+func deg2rad(_ number: CGFloat) -> CGFloat {
+    return number * .pi / 180
+}
+
+func radAngle_fromFraction(numerator:Int, denominator: Int) -> CGFloat {
+    return deg2rad(360 * (CGFloat((numerator))/CGFloat(denominator)) - 90)
+}
+
+func degAngle_fromFraction(numerator:Int, denominator: Int) -> CGFloat {
+    return 360 * (CGFloat((numerator))/CGFloat(denominator)) - 90
+}
+
+
+// View本体はここから　------------
+struct RadarChartView: View {
+    
+    var MainColor:Color
+    var SubtleColor:Color
+    var center:CGPoint
+    var labelWidth:CGFloat = 60
+    var labelOffset:CGFloat = 50
+    var width:CGFloat
+    var quantity_incrementalDividers:Int
+    var dimensions:[Ray]
+    var data:[DataPoint]
+    
+    init(width: CGFloat, MainColor:Color, SubtleColor:Color, quantity_incrementalDividers:Int, dimensions:[Ray], data:[DataPoint]) {
+        self.width = width
+        self.center = CGPoint(x: width / 2, y: width / 2)
+        self.MainColor = MainColor
+        self.SubtleColor = SubtleColor
+        self.quantity_incrementalDividers = quantity_incrementalDividers
+        self.dimensions = dimensions
+        self.data = data
+    }
+    
+    @State var showLabels = false
+    
+    var body: some View {
         
-        //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
-        //今は固定値のラベル表示
-        //別で「String型」の配列を作成する関数作れば、項目数・順序も変更可能
+        ZStack{
+            
+            //Main Spokes
+            Path { path in
+                for i in 0..<self.dimensions.count {
+                    let angle = radAngle_fromFraction(numerator: i, denominator: self.dimensions.count)
+                    let x = (self.width - (labelOffset + self.labelWidth)) / 2 * cos(angle)
+                    let y = (self.width - (labelOffset + self.labelWidth)) / 2 * sin(angle)
+                    path.move(to: center)
+                    path.addLine(to: CGPoint(x: center.x + x, y: center.y + y))
+                }
+            }
+            .stroke(self.MainColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
 
-        let xLabel :[String] = ["長所探し","気遣い","ユーモア","話術","推理力"]
+            //Labels
+            ForEach(0..<self.dimensions.count, id: \.self) { i in
+                Text(self.dimensions[i].rayCase.rawValue)
+                    .font(.system(size: 12))
+                    .foregroundColor(self.MainColor)
+                    .frame(width:self.labelWidth, height: 10)
+                    .rotationEffect(.degrees(-degAngle_fromFraction(numerator: i, denominator: self.dimensions.count)))
+//                    .rotationEffect(.degrees(
+//                        (degAngle_fromFraction(numerator: i, denominator: self.dimensions.count) > 90 && degAngle_fromFraction(numerator: i, denominator: self.dimensions.count) < 270) ? 180 : 0
+//                        ))
+                    .background(Color.clear)
+                    .offset(x: (self.width - (labelOffset))/2)
+                    .rotationEffect(.radians(
+                        Double(radAngle_fromFraction(numerator: i, denominator: self.dimensions.count)
+                    )))
+            }
+            
+            //Outer Border
+            Path { path in
+                for i in 0..<self.dimensions.count + 1 {
+                    let angle = radAngle_fromFraction(numerator: i, denominator: self.dimensions.count)
+                    let x = (self.width - (labelOffset + self.labelWidth)) / 2 * cos(angle)
+                    let y = (self.width - (labelOffset + self.labelWidth)) / 2 * sin(angle)
+                    if i == 0 {
+                        path.move(to: CGPoint(x: center.x + x, y: center.y + y))
+                    } else {
+                        path.addLine(to: CGPoint(x: center.x + x, y: center.y + y))
+                    }
+                }
+            }
+            .stroke(self.MainColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+            
+            //Incremental Dividers
+            ForEach(0..<self.quantity_incrementalDividers, id: \.self) { j in
+                Path { path in
+                    for i in 0..<self.dimensions.count + 1 {
+                        let angle = radAngle_fromFraction(numerator: i, denominator: self.dimensions.count)
+                        let size = ((self.width - (labelOffset + self.labelWidth)) / 2) * (CGFloat(j + 1)/CGFloat(self.quantity_incrementalDividers + 1))
+                        let x = size * cos(angle)
+                        let y = size * sin(angle)
+                        print(size)
+                        print((self.width - (labelOffset + self.labelWidth)))
+                        print("\(x) -- \(y)")
+                        if i == 0 {
+                            path.move(to: CGPoint(x: self.center.x + x, y: self.center.y + y))
+                        } else {
+                            path.addLine(to: CGPoint(x: self.center.x + x, y: self.center.y + y))
+                        }
+                    }
+                }
+                .stroke(self.SubtleColor, style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
+            }
+            
+            //Data Polygons
+            ForEach(0..<self.data.count, id: \.self){j -> AnyView in
+                //Create the path
+                let path = Path { path in
+                    for i in 0..<self.dimensions.count + 1 {
+                        let thisDimension = self.dimensions[i == self.dimensions.count ? 0 : i]
+                        let maxVal = thisDimension.maxVal
 
-        //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+                        let dataPointVal:Double = {
+                            for DataPointRay in self.data[j].entrys {
+                                if thisDimension.rayCase == DataPointRay.rayCase {
+                                    return DataPointRay.value
+                                }
+                            }
+                            return 0
+                        }()
 
-        
-        
-        return xLabel[Int(value)]
+                        let angle = radAngle_fromFraction(numerator: i == self.dimensions.count ? 0 : i, denominator: self.dimensions.count)
+                        let size = ((self.width - (labelOffset + self.labelWidth))/2) * (CGFloat(dataPointVal)/CGFloat(maxVal))
+                        let x = size * cos(angle)
+                        let y = size * sin(angle)
+                        print(size)
+                        print((self.width - (labelOffset + self.labelWidth)))
+                        print("\(x) -- \(y)")
+                        
+                        if i == 0 {
+                            path.move(to: CGPoint(x: self.center.x + x, y: self.center.y + y))
+                        } else {
+                            path.addLine(to: CGPoint(x: self.center.x + x, y: self.center.y + y))
+                        }
+                    }
+                }
+                
+                //Stroke and Fill
+                return AnyView (
+                    ZStack {
+                        path
+                            .stroke(self.data[j].color, style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
+                        path
+                            .foregroundColor(self.data[j].color).opacity(0.2)
+                    }
+                )
+            }
+            
+        } //ZStack
+        .frame(width:width, height:width)
     }
 }
 
 
-
-struct Radar_Preview :PreviewProvider {
-    static var previews: some View{
-        Radar(entries: [
-            RadarChartDataEntry(value: 1),
-            RadarChartDataEntry(value: 2),
-            RadarChartDataEntry(value: 4),
-            RadarChartDataEntry(value: 5),
-            RadarChartDataEntry(value: 5)]
-              ,entries2: [
-                RadarChartDataEntry(value: 2),
-                RadarChartDataEntry(value: 1),
-                RadarChartDataEntry(value: 3),
-                RadarChartDataEntry(value: 5),
-                RadarChartDataEntry(value: 2)]
-        )
-    }
-}
-*/
+//struct RadarChartView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RadarChartView()
+//    }
+//}

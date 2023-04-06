@@ -24,7 +24,7 @@ struct SquareProgressView: View {
                     ZStack(alignment: .leading) {
                         
                         Rectangle()
-                            .foregroundColor(InAppColor.mainColor2)
+                            .foregroundColor(InAppColor.accent1.opacity(0.5))
                             .opacity(0.5)
                         
                         Rectangle()
@@ -36,7 +36,7 @@ struct SquareProgressView: View {
                 }
             }
             Text("ステータス：\(num)/\(maxNum)")
-                .font(.title3)
+                .font(.system(size: 16))
                 .foregroundColor(InAppColor.strColor)
         }
     }
