@@ -53,7 +53,8 @@ enum GamePhase: Int, Codable {
     case knight                         // 騎士ターン
     case werewolf                       // 襲撃ターン
     // n日目（翌朝）
-    case resultWerewolf                 // 襲撃結果発表
+    case attackResult                   // 襲撃結果発表
+    case morningResult                  // ゲーム結果発表(朝)
 
     case closed                         // 終了したゲーム
 }
@@ -500,6 +501,113 @@ final class GameMaster: ObservableObject, DelegateGameListener {
         }
         try await gameStore.updateGame(gameId: gameId, game: bufState)
 
+    }
+
+    // 夜の結果を判定し、昼へ移行 or ゲーム結果表示
+    @MainActor func judgeNightResult() async throws {
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            throw JinlogError.unexpected
+        }
+
+        // 生存者数
+        var alivedWerewolvesCount: Int = 0
+        var alivedHumansCount: Int = 0
+        for i in 0 ..< gamePlayers.count {
+            if gamePlayers[i].alived == true {
+                if gamePlayers[i].role == .Werewolf {
+                    alivedWerewolvesCount += 1
+                } else {
+                    alivedHumansCount += 1
+                }
+            }
+        }
+
+        // 投票先UID初期化
+        var bufPlayers = gamePlayers
+        for i in 0 ..< bufPlayers.count {
+            bufPlayers[i].voteUserId = ""
+            try await gameStore.updateGame(gameId: gameId, player: bufPlayers[i])
+        }
+
+        // フェーズ更新
+        var bufState = gameState
+        if (alivedWerewolvesCount == 0) || (alivedHumansCount <= alivedWerewolvesCount) {
+            // ゲーム終了
+            bufState.progress.phase = .morningResult
+        } else {
+            // ゲーム継続(昼フェーズ開始)
+            bufState.progress.phaseTimer = gamePlayers.filter({$0.alived}).count * 3   //TODO: 
+            bufState.progress.phase = .discussion
+        }
+        try await gameStore.updateGame(gameId: gameId, game: bufState)
+
+    }
+
+    //TODO: 
+    @MainActor func attack(uId: String, attackForId: String) async throws {
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
+            throw JinlogError.argumentEmpty
+        }
+        guard !(attackForId.isEmpty) else {
+            print("Error : voteForId is empty")
+            throw JinlogError.argumentEmpty
+        }
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            throw JinlogError.unexpected
+        }
+        
+        // 襲撃
+        var bufPlayers = gamePlayers
+        guard bufPlayers.firstIndex(where: {$0.userId == attackForId}) != nil else {
+            // 襲撃先UIDがこのゲームに登録されてない
+            print("Error : uId(\(attackForId) is not in this game")
+            throw JinlogError.unexpected
+        }
+        guard let idx = bufPlayers.firstIndex(where: {$0.userId == uId}) else {
+            // 襲撃者がこのゲームに登録されてない
+            print("Error : uId(\(uId) is not in this game")
+            throw JinlogError.unexpected
+        }
+        bufPlayers[idx].atackUserId = attackForId
+        
+        // DB更新
+        try await gameStore.updateGame(gameId: gameId, player: bufPlayers[idx])
+    }
+
+    //TODO: 
+    @MainActor func startAnnounceAttackResult() async throws {
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            throw JinlogError.unexpected
+        }
+
+        // フェーズ更新
+        var bufState = gameState
+        bufState.progress.phase = .attackResult
+        bufState.progress.phaseTimer = 0
+        try await gameStore.updateGame(gameId: gameId, game: bufState)
+    }
+
+    //TODO: 
+    func getAttackedUser() -> [String] {
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            return []
+        }
+
+        // 犠牲者のUIDを抽出
+        var attackedUserId: [String] = []
+        for i in 0 ..< gamePlayers.count {
+            // 生きている人狼の襲撃先UID
+            if (gamePlayers[i].alived == true) && (gamePlayers[i].role == .Werewolf) {
+                attackedUserId.append(gamePlayers[i].atackUserId)
+            }
+        }
+
+        return attackedUserId
     }
 
 }

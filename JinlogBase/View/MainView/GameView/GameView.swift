@@ -54,6 +54,15 @@ struct GameView: View {
                 let _ = print("DEBUG : GameViewDayResult()")
                 GameViewDayResult(gm: gm)
 
+            case .werewolf:
+            let _ = print("DEBUG : GameViewWerewolf()")
+            GameViewWerewolf(gm: gm)
+
+            case .attackResult:
+            let _ = print("DEBUG : GameViewAttackResult()")
+            GameViewAttackResult(gm: gm)
+
+
             default:
                 let _ = print("ERROR : EmptyView()")
                 EmptyView()
@@ -534,6 +543,161 @@ struct GameViewDayResult: View {
                         isWerewolfAlived = true
                     }
                 }
+            }
+        }
+
+    }
+}
+
+struct GameViewWerewolf: View {
+    @ObservedObject var gm: GameMaster
+    
+    var body: some View {
+        VStack{
+            Text("〜人狼活動フェーズ〜")
+                .font(.system(size: 31, weight: .thin))
+                .padding()
+            
+            let own = gm.gamePlayers.first(where: {$0.userId == Owner.sAuth.uid})
+            if own == nil {
+                //TODO error
+                EmptyView()
+            } else if own?.role == .Werewolf {
+                // 襲撃先選択画面
+                chooseVictim(gm: gm)
+            } else {
+                // 人狼以外
+                Text("人狼が活動中です。").padding()
+                Text("しばらくお待ちください。").padding()
+            }
+            
+        }
+        .onChange(of: gm.gamePlayers) { players in
+            // 襲撃先が決定したら襲撃結果発表フェーズへ
+            // ※主催者スマホに処理させる
+            print("onChange()")
+            if gm.gameState.hostUserId == Owner.sAuth.uid {
+                print("owner")
+                let alivedWerwolfNum = players
+                    .filter(
+                        {$0.alived && ($0.role == .Werewolf)}
+                    ).count
+                let alivedWerwolfAttackedNum = players
+                    .filter(
+                        {$0.alived && ($0.role == .Werewolf) && !($0.atackUserId.isEmpty)}
+                    ).count
+
+                if alivedWerwolfNum == alivedWerwolfAttackedNum {
+                    Task {
+                        do {
+                            try await gm.startAnnounceAttackResult()
+                        } catch {
+                            //TODO:
+                            print("ERROR")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    struct chooseVictim: View {
+        @ObservedObject var gm: GameMaster
+        
+        var body: some View {
+            VStack {
+                Text("襲撃先を選んでください").padding()
+                
+                List {
+                    ForEach(gm.gamePlayers, id: \.self) { player in
+                        if (player.role != .Werewolf) && (player.alived) {
+                            // 人狼以外の生存者
+                            Button(player.userId) {
+                                Task {
+                                    do {
+                                        try await gm.attack(uId: Owner.sAuth.uid, attackForId: player.userId)
+                                    } catch {
+                                        //TODO:
+                                        print("ERROR")
+                                    }
+                                }
+                            }
+                        } else {
+                            if player.alived == false {
+                                Text(player.userId).background(Color.gray)  // 既死者
+                            } else {
+                                Text(player.userId).background(Color.blue)  // 人狼
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    
+}
+
+struct GameViewAttackResult: View {
+    @ObservedObject var gm: GameMaster
+    
+    var body: some View {
+        VStack{
+            Text("襲撃結果")
+                .font(.system(size: 31, weight: .thin))
+                .padding()
+
+            Text("犠牲者が発生しました").padding()
+            let attackedUserId = gm.getAttackedUser()
+            ForEach(attackedUserId, id: \.self) { userId in
+                Text(userId)
+            }
+
+            if let _ = attackedUserId.first(where: {$0 == Owner.sAuth.uid}) {
+                Text("あなたは人狼に襲撃されました").padding()
+                if gm.gamePlayers.first(where: {$0.userId == Owner.sAuth.uid})?.alived == true {
+                    Button("OK") {
+                        Task {
+                            do {
+                                try await gm.lieveVillage(uId: Owner.sAuth.uid)
+                            } catch {
+                                //TODO:
+                                print("ERROR")
+                            }
+                        }
+                    }
+                } else {
+                    Text("ゲームオーバー")
+                }
+            }
+
+        }
+        .onChange(of: gm.gamePlayers) { players in
+            // 犠牲者が確認したら夜結果判定
+            // ※主催者スマホに処理させる
+            if gm.gameState.hostUserId == Owner.sAuth.uid {
+                let attackedUserId = gm.getAttackedUser()
+
+                var isFinishedLeaving: Bool = true
+                for i in 0 ..< attackedUserId.count {
+                    // 犠牲者がまだ確認してなければfalse
+                    if gm.gamePlayers.first(where: {$0.userId == attackedUserId[i]})?.lievedVillage == false {
+                        isFinishedLeaving = false
+                    }
+                }
+                // 犠牲者が全員確認済みならばtrueが残る
+
+                if isFinishedLeaving == true {
+                    Task {
+                        do {
+                            try await gm.judgeNightResult()
+                        } catch {
+                            //TODO:
+                            print("ERROR")
+                        }
+                    }
+                }
+
             }
         }
 
