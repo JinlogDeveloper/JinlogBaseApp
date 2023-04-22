@@ -421,12 +421,17 @@ struct GameViewVoting: View {
 }
 
 struct GameView_Previews: PreviewProvider {
+    static var dummyGM = GameMaster()
+    
     static var previews: some View {
-        GameViewTop(gm: GameMaster())
-        GameViewRecruitPlayers(gm: GameMaster())
-        GameViewWaitingStart(gm: GameMaster())
-        GameViewConfirmingRole(gm: GameMaster())
-        GameViewDiscussion(gm: GameMaster())
-        GameViewVoting(gm: GameMaster())
+        let _ = dummyGM.setDummy()
+        let _ = Owner.sAuth.setDummy()
+
+        GameViewTop(gm: dummyGM)
+        GameViewRecruitPlayers(gm: dummyGM)
+        GameViewWaitingStart(gm: dummyGM)
+        GameViewConfirmingRole(gm: dummyGM)
+        GameViewDiscussion(gm: dummyGM)
+        GameViewVoting(gm: dummyGM)
     }
 }

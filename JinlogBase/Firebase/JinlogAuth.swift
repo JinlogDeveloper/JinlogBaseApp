@@ -45,6 +45,11 @@ final class FirebaseAuth {
         })
         //TODO: どこかでremoveStateDidChangeListener()
     }
+    
+    func setDummy() {
+        uid = "Player1_UID"
+        isSignIn = true
+    }
 
     //-------------------------------------------------------------------------------------------
     //サインイン処理

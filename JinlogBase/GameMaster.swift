@@ -124,6 +124,23 @@ final class GameMaster: ObservableObject, DelegateGameListener {
     
     private let gameStore = GameStore()
     
+    func setDummy() {
+        gameId = "abcdefg123abcdefg123"
+
+        gameState.hostUserId = "abccdefg123456abccdefg123456"
+        gameState.rule.numOfWerewolves  = 1
+        gameState.rule.numOfVillagers   = 4
+        gameState.rule.minDiscussTime   = 60
+        gameState.progress.phaseTimer   = 75
+
+        gamePlayers = []
+        gamePlayers.append(GamePlayer(userId: "Player1_UID", role: .Villager, alived: true, confirmedRole: true, voteUserId: "Player4_UID"))
+        gamePlayers.append(GamePlayer(userId: "Player2_UID", role: .Werewolf, alived: true, confirmedRole: true, voteUserId: "Player2_UID"))
+        gamePlayers.append(GamePlayer(userId: "Player3_UID", role: .Villager, alived: false, confirmedRole: true, voteUserId: "Player1_UID"))
+        gamePlayers.append(GamePlayer(userId: "Player4_UID", role: .Villager, alived: true, confirmedRole: true, voteUserId: "Player2_UID"))
+        gamePlayers.append(GamePlayer(userId: "Player5_UID", role: .Villager, alived: true, confirmedRole: true, voteUserId: "Player2_UID"))
+    }
+
     // DelegateGameListener
     @MainActor func receiveLatestGame(gId: String, latestGameState: GameState?) {
         if (gId == gameId) && (latestGameState != nil) {
