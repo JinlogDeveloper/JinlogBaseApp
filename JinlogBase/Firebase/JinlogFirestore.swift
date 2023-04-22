@@ -199,6 +199,10 @@ final actor GameStore {
         db = Firestore.firestore().collection(rootCollections.games.rawValue)
     }
     
+    deinit {
+        print("DEBUG : deinit CALLED")
+    }
+    
     /// データベースに新規ゲームを保存する
     /// - Parameters:
     ///   - game: 保存する新規ゲーム

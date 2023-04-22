@@ -46,6 +46,7 @@ enum GamePhase: Int, Codable {
     case discussion                     // 議論
     case voting                         // 投票
     case annouceVoteResult              // 投票結果発表
+    case dayResult                      // ゲーム結果発表(昼)
     // n日目（夜）
     case medium                         // 霊媒師ターン
     case fortuneTeller                  // 占い師ターン
@@ -109,6 +110,7 @@ struct GamePlayer: Codable, Hashable {
     var alived: Bool                = true          // 生存有無
 
     var confirmedRole: Bool         = false         // 役職認知有無
+    var lievedVillage: Bool         = false         // 立ち去り有無
     var voteUserId: String          = ""            // 投票先UID
     var atackUserId: String         = ""            // 襲撃先UID
 //    var divineUserId: String        = ""            // 占い先UID
@@ -122,7 +124,7 @@ final class GameMaster: ObservableObject, DelegateGameListener {
     @Published private(set) var gameState = GameState()
     @Published private(set) var gamePlayers: [GamePlayer] = []
     
-    private let gameStore = GameStore()
+    private var gameStore = GameStore()
     
     func setDummy() {
         gameId = "abcdefg123abcdefg123"
@@ -139,6 +141,15 @@ final class GameMaster: ObservableObject, DelegateGameListener {
         gamePlayers.append(GamePlayer(userId: "Player3_UID", role: .Villager, alived: false, confirmedRole: true, voteUserId: "Player1_UID"))
         gamePlayers.append(GamePlayer(userId: "Player4_UID", role: .Villager, alived: true, confirmedRole: true, voteUserId: "Player2_UID"))
         gamePlayers.append(GamePlayer(userId: "Player5_UID", role: .Villager, alived: true, confirmedRole: true, voteUserId: "Player2_UID"))
+    }
+
+    func reInit() {
+        gameId = ""
+        gameState = GameState()
+        gamePlayers = []
+
+        //TODO: deinitが呼ばれているかを確認すること！！
+        gameStore = GameStore()
     }
 
     // DelegateGameListener
@@ -273,7 +284,7 @@ final class GameMaster: ObservableObject, DelegateGameListener {
             bufPlayers[i].role = .Villager
         }
         // 仮）ランダムな1人を人狼にする
-        bufPlayers[Int.random(in: 0..<bufPlayers.count)].role = .Werewolf
+        bufPlayers[Int.random(in: 0..<Int.max) % bufPlayers.count].role = .Werewolf
         
         //TODO: 現状playerひとりひとり順に保存。→TODO:playersをまとめて1回で保存にする。
         for i in 0 ..< bufPlayers.count {
@@ -318,7 +329,7 @@ final class GameMaster: ObservableObject, DelegateGameListener {
         // フェーズ更新
         var bufState = gameState
         bufState.progress.phase = .discussion
-        bufState.progress.phaseTimer = 30   //TODO: 
+        bufState.progress.phaseTimer = gamePlayers.filter({$0.alived}).count * 3   //TODO: 
         try await gameStore.updateGame(gameId: gameId, game: bufState)
     }
 
@@ -381,6 +392,114 @@ final class GameMaster: ObservableObject, DelegateGameListener {
         bufState.progress.phase = .annouceVoteResult
         bufState.progress.phaseTimer = 0 
         try await gameStore.updateGame(gameId: gameId, game: bufState)
+    }
+
+    //TODO: 
+    func getMostVotedUser() -> [String] {
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            return []
+        }
+
+        struct VoteResultRecord {
+            var userId: String = ""
+            var votedCount: Int  = 0
+        }
+
+        // 得票数一覧作成
+        var voteResults: [VoteResultRecord] = []
+        for i in 0 ..< gamePlayers.count {
+            voteResults.append(VoteResultRecord(userId: gamePlayers[i].userId))
+            for j in 0 ..< gamePlayers.count {
+                if voteResults[i].userId == gamePlayers[j].voteUserId {
+                    voteResults[i].votedCount += 1
+                }
+            }
+        }
+
+        // 得票数が多い順に並び替え
+        voteResults.sort(by: {$1.votedCount < $0.votedCount})
+
+        // 最大得票者のUIDを抽出
+        var mostVotedUserId: [String] = []
+        for i in 0 ..< voteResults.count {
+            if i == 0{
+                // 得票数が多い順に並び替えてるので、一人目は確実に最大得票者
+                mostVotedUserId.append(voteResults[i].userId)
+            } else {
+                if voteResults[i].votedCount == voteResults[i-1].votedCount {
+                    // 二人目以降は、同得票数なら同率で最大得票者
+                    mostVotedUserId.append(voteResults[i].userId)
+                } else {
+                    break
+                }
+            }
+        }
+
+        return mostVotedUserId
+    }
+
+    @MainActor func lieveVillage(uId: String) async throws {
+        guard !(uId.isEmpty) else {
+            print("Error : uId is empty")
+            throw JinlogError.argumentEmpty
+        }
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            throw JinlogError.unexpected
+        }
+        
+        // 村から立ち去る
+        var bufPlayers = gamePlayers
+        guard let idx = bufPlayers.firstIndex(where: {$0.userId == uId}) else {
+            print("Error : uId(\(uId) is not in this game")
+            throw JinlogError.unexpected
+        }
+        bufPlayers[idx].lievedVillage = true
+        bufPlayers[idx].alived = false
+        
+        // DB更新
+        try await gameStore.updateGame(gameId: gameId, player: bufPlayers[idx])
+    }
+
+    // 昼の結果を判定し、夜へ移行 or ゲーム結果表示
+    @MainActor func judgeDayResult() async throws {
+        guard !(gameId.isEmpty) else {
+            print("Error : gameId is empty")
+            throw JinlogError.unexpected
+        }
+
+        // 生存者数
+        var alivedWerewolvesCount: Int = 0
+        var alivedHumansCount: Int = 0
+        for i in 0 ..< gamePlayers.count {
+            if gamePlayers[i].alived == true {
+                if gamePlayers[i].role == .Werewolf {
+                    alivedWerewolvesCount += 1
+                } else {
+                    alivedHumansCount += 1
+                }
+            }
+        }
+        
+        // 襲撃先UID初期化
+        var bufPlayers = gamePlayers
+        for i in 0 ..< bufPlayers.count {
+            bufPlayers[i].atackUserId = ""
+            try await gameStore.updateGame(gameId: gameId, player: bufPlayers[i])
+        }
+
+        // フェーズ更新
+        var bufState = gameState
+        if (alivedWerewolvesCount == 0) || (alivedHumansCount <= alivedWerewolvesCount) {
+            // ゲーム終了
+            bufState.progress.phase = .dayResult
+        } else {
+            // ゲーム継続(夜フェーズ開始)
+            bufState.progress.phase = .werewolf // 人狼フェーズ
+        }
+        try await gameStore.updateGame(gameId: gameId, game: bufState)
+
     }
 
 }

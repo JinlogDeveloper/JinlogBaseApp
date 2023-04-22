@@ -15,6 +15,15 @@ struct GameView: View {
             let _ = print("DEBUG : GameViewTop()")
             GameViewTop(gm: gm)
         } else {
+            
+            //TODO: 要デバッグ
+            let own = gm.gamePlayers.first(where: {$0.userId == Owner.sAuth.uid})
+            if own != nil {
+                if own?.alived == false {
+                    GameViewGameOver(gm: gm)
+                }
+            }
+
             switch gm.gameState.progress.phase {
             case .recruitPlayers:
                 if gm.gameState.hostUserId == Owner.sAuth.uid {
@@ -37,6 +46,14 @@ struct GameView: View {
                 let _ = print("DEBUG : GameViewVoting()")
                 GameViewVoting(gm: gm)
                 
+            case .annouceVoteResult:
+                let _ = print("DEBUG : GameViewVoteResult()")
+                GameViewVoteResult(gm: gm)
+                
+            case .dayResult:
+                let _ = print("DEBUG : GameViewDayResult()")
+                GameViewDayResult(gm: gm)
+
             default:
                 let _ = print("ERROR : EmptyView()")
                 EmptyView()
@@ -207,10 +224,10 @@ struct GameViewConfirmingRole: View {
                     (gm.gamePlayers.filter({$0.confirmedRole}).count == gm.gamePlayers.count) {
                 } else {
                     
-                    Text("あなたの役職は \(player!.role.name) です")
+                    Text("あなたの役職は \(player?.role.name ?? "村人") です")
                         .padding()
                     
-                    if player!.confirmedRole == false {
+                    if player?.confirmedRole == false {
                         Button("確認しました") {
                             Task {
                                 do {
@@ -322,6 +339,28 @@ struct GameViewVoting: View {
             }
             
         }
+        .onChange(of: gm.gamePlayers) { players in
+            // 全員が投票したら投票結果発表フェーズへ
+            // ※主催者スマホに処理させる
+            print("onChange()")
+            if gm.gameState.hostUserId == Owner.sAuth.uid {
+                print("owner")
+                let alivedUserNum = players.filter({$0.alived}).count
+                let alivedVotedUserNum = players.filter({$0.alived && ($0.voteUserId != "")}).count
+                print("alivedUserNum:\(alivedUserNum) alivedVotedUserNum:\(alivedVotedUserNum)")
+                
+                if alivedUserNum == alivedVotedUserNum {
+                    Task {
+                        do {
+                            try await gm.startAnnounceVoteResult()
+                        } catch {
+                            //TODO:
+                            print("ERROR")
+                        }
+                    }
+                }
+            }
+        }
     }
     
     struct beforeVote: View {
@@ -382,7 +421,7 @@ struct GameViewVoting: View {
                                 Text(player.userId).background(Color.blue)      // 本人
                             } else if player.alived == false {
                                 Text(player.userId).background(Color.gray)      // 既死者
-                            } else if player.userId == own!.voteUserId {
+                            } else if player.userId == own?.voteUserId {
                                 Text(player.userId).background(Color.red)       // 投票先
                             } else {
                                 Text(player.userId)                             // それ以外
@@ -391,33 +430,124 @@ struct GameViewVoting: View {
                     }
                     
                 }
-                .onChange(of: gm.gamePlayers) { players in
-                    // 全員が投票したら投票結果発表フェーズへ
-                    // ※主催者スマホに処理させる
-                    print("onChange()")
-                    if gm.gameState.hostUserId == Owner.sAuth.uid {
-                        print("owner")
-                        let alivedUserNum = players.filter({$0.alived}).count
-                        let alivedVotedUserNum = players.filter({$0.alived && ($0.voteUserId != "")}).count
-                        print("alivedUserNum:\(alivedUserNum) alivedVotedUserNum:\(alivedVotedUserNum)")
-                        
-                        if alivedUserNum == alivedVotedUserNum {
-                            Task {
-                                do {
-                                    try await gm.startAnnounceVoteResult()
-                                } catch {
-                                    //TODO:
-                                    print("ERROR")
-                                }
-                            }
-                        }
-                    }
-                }
-                
+
             }
         }
     }
     
+}
+
+struct GameViewVoteResult: View {
+    @ObservedObject var gm: GameMaster
+    
+    var body: some View {
+        VStack{
+            Text("投票結果")
+                .font(.system(size: 31, weight: .thin))
+                .padding()
+
+            Text("追放者が決定しました").padding()
+            let mostVotedUserId = gm.getMostVotedUser()
+            ForEach(mostVotedUserId, id: \.self) { userId in
+                Text(userId)
+            }
+
+            if let _ = mostVotedUserId.first(where: {$0 == Owner.sAuth.uid}) {
+                Text("あなたは追放されました").padding()
+                if gm.gamePlayers.first(where: {$0.userId == Owner.sAuth.uid})?.alived == true {
+                    Button("立ち去る") {
+                        Task {
+                            do {
+                                try await gm.lieveVillage(uId: Owner.sAuth.uid)
+                            } catch {
+                                //TODO:
+                                print("ERROR")
+                            }
+                        }
+                    }
+                } else {
+                    Text("ゲームオーバー")
+                }
+            }
+
+        }
+        .onChange(of: gm.gamePlayers) { players in
+            // 追放者が立ち去ったら昼結果を判定
+            // ※主催者スマホに処理させる
+            if gm.gameState.hostUserId == Owner.sAuth.uid {
+                let mostVotedUserId = gm.getMostVotedUser()
+
+                var isFinishedLeaving: Bool = true
+                for i in 0 ..< mostVotedUserId.count {
+                    // 追放者がまだ立ち去ってなければfalse
+                    if gm.gamePlayers.first(where: {$0.userId == mostVotedUserId[i]})?.lievedVillage == false {
+                        isFinishedLeaving = false
+                    }
+                }
+                // 追放者が全員立ち去っていればtrueが残る
+
+                if isFinishedLeaving == true {
+                    Task {
+                        do {
+                            try await gm.judgeDayResult()
+                        } catch {
+                            //TODO:
+                            print("ERROR")
+                        }
+                    }
+                }
+
+            }
+        }
+
+    }
+}
+
+struct GameViewDayResult: View {
+    @ObservedObject var gm: GameMaster
+    @State private var isWerewolfAlived: Bool = false
+    
+    var body: some View {
+        
+        VStack{
+            Text("結果発表")
+                .font(.system(size: 31, weight: .thin))
+                .padding()
+            
+            if isWerewolfAlived == false {
+                Text("市民の勝ち！").padding()
+            } else {
+                Text("人狼の勝ち！").padding()
+            }
+
+            Button("ゲーム終了") {
+                gm.reInit()
+            }.padding()
+            
+        }
+        .onAppear() {
+            // 人狼の生死確認
+            for i in 0 ..< gm.gamePlayers.count {
+                if gm.gamePlayers[i].alived == true {
+                    if gm.gamePlayers[i].role == .Werewolf {
+                        print("isWerewolfAlived = true")
+                        isWerewolfAlived = true
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+struct GameViewGameOver: View {
+    @ObservedObject var gm: GameMaster
+    
+    var body: some View {
+        VStack{
+            Text("ゲームオーバー")
+        }
+    }
 }
 
 struct GameView_Previews: PreviewProvider {
@@ -434,4 +564,5 @@ struct GameView_Previews: PreviewProvider {
         GameViewDiscussion(gm: dummyGM)
         GameViewVoting(gm: dummyGM)
     }
+    
 }
